@@ -1,0 +1,186 @@
+{
+  "index_version": 1,
+  "generated_at": "2026-07-23T22:27:22Z",
+  "generator": "heyeddi-auto-sync-minimal",
+  "skill_count": 22,
+  "installed_count": 22,
+  "skills": [
+    {
+      "name": "backend-type-bridger",
+      "folder": "backend-type-bridger",
+      "description": "Syncs a local FastAPI OpenAPI file to TypeScript types and reads Firestore schema hints. Use when writing Vue composables against FastAPI or Firebase backends.",
+      "version": "",
+      "installed": true,
+      "at": "@backend-type-bridger"
+    },
+    {
+      "name": "composable-patterns",
+      "folder": "composable-patterns",
+      "description": "Provides FastAPI JWT and Firebase client composable patterns for consistent auth and data layers. Context-first skill: use when writing or reviewing Vue composables for API access.",
+      "version": "",
+      "installed": true,
+      "at": "@composable-patterns"
+    },
+    {
+      "name": "dart-type-bridger",
+      "folder": "dart-type-bridger",
+      "description": "Syncs a local FastAPI OpenAPI file to Dart model stubs and reads Firestore schema hints for Flutter projects. Use when writing Flutter repositories against FastAPI or Firebase backends.",
+      "version": "",
+      "installed": true,
+      "at": "@dart-type-bridger"
+    },
+    {
+      "name": "design-handoff-flutter",
+      "folder": "design-handoff-flutter",
+      "description": "Implements Flutter screens from designer screenshots and handoff notes using Material 3. Two-pass workflow: mockup-brief with Implementation spec, then AppShell + route screens. Use when approved mockups exist for a HeyEddi Flutter app.",
+      "version": "",
+      "installed": true,
+      "at": "@design-handoff-flutter"
+    },
+    {
+      "name": "design-system-generalizer",
+      "folder": "design-system-generalizer",
+      "description": "Scans token and component usage patterns from a golden reference page and diffs violations on other routes. Use when spreading a well-built page's patterns across the app in PR-sized chunks.",
+      "version": "",
+      "installed": true,
+      "at": "@design-system-generalizer"
+    },
+    {
+      "name": "engineering-excellence",
+      "folder": "engineering-excellence",
+      "description": "Audits code for KISS, YAGNI, DRY, SOLID, and testability; maintains living engineering notes under .heyeddi/docs/engineering/. Use when refactoring, before merge, or when the user asks for simple scalable design, architecture notes, reuse c",
+      "version": "1.0.0",
+      "installed": true,
+      "at": "@engineering-excellence"
+    },
+    {
+      "name": "flutter-engineering",
+      "folder": "flutter-engineering",
+      "description": "Ensures HeyEddi Flutter projects have the right engineering stack: Flutter (Riverpod, go_router, Material 3), FastAPI backend, or Firebase tooling. Audits gaps, scaffolds as needed, runs flutter test/analyze, documents local dev servers. Us",
+      "version": "",
+      "installed": true,
+      "at": "@flutter-engineering"
+    },
+    {
+      "name": "flutter-patterns",
+      "folder": "flutter-patterns",
+      "description": "Provides FastAPI Dio and Firebase client patterns for Flutter: repositories, Riverpod providers, auth. Context-first skill; use when writing or reviewing Dart data layers for HeyEddi Flutter apps.",
+      "version": "",
+      "installed": true,
+      "at": "@flutter-patterns"
+    },
+    {
+      "name": "heyeddi-design",
+      "folder": "heyeddi-design",
+      "description": "End-to-end UI design for HeyEddi stack (PrimeVue, DESIGN.md, semantic tokens: OpenProps on scaffold default). Use when the user wants to design, explore, critique, or improve existing frontend: e.g. \\\"enterprise view\\\", \\\"critique the login",
+      "version": "2.1.0",
+      "installed": true,
+      "at": "@heyeddi-design"
+    },
+    {
+      "name": "heyeddi-handoff",
+      "folder": "heyeddi-handoff",
+      "description": "Implements screens from designer screenshots and handoff notes. Two-pass workflow: designer writes mockup-brief with Implementation spec, implementer builds shell then route, verify_handoff checks tokens and layout. Use when approved mockup",
+      "version": "",
+      "installed": true,
+      "at": "@heyeddi-handoff"
+    },
+    {
+      "name": "heyeddi-intake",
+      "folder": "heyeddi-intake",
+      "description": "Translates vague user prompts into HeyEddi product docs (personas, route intent, voice), route-specific handoff artifacts (wireframes, user mockups, or briefs), and skill-routing under .heyeddi/. Use first on new projects before @heyeddi-de",
+      "version": "1.3.0",
+      "installed": true,
+      "at": "@heyeddi-intake"
+    },
+    {
+      "name": "heyeddi-orchestrator",
+      "folder": "heyeddi-orchestrator",
+      "description": "Discover HeyEddi skills, auto-sync .heyeddi/ (skills index), cross-pillar opinions, and suggest @skills. Use at session start, after reinstalling skills, or when connecting heyeddi-product, ux-flow-auditor, and heyeddi-design on a route.",
+      "version": "3.0.3",
+      "installed": true,
+      "at": "@heyeddi-orchestrator"
+    },
+    {
+      "name": "heyeddi-pr-respond",
+      "folder": "heyeddi-pr-respond",
+      "description": "Addresses PR review feedback: fetch all comment types, fix-vs-decline decisions, apply fixes, re-run pre-merge gate, threaded replies. Use when responding to human review comments as the PR author. For reviewing a submitted PR use heyeddi-p",
+      "version": "",
+      "installed": true,
+      "at": "@heyeddi-pr-respond"
+    },
+    {
+      "name": "heyeddi-pr-review",
+      "folder": "heyeddi-pr-review",
+      "description": "Reviews submitted PRs using only committed changes: product fit, docs drift, engineering quality, test coverage, and pre-merge gate. Use when approving a PR, doing reviewer QA, or self-checking before requesting review. Not for replying to ",
+      "version": "1.0.0",
+      "installed": true,
+      "at": "@heyeddi-pr-review"
+    },
+    {
+      "name": "heyeddi-product",
+      "folder": "heyeddi-product",
+      "description": "Product leadership: user stories, acceptance criteria, backlog, holistic reviews. Verifies the product works and is useful; delegates UX flow, design critique, visual contrast, and engineering audits; synthesizes plans and change recommenda",
+      "version": "1.0.0",
+      "installed": true,
+      "at": "@heyeddi-product"
+    },
+    {
+      "name": "no-duplicate-ui",
+      "folder": "no-duplicate-ui",
+      "description": "Scans Vue files for duplicate component names and similar template overlap. Use during PR review or when refactoring UI to enforce DRY architecture.",
+      "version": "",
+      "installed": true,
+      "at": "@no-duplicate-ui"
+    },
+    {
+      "name": "pre-merge-gate",
+      "folder": "pre-merge-gate",
+      "description": "Runs pre-merge checks (tests, build, types, optional UI audit) and returns a markdown pass/fail report. Use when QA approves a PR or before merge to main.",
+      "version": "",
+      "installed": true,
+      "at": "@pre-merge-gate"
+    },
+    {
+      "name": "primevue-openprops-architect",
+      "folder": "primevue-openprops-architect",
+      "description": "Enforces PrimeVue + project design tokens when editing Vue or CSS. OpenProps rules apply only when the project already uses open-props. Runs vue-tsc and stylelint when available.",
+      "version": "",
+      "installed": true,
+      "at": "@primevue-openprops-architect"
+    },
+    {
+      "name": "project-engineering",
+      "folder": "project-engineering",
+      "description": "Ensures HeyEddi projects have the right engineering stack: Vue (Vite/Vitest), FastAPI backend, or Firebase tooling. Audits gaps, scaffolds as needed, installs deps, runs tests, documents local dev servers. Use when the repo is thin or befor",
+      "version": "",
+      "installed": true,
+      "at": "@project-engineering"
+    },
+    {
+      "name": "ux-flow-auditor",
+      "folder": "ux-flow-auditor",
+      "description": "Traces user task flows with Playwright: click depth, step success, friction: and writes reports to .heyeddi/docs/ux-flows/. Use when measuring ease of use, clicks to complete a task, or onboarding friction. Not for static visual critique (u",
+      "version": "1.0.0",
+      "installed": true,
+      "at": "@ux-flow-auditor"
+    },
+    {
+      "name": "verify-build",
+      "folder": "verify-build",
+      "description": "Runs npm run build to catch Vite/Rollup failures before merge. Use when validating frontend changes or in CI pre-merge loops.",
+      "version": "",
+      "installed": true,
+      "at": "@verify-build"
+    },
+    {
+      "name": "visual-auditor",
+      "folder": "visual-auditor",
+      "description": "Captures screenshots, reviews UI against product.md and design.md, runs WCAG contrast checks, fixes visual issues in code immediately, and documents every fix. Use after craft/handoff or when UI looks wrong: not report-only QA.",
+      "version": "3.0.0",
+      "installed": true,
+      "at": "@visual-auditor"
+    }
+  ],
+  "note": "Minimal index from install-tree SKILL.md scan. Run @heyeddi-orchestrator sync for full catalog."
+}

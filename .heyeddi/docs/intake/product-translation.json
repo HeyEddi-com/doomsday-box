@@ -1,0 +1,66 @@
+{
+  "product_name": "HeyEddi Doomsday Box",
+  "audience_summary": "Privacy-first households and self-hosters who want an offline-capable personal cloud, inline network protection, and local AI in one low-power appliance\u2014plus early supporters ready to back a Kickstarter.",
+  "stack_note": "Monorepo `heyeddi-doomsday-box`: `website/` = Phase 0 market-intent Vue SPA (heyeddi.com hero; Postmark DOI; Stripe custom amount $0 lead / \u2265$1 paid intent up to \u221e; no prototype video required); `box/` = on-device software (Debian/Ubuntu, Docker Compose, FastAPI + Vue/PrimeVue, nftables, Ollama; N100/N150 + ARM64). Kickstarter later when prototype+video exist.",
+  "personas": [
+    {
+      "name": "Alex",
+      "role": "Self-hoster / DIY node runner",
+      "primary_job": "Run personal cloud and local AI on hardware they control without cloud lock-in",
+      "anxiety": "Vendor telemetry, brittle DIY stacks, and software that never ships open",
+      "design_implication": "Concrete capability list; honest OSS timeline; clear DIY vs hardware paths"
+    },
+    {
+      "name": "Morgan",
+      "role": "Household privacy / resilience lead",
+      "primary_job": "Protect home network and keep family data usable offline",
+      "anxiety": "Outages, ads/trackers, and gadgets that need constant cloud",
+      "design_implication": "Plain-language outcomes first; low jargon; trust via transparency"
+    },
+    {
+      "name": "Casey",
+      "role": "Early backer / Kickstarter supporter",
+      "primary_job": "Show demand with email at $0 or paid intent at $1+ before Kickstarter",
+      "anxiety": "Paying without clarity, or being asked for a demo that does not exist yet",
+      "design_implication": "Amount field allows 0 and custom \u22651; honest no-video / not-a-pledge copy; measure paid intent"
+    }
+  ],
+  "route_intent": [
+    {
+      "route": "/",
+      "register": "brand",
+      "primary_persona": "Casey",
+      "mindset": "Curious; may pay $1+ to signal demand without a prototype video",
+      "success_feeling": "I joined at $0 or showed paid intent in under a minute without being sold a fake demo"
+    }
+  ],
+  "pages": [
+    {
+      "route": "/",
+      "view": "PreLaunchLanding",
+      "purpose": "Single-page Vue: hero, pitch, planned perks (reference only), email + amount ($0 or \u2265$1\u2192\u221e), disclosure; no prototype video; CTA from heyeddi.com hero"
+    }
+  ],
+  "competitors": [
+    "Umbrel",
+    "CasaOS",
+    "Firewalla",
+    "Protectli / mini PC firewall builds",
+    "Synology / NAS appliances",
+    "Raspberry Pi DIY stacks"
+  ],
+  "competitive_edge": "One appliance combining sovereign personal cloud, inline firewall/ad-tarpit, and offline local AI\u2014open-source after campaign fulfillment, with a high-trust Kickstarter path",
+  "anti_audience": "Enterprise SSO buyers, people seeking cloud-only SaaS, and anyone wanting equity crowdfunding or charity fundraising on Kickstarter",
+  "voice_tone": "Direct, sovereignty-forward, no hype. Verb-first CTAs. Honest about crowdfunding rules and planned perks. Calm confidence over prepper panic.",
+  "brand_personality": "HeyEddi product line: practical digital sovereignty appliance with campaign energy on Doomsday Box naming",
+  "design_references": [
+    "Framework Laptop: honest hardware storytelling",
+    "Umbrel: clear personal-server value without enterprise chrome",
+    "Kickstarter hardware campaigns: perk clarity and early-bird urgency without scammy scarcity"
+  ],
+  "anti_references": [
+    "Generic purple SaaS landing with floating badge clusters",
+    "Fear-mongering prepper marketing with cluttered stat strips",
+    "Multi-page marketing site when a single scroll page suffices"
+  ]
+}

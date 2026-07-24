@@ -1,0 +1,137 @@
+{
+  "version": 1,
+  "skills": {
+    "backend-type-bridger": {
+      "source": "HeyEddi-com/skills",
+      "sourceType": "github",
+      "skillPath": "skills/backend-type-bridger/SKILL.md",
+      "computedHash": "ce485575c88b56f05a53f498e501193f4451930ea5c06a0f11631658cd0e7413"
+    },
+    "composable-patterns": {
+      "source": "HeyEddi-com/skills",
+      "sourceType": "github",
+      "skillPath": "skills/composable-patterns/SKILL.md",
+      "computedHash": "3cc244f4a59d4a25a9a0b1b5004e66faa9732525ff208e2b82bff011a224d7ba"
+    },
+    "dart-type-bridger": {
+      "source": "HeyEddi-com/skills",
+      "sourceType": "github",
+      "skillPath": "skills/dart-type-bridger/SKILL.md",
+      "computedHash": "152474e1468a49b21258f64d7d57ebf039de6bc01033f27be4397b565a8be2dd"
+    },
+    "design-handoff-flutter": {
+      "source": "HeyEddi-com/skills",
+      "sourceType": "github",
+      "skillPath": "skills/design-handoff-flutter/SKILL.md",
+      "computedHash": "68d1c0704a902378ddfd0a870805ecbd433bc02b325f2865e6c6cdf924bc3198"
+    },
+    "design-system-generalizer": {
+      "source": "HeyEddi-com/skills",
+      "sourceType": "github",
+      "skillPath": "skills/design-system-generalizer/SKILL.md",
+      "computedHash": "98492ece22c205c02093d574aecac48dd55730b56dbcefe98d839ed985efc53e"
+    },
+    "engineering-excellence": {
+      "source": "HeyEddi-com/skills",
+      "sourceType": "github",
+      "skillPath": "skills/engineering-excellence/SKILL.md",
+      "computedHash": "a85ee5df87ea1f41c2eb95365ffbdc2fd05fc75a0bcd7be99a23d6e6562fd305"
+    },
+    "flutter-engineering": {
+      "source": "HeyEddi-com/skills",
+      "sourceType": "github",
+      "skillPath": "skills/flutter-engineering/SKILL.md",
+      "computedHash": "2288c311b00c9a4dca17631284b3c2a0cbc5927f33e128d5e7954752726952b0"
+    },
+    "flutter-patterns": {
+      "source": "HeyEddi-com/skills",
+      "sourceType": "github",
+      "skillPath": "skills/flutter-patterns/SKILL.md",
+      "computedHash": "e2146605b02ed7365eb392b88171d064739a4e8bc7d93b12d66f2d75ca697b0f"
+    },
+    "heyeddi-design": {
+      "source": "HeyEddi-com/skills",
+      "sourceType": "github",
+      "skillPath": "skills/heyeddi-design/SKILL.md",
+      "computedHash": "fb23a7b90199bcddb03312e456e25fc1de3ea7fae337849f72b65bbadd2ec4a7"
+    },
+    "heyeddi-handoff": {
+      "source": "HeyEddi-com/skills",
+      "sourceType": "github",
+      "skillPath": "skills/heyeddi-handoff/SKILL.md",
+      "computedHash": "aa1d1cd703ecc4ff04948c31645fb8026c775ff49de56f28ff5ec71ff6483177"
+    },
+    "heyeddi-intake": {
+      "source": "HeyEddi-com/skills",
+      "sourceType": "github",
+      "skillPath": "skills/heyeddi-intake/SKILL.md",
+      "computedHash": "2ca5b9228a62c003afdd0a9af4920791182d654fbc87f900ee74e13e4dc59a13"
+    },
+    "heyeddi-orchestrator": {
+      "source": "HeyEddi-com/skills",
+      "sourceType": "github",
+      "skillPath": "skills/heyeddi-orchestrator/SKILL.md",
+      "computedHash": "800430b9c8089b5c54416fe548f9626c4d76250fa0f8422ac09ad8a397bd14e7"
+    },
+    "heyeddi-pr-respond": {
+      "source": "HeyEddi-com/skills",
+      "sourceType": "github",
+      "skillPath": "skills/heyeddi-pr-respond/SKILL.md",
+      "computedHash": "c733917a3daf67a1b6b51e0abf5d3a0b14af2ecf34ce90683ade097cbfb56552"
+    },
+    "heyeddi-pr-review": {
+      "source": "HeyEddi-com/skills",
+      "sourceType": "github",
+      "skillPath": "skills/heyeddi-pr-review/SKILL.md",
+      "computedHash": "a6c456c8f2fc7903942768ded4d7169d5781c784133ec475672e179826c9d8a7"
+    },
+    "heyeddi-product": {
+      "source": "HeyEddi-com/skills",
+      "sourceType": "github",
+      "skillPath": "skills/heyeddi-product/SKILL.md",
+      "computedHash": "63defe94841aeba7f5c203470c5716ea2d956881cbd8939b26c4d8a86fd9b9f7"
+    },
+    "no-duplicate-ui": {
+      "source": "HeyEddi-com/skills",
+      "sourceType": "github",
+      "skillPath": "skills/no-duplicate-ui/SKILL.md",
+      "computedHash": "b20f6f7231422f4cbf9e628c7e211ebc7392b43efc29a4431bf8ad819792e3fc"
+    },
+    "pre-merge-gate": {
+      "source": "HeyEddi-com/skills",
+      "sourceType": "github",
+      "skillPath": "skills/pre-merge-gate/SKILL.md",
+      "computedHash": "52a8c524707719e39d3bcf5a4cc76a99e41c6af16c0f71357c3ffafdb2788f64"
+    },
+    "primevue-openprops-architect": {
+      "source": "HeyEddi-com/skills",
+      "sourceType": "github",
+      "skillPath": "skills/primevue-openprops-architect/SKILL.md",
+      "computedHash": "39075458d51e2b411a095e62344f54b180aff1c5c6d9f9fe7a5d6160a07ec6d8"
+    },
+    "project-engineering": {
+      "source": "HeyEddi-com/skills",
+      "sourceType": "github",
+      "skillPath": "skills/project-engineering/SKILL.md",
+      "computedHash": "0bd1f99100edff0729597c2dfce09f1cc54f8a6fa1216d0728f0c9b94825d65a"
+    },
+    "ux-flow-auditor": {
+      "source": "HeyEddi-com/skills",
+      "sourceType": "github",
+      "skillPath": "skills/ux-flow-auditor/SKILL.md",
+      "computedHash": "bba41cffaff1da6987996e8f3d46a8ef765d11761e804f9f4ec60a8e210c42ba"
+    },
+    "verify-build": {
+      "source": "HeyEddi-com/skills",
+      "sourceType": "github",
+      "skillPath": "skills/verify-build/SKILL.md",
+      "computedHash": "6e07c1366c293fbc899b51cfa13cb462b6972b4bca827adf90f4125460fdefb9"
+    },
+    "visual-auditor": {
+      "source": "HeyEddi-com/skills",
+      "sourceType": "github",
+      "skillPath": "skills/visual-auditor/SKILL.md",
+      "computedHash": "2c990ee8176f1408029749975a40291b7a93ad42fdc4e7ba0398e230749870aa"
+    }
+  }
+}

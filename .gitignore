@@ -1,0 +1,22 @@
+node_modules/
+dist/
+.DS_Store
+*.log
+.env
+.env.*
+!.env.example
+
+# Private founder finance / legal working notes
+.docs/
+
+# Local agent / IDE tooling (not product source)
+.agents/
+.cursor/
+learnings.md
+
+# Python / Vue leftovers if added under box/
+**/__pycache__/
+.pytest_cache/
+.coverage
+*.pyc
+.venv/

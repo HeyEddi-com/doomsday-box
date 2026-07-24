@@ -1,0 +1,10 @@
+{
+  "route": "/",
+  "feature": "pre-launch-landing",
+  "last_pillar": "product",
+  "updated": "2026-07-23",
+  "pending_pillars": [
+    "ux",
+    "design"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "frontend": "vue",
+  "backends": [
+    "fastapi"
+  ],
+  "product_name": "HeyEddi Doomsday Box",
+  "routes": [
+    {
+      "route": "/",
+      "register": "brand",
+      "skill": "heyeddi-design",
+      "mode": "craft",
+      "feature": "taskflow-marketing",
+      "notes": "Single-page Vue marketing: hero, product pitch, planned Kickstarter perk references, email waitlist, optional founding reservation, disclosure; CTA also used from heyeddi.com hero"
+    }
+  ],
+  "scaffold": [
+    "project-engineering",
+    "scaffold_stack --stack full"
+  ],
+  "post_intake": [
+    "@heyeddi-orchestrator write_skills_index",
+    "@heyeddi-design document"
+  ]
+}

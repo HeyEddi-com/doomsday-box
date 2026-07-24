@@ -1,0 +1,13 @@
+{
+  "route": "/",
+  "app": "HeyEddi Doomsday Box",
+  "mode": "wireframe",
+  "fidelity": "wireframe",
+  "mockup_contract": "wireframe_layout",
+  "generated_by": "heyeddi-intake",
+  "notes": [
+    "Layout derived from product-translation.json page purpose: not a generic PNG template",
+    "Refine regions in wireframe.md before @heyeddi-handoff if product intent changed",
+    "mockup-brief.md seeded by seed_brief.py; expand Implementation spec from wireframe"
+  ]
+}
