@@ -29,7 +29,7 @@
 
 Double opt-in required before Broadcast.
 
-## Pre-launch funnel (`heyeddi.com/doomsday-box`)
+## Pre-launch funnel (`heyeddi.com/projects/doomsday-box`)
 
 ```
 heyeddi.com hero
@@ -64,6 +64,7 @@ Shown as planned only — site payment does **not** lock a reward.
 | Standard (1 box) | $449 |
 | Household Duo (2) | $759 / $819 / $859 (staged) |
 | Mesh Trio (3) | $1,099 / $1,189 / $1,249 (staged) |
+| Tee (optional) | ~$29 / thank-you — **only if campaign success allows** |
 | Retail (1 box) | $499 |
 
 Multi-box packs support **mesh / multi-node** homes (coverage, load split, redundancy).
@@ -72,7 +73,7 @@ Multi-box packs support **mesh / multi-node** homes (coverage, load split, redun
 
 | Host / path | Role |
 |-------------|------|
-| `heyeddi.com/doomsday-box` | **Primary** landing |
+| `heyeddi.com/projects/doomsday-box` | **Primary** landing |
 | `box.heyeddi.com` | Alias → landing (CNAME / Firebase `box` redirect) |
 | `doomsday.heyeddi.com` | Alias → landing |
 | heyeddi.com | Hero CTA, `/projects/doomsday-box`, blog post |

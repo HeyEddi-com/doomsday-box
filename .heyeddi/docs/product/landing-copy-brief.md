@@ -1,7 +1,7 @@
 # Landing copy brief (single-page SPA)
 
 **Last updated:** 2026-07-23  
-**Surface:** `heyeddi-tool/hey-eddi-website` · route `/doomsday-box` 
+**Surface:** `heyeddi-tool/hey-eddi-website` · route `/projects/doomsday-box` 
 **Status:** Locked for craft  
 **Phase:** Market intent first. **No prototype video required** for this page
 
@@ -57,6 +57,7 @@ Hardware uses **three stages** (Super Early Bird → Early Bird → Standard), t
 | Standard (1 box) | $449 | Rest of campaign |
 | Household Duo (2 boxes) | $759 / $819 / $859 | Staged; mesh multi-node; saves vs 2 singles |
 | Mesh Trio (3 boxes) | $1,099 / $1,189 / $1,249 | Staged; mesh multi-node; saves vs 3 singles |
+| Tee (optional) | ~$29 / thank-you | **Only if campaign success allows** — not guaranteed on landing |
 | Retail (context, 1 box) | $499 | After campaign, not a pre-sale |
 
 ## Intent / support block (locked)
@@ -86,5 +87,5 @@ Only when `VITE_KICKSTARTER_PRELAUNCH_URL` is set. Hidden until then.
 
 ## heyeddi.com hero handoff (locked)
 
-CTA: **Doomsday Box: join the launch** → `https://heyeddi.com/doomsday-box?src=heyeddi-hero`  
+CTA: **Doomsday Box: join the launch** → `https://heyeddi.com/projects/doomsday-box?src=heyeddi-hero`  
 (`box.heyeddi.com` aliases to the same page.)

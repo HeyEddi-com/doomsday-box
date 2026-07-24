@@ -70,7 +70,16 @@ Three hardware **stages** (deepest discount first), plus multi-box mesh packs.
 |------|-------|
 | Retail MSRP (1 box) | **$499** |
 
-Add-ons: none in v1 beyond Duo/Trio packs.
+### Add-ons & thank-you merch (conditional)
+
+| Item | Planned price | Who | Notes |
+|------|---------------|-----|-------|
+| **Doomsday / Hub tee** | **~$29** add-on (TBD) | Optional KS add-on if offered | **Only if campaign success / margins allow** — decide after funding (or as a stretch). Soft merch; ships with or after hardware wave |
+| **Intent thank-you tee** | Included (not a discount) | Segment A (≥ $1) who also pledge, **if we green-light merch** | Same gate: not promised on the landing as guaranteed. Size survey only after we commit |
+
+Make-good if Super Early Bird oversubscribes: prefer next hardware tier / clear ops message first; tee only if merch is green-lit.
+
+Default v1 add-ons without merch: Duo/Trio packs only. Tee is a **success-dependent option**, not a locked deliverable.
 
 ## Shipping (locked planning estimates)
 
