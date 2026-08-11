@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { BoxStatus } from "./api";
 
-const fetchStatus = vi.fn<[], Promise<BoxStatus>>();
+const fetchStatus = vi.fn<() => Promise<BoxStatus>>();
 
 vi.mock("./api", () => ({
   fetchStatus: () => fetchStatus(),

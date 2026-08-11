@@ -37,8 +37,9 @@ if doombox_has_systemd; then
 else
   log "No systemd — starting avahi best-effort (container smoke)"
   doombox_service_enable_now avahi-daemon
+  install -d -m 0755 /var/log/doombox
   # Alias publisher needs a default route; may no-op in slim containers.
-  /usr/local/sbin/doombox-publish-doomsday-mdns >/tmp/doombox-mdns-alias.log 2>&1 &
+  /usr/local/sbin/doombox-publish-doomsday-mdns >>/var/log/doombox/mdns-alias.log 2>&1 &
 fi
 
 log "mDNS: hostname box.local + alias doomsday.local"

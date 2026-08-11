@@ -15,7 +15,16 @@ apt-get update -y
 apt-get install -y podman uidmap slirp4netns fuse-overlayfs
 
 home="$(getent passwd "${ADMIN_USER}" | cut -d: -f6)"
-install -d -m 0755 -o "${ADMIN_USER}" -g "${ADMIN_USER}" "${home}/.config/containers"
+[[ -n "${home}" && -d "${home}" && ! -L "${home}" ]] \
+  || die "refusing to write into missing or symlink home: ${home}"
+owner="$(stat -c '%U' "${home}")"
+[[ "${owner}" == "${ADMIN_USER}" || "${owner}" == "root" ]] \
+  || die "refusing to write into ${home} (owner=${owner}, expected ${ADMIN_USER})"
+
+cfg_dir="${home}/.config/containers"
+[[ ! -e "${cfg_dir}" || ( -d "${cfg_dir}" && ! -L "${cfg_dir}" ) ]] \
+  || die "refusing to use symlink config dir: ${cfg_dir}"
+install -d -m 0755 -o "${ADMIN_USER}" -g "${ADMIN_USER}" "${cfg_dir}"
 
 # Enable lingering so user services can run without interactive login (optional)
 if command -v loginctl >/dev/null 2>&1; then
@@ -35,12 +44,17 @@ if getent group docker >/dev/null && id -nG "${ADMIN_USER}" | grep -qw docker; t
   gpasswd -d "${ADMIN_USER}" docker || true
 fi
 
-cat > "${home}/.config/containers/containers.conf" <<'EOF'
+tmp="$(mktemp)"
+cat > "${tmp}" <<'EOF'
 [engine]
 cgroup_manager = "systemd"
 events_logger = "file"
 EOF
-chown -R "${ADMIN_USER}:${ADMIN_USER}" "${home}/.config/containers"
+chown "${ADMIN_USER}:${ADMIN_USER}" "${tmp}"
+chmod 0644 "${tmp}"
+target="${cfg_dir}/containers.conf"
+[[ ! -L "${target}" ]] || { rm -f "${tmp}"; die "refusing to overwrite symlink ${target}"; }
+mv -f "${tmp}" "${target}"
 
 log "Rootless Podman installed for ${ADMIN_USER}"
 log "As ${ADMIN_USER}: podman info"
