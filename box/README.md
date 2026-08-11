@@ -19,11 +19,27 @@
 ```bash
 cd box
 cp .env.example .env
-# use a local storage dir for compose state
 mkdir -p /tmp/doombox-storage/compose
+chmod -R a+rwx /tmp/doombox-storage   # api container user needs write access
 STORAGE_ROOT=/tmp/doombox-storage docker compose -f compose/docker-compose.yml --env-file .env up -d --build
 # open http://127.0.0.1:8080/
 ```
+
+## Software tests (CI / local)
+
+```bash
+# Fast path: dashboard + API unit tests only
+cd box/dashboard && npm ci && npm run typecheck && npm test
+cd box/api && pip install -r requirements-dev.txt && pytest -q
+
+# Full software gate (includes Docker smokes)
+./box/test/run-software-tests.sh
+
+# Skip container smokes when Docker is unavailable
+DOOMBOX_SKIP_CONTAINER_TESTS=1 DOOMBOX_SKIP_COMPOSE_TESTS=1 ./box/test/run-software-tests.sh
+```
+
+GitHub Actions runs the same gates in `.github/workflows/ci.yml`.
 
 ## On appliance (after host bootstrap)
 
