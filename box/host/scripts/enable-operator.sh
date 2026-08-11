@@ -5,6 +5,10 @@
 # Run as root on the local console (not via maker sudoers).
 set -euo pipefail
 
+HOST_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# shellcheck source=lib/host-env.sh
+source "${HOST_ROOT}/scripts/lib/host-env.sh"
+
 ADMIN_USER="${DOOMBOX_ADMIN_USER:-heyeddi}"
 STATE_DIR="/var/lib/doombox"
 REMOTE_ADMIN_MARKER="${STATE_DIR}/remote-admin-enabled"
@@ -70,17 +74,8 @@ if [[ -n "${PUBKEY_FILE}" ]]; then
 fi
 
 install_pubkey() {
-  local home ssh_dir aks
-  home="$(getent passwd "${ADMIN_USER}" | cut -d: -f6)"
-  ssh_dir="${home}/.ssh"
-  aks="${ssh_dir}/authorized_keys"
-  install -d -m 0700 -o "${ADMIN_USER}" -g "${ADMIN_USER}" "${ssh_dir}"
-  touch "${aks}"
-  chown "${ADMIN_USER}:${ADMIN_USER}" "${aks}"
-  chmod 0600 "${aks}"
-  if ! grep -Fxq "${PUBKEY}" "${aks}"; then
-    printf '%s\n' "${PUBKEY}" >> "${aks}"
-  fi
+  doombox_install_authorized_key "${ADMIN_USER}" "${PUBKEY}" \
+    || die "failed to install SSH pubkey for ${ADMIN_USER}"
   log "Installed SSH pubkey for ${ADMIN_USER}"
 }
 

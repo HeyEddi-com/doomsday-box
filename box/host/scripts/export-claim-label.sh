@@ -11,6 +11,7 @@
 # Usage (on the box, after API minted SETUP_PIN.txt):
 #   sudo doombox-export-claim-label
 set -euo pipefail
+umask 077
 
 HOST_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 if [[ -f /usr/local/lib/doombox/physical-console.sh ]]; then
@@ -375,7 +376,8 @@ fi
 echo "${TS},${SERIAL},${OEM_SERIAL},${PRODUCT_SKU},${MODEL},${PIN},${MAC},${MFG_DATE},${OUT},provisioned" >> "${LEDGER}"
 
 chmod 700 "${OUT}" 2>/dev/null || true
-chmod 600 "${OUT}/label.zpl" "${OUT}/meta.json" 2>/dev/null || true
+chmod 600 "${OUT}/label.zpl" "${OUT}/label.html" "${OUT}/meta.json" 2>/dev/null || true
+[[ -f "${OUT}/claim-qr.png" ]] && chmod 600 "${OUT}/claim-qr.png" 2>/dev/null || true
 
 cat <<EOF
 

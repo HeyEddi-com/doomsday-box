@@ -22,16 +22,6 @@ REMOTE_ADMIN_MARKER="${STATE_DIR}/remote-admin-enabled"
 log() { printf '==> %s\n' "$*"; }
 die() { printf 'ERROR: %s\n' "$*" >&2; exit 1; }
 
-assert_safe_home_dir() {
-  local home="$1" user="$2"
-  [[ -n "${home}" && -d "${home}" && ! -L "${home}" ]] \
-    || die "refusing to write into missing or symlink home: ${home}"
-  local owner
-  owner="$(stat -c '%U' "${home}")"
-  [[ "${owner}" == "${user}" || "${owner}" == "root" ]] \
-    || die "refusing to write into ${home} (owner=${owner}, expected ${user})"
-}
-
 [[ "${EUID}" -eq 0 ]] || die "run as root"
 
 install -d -m 0755 "${STATE_DIR}"
@@ -88,7 +78,7 @@ install_operator_sudoers() {
 install_maker_readme() {
   local home readme tmp
   home="$(getent passwd "${ADMIN_USER}" | cut -d: -f6)"
-  assert_safe_home_dir "${home}" "${ADMIN_USER}"
+  doombox_assert_safe_home_dir "${home}" "${ADMIN_USER}" || die "unsafe home for ${ADMIN_USER}"
   readme="${home}/README-MAKER.txt"
   if [[ -f "${HOST_ROOT}/docs/MAKER.txt" ]]; then
     tmp="$(mktemp)"
@@ -152,20 +142,8 @@ maybe_preseed_pubkey() {
     return 0
   fi
   log "Pre-seeding SSH pubkey for ${ADMIN_USER} (still need enable-operator --enable-ssh)"
-  local ssh_dir home
-  home="$(getent passwd "${ADMIN_USER}" | cut -d: -f6)"
-  assert_safe_home_dir "${home}" "${ADMIN_USER}"
-  ssh_dir="${home}/.ssh"
-  [[ ! -e "${ssh_dir}" || ( -d "${ssh_dir}" && ! -L "${ssh_dir}" ) ]] \
-    || die "refusing to use symlink .ssh: ${ssh_dir}"
-  install -d -m 0700 -o "${ADMIN_USER}" -g "${ADMIN_USER}" "${ssh_dir}"
-  local aks="${ssh_dir}/authorized_keys"
-  touch "${aks}"
-  chown "${ADMIN_USER}:${ADMIN_USER}" "${aks}"
-  chmod 0600 "${aks}"
-  if ! grep -Fxq "${DOOMBOX_ADMIN_SSH_PUBKEY}" "${aks}"; then
-    printf '%s\n' "${DOOMBOX_ADMIN_SSH_PUBKEY}" >> "${aks}"
-  fi
+  doombox_install_authorized_key "${ADMIN_USER}" "${DOOMBOX_ADMIN_SSH_PUBKEY}" \
+    || die "failed to install SSH pubkey for ${ADMIN_USER}"
 }
 
 install_host_tools() {

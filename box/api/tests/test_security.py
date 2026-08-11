@@ -38,3 +38,13 @@ def test_cors_rejects_unlisted_origin(box):
     )
     assert res.status_code == 200
     assert "access-control-allow-origin" not in res.headers
+
+
+def test_cors_allows_localhost_with_port(box):
+    client, _, _, _ = box
+    res = client.get(
+        "/api/health",
+        headers={"Origin": "http://127.0.0.1:8080"},
+    )
+    assert res.status_code == 200
+    assert res.headers.get("access-control-allow-origin") == "http://127.0.0.1:8080"

@@ -83,3 +83,46 @@ doombox_dpkg_arch() {
     esac
   }
 }
+
+doombox_assert_safe_home_dir() {
+  local home="$1" user="$2"
+  [[ -n "${home}" && -d "${home}" && ! -L "${home}" ]] \
+    || { printf 'ERROR: refusing to write into missing or symlink home: %s\n' "${home}" >&2; return 1; }
+  local owner
+  owner="$(stat -c '%U' "${home}")"
+  [[ "${owner}" == "${user}" || "${owner}" == "root" ]] \
+    || { printf 'ERROR: refusing to write into %s (owner=%s, expected %s)\n' "${home}" "${owner}" "${user}" >&2; return 1; }
+}
+
+# Append pubkey to authorized_keys without following user-controlled symlinks (root context).
+doombox_install_authorized_key() {
+  local user="$1" pubkey="$2"
+  local home ssh_dir aks staging tmp
+  home="$(getent passwd "${user}" | cut -d: -f6)"
+  doombox_assert_safe_home_dir "${home}" "${user}" || return 1
+  ssh_dir="${home}/.ssh"
+  [[ ! -e "${ssh_dir}" || ( -d "${ssh_dir}" && ! -L "${ssh_dir}" ) ]] \
+    || { printf 'ERROR: refusing to use symlink .ssh: %s\n' "${ssh_dir}" >&2; return 1; }
+  install -d -m 0700 -o "${user}" -g "${user}" "${ssh_dir}"
+  aks="${ssh_dir}/authorized_keys"
+  [[ ! -L "${aks}" ]] \
+    || { printf 'ERROR: refusing to use symlink authorized_keys: %s\n' "${aks}" >&2; return 1; }
+
+  staging="$(mktemp -d)"
+  chmod 0700 "${staging}"
+  tmp="${staging}/authorized_keys.new"
+  if [[ -f "${aks}" ]]; then
+    su -s /bin/bash "${user}" -c "cat -- '${aks}'" > "${tmp}" 2>/dev/null || : > "${tmp}"
+  else
+    : > "${tmp}"
+  fi
+  if ! grep -Fxq "${pubkey}" "${tmp}"; then
+    printf '%s\n' "${pubkey}" >> "${tmp}"
+  fi
+  chown "${user}:${user}" "${tmp}"
+  chmod 0600 "${tmp}"
+  [[ ! -L "${aks}" ]] \
+    || { rm -rf "${staging}"; printf 'ERROR: refusing to overwrite symlink %s\n' "${aks}" >&2; return 1; }
+  mv -fT "${tmp}" "${aks}"
+  rm -rf "${staging}"
+}
