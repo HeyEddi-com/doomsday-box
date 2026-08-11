@@ -22,6 +22,16 @@ REMOTE_ADMIN_MARKER="${STATE_DIR}/remote-admin-enabled"
 log() { printf '==> %s\n' "$*"; }
 die() { printf 'ERROR: %s\n' "$*" >&2; exit 1; }
 
+assert_safe_home_dir() {
+  local home="$1" user="$2"
+  [[ -n "${home}" && -d "${home}" && ! -L "${home}" ]] \
+    || die "refusing to write into missing or symlink home: ${home}"
+  local owner
+  owner="$(stat -c '%U' "${home}")"
+  [[ "${owner}" == "${user}" || "${owner}" == "root" ]] \
+    || die "refusing to write into ${home} (owner=${owner}, expected ${user})"
+}
+
 [[ "${EUID}" -eq 0 ]] || die "run as root"
 
 install -d -m 0755 "${STATE_DIR}"
@@ -76,13 +86,15 @@ install_operator_sudoers() {
 }
 
 install_maker_readme() {
-  local home readme
+  local home readme tmp
   home="$(getent passwd "${ADMIN_USER}" | cut -d: -f6)"
-  [[ -d "${home}" ]] || return 0
+  assert_safe_home_dir "${home}" "${ADMIN_USER}"
   readme="${home}/README-MAKER.txt"
   if [[ -f "${HOST_ROOT}/docs/MAKER.txt" ]]; then
-    install -m 0644 -o "${ADMIN_USER}" -g "${ADMIN_USER}" \
-      "${HOST_ROOT}/docs/MAKER.txt" "${readme}"
+    tmp="$(mktemp)"
+    install -m 0644 "${HOST_ROOT}/docs/MAKER.txt" "${tmp}"
+    chown "${ADMIN_USER}:${ADMIN_USER}" "${tmp}"
+    mv -f "${tmp}" "${readme}"
   fi
 }
 
@@ -142,7 +154,10 @@ maybe_preseed_pubkey() {
   log "Pre-seeding SSH pubkey for ${ADMIN_USER} (still need enable-operator --enable-ssh)"
   local ssh_dir home
   home="$(getent passwd "${ADMIN_USER}" | cut -d: -f6)"
+  assert_safe_home_dir "${home}" "${ADMIN_USER}"
   ssh_dir="${home}/.ssh"
+  [[ ! -e "${ssh_dir}" || ( -d "${ssh_dir}" && ! -L "${ssh_dir}" ) ]] \
+    || die "refusing to use symlink .ssh: ${ssh_dir}"
   install -d -m 0700 -o "${ADMIN_USER}" -g "${ADMIN_USER}" "${ssh_dir}"
   local aks="${ssh_dir}/authorized_keys"
   touch "${aks}"

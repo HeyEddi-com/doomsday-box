@@ -9,7 +9,7 @@ for _ in $(seq 1 30); do
   sleep 1
 done
 
-IFACE="$(ip -4 route show default | awk '{print $5; exit}')"
+IFACE="$(ip -4 route show default | awk '/ dev / { for (i = 1; i <= NF; i++) if ($i == "dev") { print $(i + 1); exit } }')"
 ADDR="$(ip -4 -o addr show dev "${IFACE}" | awk '{print $4}' | cut -d/ -f1 | head -n1)"
 [[ -n "${ADDR}" ]] || exit 1
 

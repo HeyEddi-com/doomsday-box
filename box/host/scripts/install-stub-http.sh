@@ -17,7 +17,7 @@ install -m 0644 "${HOST_ROOT}/stub/index.html" "${WEB_ROOT}/index.html"
 install -d /etc/nginx/sites-available /etc/nginx/sites-enabled
 install -m 0644 "${HOST_ROOT}/conf/nginx/doombox-stub.conf" /etc/nginx/sites-available/doombox-stub
 
-if [[ -L /etc/nginx/sites-enabled/default ]]; then
+if [[ -e /etc/nginx/sites-enabled/default ]]; then
   rm -f /etc/nginx/sites-enabled/default
 fi
 ln -sfn /etc/nginx/sites-available/doombox-stub /etc/nginx/sites-enabled/doombox-stub
