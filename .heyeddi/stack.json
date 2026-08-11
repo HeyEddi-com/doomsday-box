@@ -2,6 +2,6 @@
   "frontend": "vue",
   "backends": ["fastapi"],
   "api_port": 8090,
-  "web_port": 5173,
-  "package_root": "website"
+  "web_port": 8080,
+  "notes": "On-device DoomBox stack under box/; marketing stays on hey-eddi-website"
 }

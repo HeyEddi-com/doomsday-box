@@ -1,0 +1,13 @@
+[Unit]
+Description=Publish doomsday.local mDNS alias for DoomBox
+After=network-online.target avahi-daemon.service
+Wants=network-online.target avahi-daemon.service
+
+[Service]
+Type=simple
+ExecStart=/usr/local/sbin/doombox-publish-doomsday-mdns
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

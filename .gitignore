@@ -20,3 +20,5 @@ learnings.md
 .coverage
 *.pyc
 .venv/
+box/dashboard/dist/
+box/api/.venv/

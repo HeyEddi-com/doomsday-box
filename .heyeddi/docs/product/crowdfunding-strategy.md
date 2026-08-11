@@ -59,13 +59,12 @@ Shown as planned only — site payment does **not** lock a reward.
 | Ref | Planned price |
 |-----|---------------|
 | Founding Insider | $49 |
-| Super Early Bird (1 box) | $399 (≈100) |
-| Early Bird (1 box) | $429 (soft ~150) |
-| Standard (1 box) | $449 |
-| Household Duo (2) | $759 / $819 / $859 (staged) |
-| Mesh Trio (3) | $1,099 / $1,189 / $1,249 (staged) |
+| Basic Super EB / Early / Standard (DDR4) | $399 / $429 / $449 |
+| Premium Super EB / Early / Standard (DDR5) | $529 / $549 / $579 |
+| Household Duo (2× Basic) | $759 / $819 / $859 (staged) |
+| Mesh Trio (3× Basic) | $1,099 / $1,189 / $1,249 (staged) |
 | Tee (optional) | ~$29 / thank-you — **only if campaign success allows** |
-| Retail (1 box) | $499 |
+| Retail Basic / Premium | $499 / $649 |
 
 Multi-box packs support **mesh / multi-node** homes (coverage, load split, redundancy).
 

@@ -1,0 +1,18 @@
+[Unit]
+Description=DoomBox claim PIN HDMI kiosk (loopback only)
+After=network-online.target docker.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+Environment=DOOMBOX_STORAGE=/mnt/storage
+Environment=DOOMBOX_KIOSK_HOST=127.0.0.1
+Environment=DOOMBOX_KIOSK_PORT=7901
+ExecStart=/usr/bin/python3 /usr/local/lib/doombox/claim_kiosk.py
+Restart=on-failure
+RestartSec=3
+# No new privileges; loopback-only by app policy
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target

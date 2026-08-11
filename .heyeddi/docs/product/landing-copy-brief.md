@@ -1,6 +1,6 @@
 # Landing copy brief (single-page SPA)
 
-**Last updated:** 2026-07-23  
+**Last updated:** 2026-08-10  
 **Surface:** `heyeddi-tool/hey-eddi-website` · route `/projects/doomsday-box` 
 **Status:** Locked for craft  
 **Phase:** Market intent first. **No prototype video required** for this page
@@ -18,7 +18,7 @@
 | Headline | Your network. Your data. Offline when it matters. |
 | Support | Stream to your TVs, run local compute, keep AI on-box, stay useful offline, and put protection on the path. Open source when units ship. |
 | Primary CTA | Join with $0 or show intent from $1 |
-| Visual | Optional: concept motion graphics + real table B-roll (`video-creative.md`). No fake working demo. |
+| Visual | Optional: concept motion graphics + real table B-roll (`video-creative.md`, shoot: `product-imagery-brief.md`). No fake working demo. |
 
 Do **not** claim a live working demo until software boots on camera. Concept graphics must be labeled as concept.
 
@@ -47,18 +47,17 @@ Kickstarter Insiders will get early software access and a say in the roadmap. Wh
 **Headline:** Planned Kickstarter rewards  
 **Label:** Subject to change. Supporting here does **not** lock a reward.
 
-Hardware uses **three stages** (Super Early Bird → Early Bird → Standard), then retail context. Multi-box packs for mesh / multi-node homes.
+Hardware uses **Basic (DDR4)** and **Premium (DDR5)** ladders (Super Early Bird → Early Bird → Standard), then retail. Multi-box packs are Basic SKU for v1.
 
 | Perk | Planned price | Snapshot |
 |------|---------------|----------|
 | Founding Insider (digital) | $49 | Early builds, VIP channel, feature votes, credit |
-| Super Early Bird (1 box) | $399 | First ~100 hardware units |
-| Early Bird (1 box) | $429 | Next staged discount |
-| Standard (1 box) | $449 | Rest of campaign |
-| Household Duo (2 boxes) | $759 / $819 / $859 | Staged; mesh multi-node; saves vs 2 singles |
-| Mesh Trio (3 boxes) | $1,099 / $1,189 / $1,249 | Staged; mesh multi-node; saves vs 3 singles |
+| Basic Super / Early / Standard | $399 / $429 / $449 | N150 · DDR4 · 1TB · 1m Cat6 · dual path NIC/dongle |
+| Premium Super / Early / Standard | $529 / $549 / $579 | N150 · DDR5 · 1TB · same accessories |
+| Household Duo (2× Basic) | $759 / $819 / $859 | Staged; mesh multi-node; saves vs 2 singles |
+| Mesh Trio (3× Basic) | $1,099 / $1,189 / $1,249 | Staged; mesh multi-node; saves vs 3 singles |
 | Tee (optional) | ~$29 / thank-you | **Only if campaign success allows** — not guaranteed on landing |
-| Retail (context, 1 box) | $499 | After campaign, not a pre-sale |
+| Retail Basic / Premium | $499 / $649 | After campaign, not a pre-sale |
 
 ## Intent / support block (locked)
 
@@ -80,7 +79,7 @@ Only when `VITE_KICKSTARTER_PRELAUNCH_URL` is set. Hidden until then.
 
 ## Footer (locked)
 
-- Optional concept graphics + table B-roll (`video-creative.md`).  
+- Optional concept graphics + table B-roll (`video-creative.md`, `product-imagery-brief.md`).  
 - Planned rewards may change; site support ≠ Kickstarter pledge.  
 - Off-site funds disclosed on the campaign when it launches; ≥ $1 mapping in `ks-stripe-mapping.md`.  
 - `privacy@heyeddi.com` · Postmark · Stripe · box.heyeddi.com  

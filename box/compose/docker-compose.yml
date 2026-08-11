@@ -1,0 +1,60 @@
+# DoomBox core stack — amd64 + arm64
+# Usage (on appliance or Docker Desktop):
+#   cp .env.example .env
+#   docker compose -f compose/docker-compose.yml --env-file .env up -d --build
+
+name: doombox
+
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: images/api/Dockerfile
+    image: heyeddi/doombox-api:local
+    restart: unless-stopped
+    volumes:
+      - ${STORAGE_ROOT:-/mnt/storage}:/mnt/storage:rw
+      # Read-only host marker for Advanced → remote admin status (optional on pure compose)
+      - ${DOOMBOX_HOST_STATE:-/var/lib/doombox}:/var/lib/doombox:ro
+    environment:
+      # Always the in-container path; host maps STORAGE_ROOT → /mnt/storage
+      DOOMBOX_STORAGE: /mnt/storage
+      DOOMBOX_HOST_STATE: /var/lib/doombox
+      DOOMBOX_ENV: appliance
+    expose:
+      - "8090"
+    cpus: ${API_CPUS:-0.50}
+    mem_limit: ${API_MEM:-512m}
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8090/api/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  dashboard:
+    build:
+      context: ..
+      dockerfile: images/dashboard/Dockerfile
+    image: heyeddi/doombox-dashboard:local
+    restart: unless-stopped
+    expose:
+      - "80"
+    cpus: ${DASHBOARD_CPUS:-0.25}
+    mem_limit: ${DASHBOARD_MEM:-128m}
+    depends_on:
+      api:
+        condition: service_healthy
+
+  gateway:
+    image: nginx:1.27-alpine
+    restart: unless-stopped
+    ports:
+      - "${GATEWAY_HTTP_PORT:-8080}:80"
+    volumes:
+      - ./gateway/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - api
+      - dashboard
+    cpus: ${GATEWAY_CPUS:-0.25}
+    mem_limit: ${GATEWAY_MEM:-64m}

@@ -1,0 +1,16 @@
+# HeyEddi operator — least privilege
+#
+# heyeddi is a maker account: shell, $HOME tooling, rootless installs.
+# Not in the `sudo` group. Not in the `docker` group (docker ≈ root).
+#
+# Only these host tools (each enforces physical-console where required):
+Cmnd_Alias DOOMBOX_HOST_TOOLS = \
+  /usr/local/sbin/doombox-show-setup-pin, \
+  /usr/local/sbin/doombox-export-claim-label, \
+  /usr/local/sbin/doombox-print-claim-label, \
+  /usr/local/sbin/doombox-factory-reset-claim, \
+  /usr/local/sbin/doombox-disable-remote-admin
+
+# Password required — stolen SSH session still cannot silently escalate,
+# and host tools themselves refuse SSH for PIN / factory-reset / label export.
+heyeddi ALL=(root) PASSWD: DOOMBOX_HOST_TOOLS

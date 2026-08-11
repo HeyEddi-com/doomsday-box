@@ -34,7 +34,7 @@
 
 1. Kickstarter Late Pledges  
 2. Optional Indiegogo InDemand **only after** KS ends  
-3. Direct retail on `box.heyeddi.com` at **$499** when inventory ready  
+3. Direct retail on `box.heyeddi.com` at **$499 Basic / $649 Premium** when inventory ready  
 
 ## Friend-seed payout
 
