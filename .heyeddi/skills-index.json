@@ -1,7 +1,7 @@
 {
   "hub_root": null,
   "project_root": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box",
-  "skill_count": 27,
+  "skill_count": 28,
   "skills": [
     {
       "name": "backend-type-bridger",
@@ -64,6 +64,19 @@
       "skill_md": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/design-system-generalizer/SKILL.md",
       "skill_dir": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/design-system-generalizer",
       "invoke_as": "@design-system-generalizer",
+      "has_triggers_file": false,
+      "triggers": [],
+      "source": "local-only"
+    },
+    {
+      "name": "doomsday-box-testing",
+      "description": "Run and extend software tests for the HeyEddi Doomsday Box appliance (box/api pytest, dashboard vitest, host container smoke, compose smoke, GitHub Actions CI). Use when adding tests, fixing CI, or validating claim/auth/host bootstrap behavior.",
+      "scoring_text": "Run and extend software tests for the HeyEddi Doomsday Box appliance (box/api pytest, dashboard vitest, host container smoke, compose smoke, GitHub Actions CI). Use when adding tests, fixing CI, or validating claim/auth/host bootstrap behavior.",
+      "version": "1.0.0",
+      "installed": true,
+      "skill_md": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/doomsday-box-testing/SKILL.md",
+      "skill_dir": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/doomsday-box-testing",
+      "invoke_as": "@doomsday-box-testing",
       "has_triggers_file": false,
       "triggers": [],
       "source": "local-only"
@@ -148,9 +161,9 @@
     },
     {
       "name": "heyeddi-ci-respond",
-      "description": "\"Respond to HeyEddi CI findings only: filter markers/bot, fix-vs-decline, stack-agnostic verify, threaded replies, never merge without authorize merge. Use for CI findings; human reviews use heyeddi-pr-respond.\"",
-      "scoring_text": "\"Respond to HeyEddi CI findings only: filter markers/bot, fix-vs-decline, stack-agnostic verify, threaded replies, never merge without authorize merge. Use for CI findings; human reviews use heyeddi-pr-respond.\"",
-      "version": "1.0.0",
+      "description": "\"Respond to HeyEddi CI bot findings only (heyeddi-ci[bot] / <!-- heyeddi-ci-review). Not for human PR reviews \u2014 use heyeddi-pr-respond. Filter, fix-vs-decline, commit+push, threaded replies; never merge without authorize merge.\"",
+      "scoring_text": "\"Respond to HeyEddi CI bot findings only (heyeddi-ci[bot] / <!-- heyeddi-ci-review). Not for human PR reviews \u2014 use heyeddi-pr-respond. Filter, fix-vs-decline, commit+push, threaded replies; never merge without authorize merge.\"",
+      "version": "1.1.1",
       "installed": true,
       "skill_md": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/heyeddi-ci-respond/SKILL.md",
       "skill_dir": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/heyeddi-ci-respond",
@@ -251,9 +264,9 @@
     },
     {
       "name": "heyeddi-pr-respond",
-      "description": "\"Addresses PR review feedback: fetch comments, fix-vs-decline, apply fixes, re-gate, reply IN EACH review thread via post_thread_replies (/replies only; never top-level acknowledgement spam), verify_response hard gate. Use when responding as the PR author. For reviewing a submitted PR use heyeddi-pr-review.\"",
-      "scoring_text": "\"Addresses PR review feedback: fetch comments, fix-vs-decline, apply fixes, re-gate, reply IN EACH review thread via post_thread_replies (/replies only; never top-level acknowledgement spam), verify_response hard gate. Use when responding as the PR author. For reviewing a submitted PR use heyeddi-pr-review.\"",
-      "version": "1.3.1",
+      "description": "\"Human PR review response only (teammate/QA comments). Not for HeyEddi CI bot findings \u2014 use heyeddi-ci-respond. Fetch comments, fix-vs-decline, commit+push, threaded /replies, verify_response.\"",
+      "scoring_text": "\"Human PR review response only (teammate/QA comments). Not for HeyEddi CI bot findings \u2014 use heyeddi-ci-respond. Fetch comments, fix-vs-decline, commit+push, threaded /replies, verify_response.\"",
+      "version": "1.4.1",
       "installed": true,
       "skill_md": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/heyeddi-pr-respond/SKILL.md",
       "skill_dir": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/heyeddi-pr-respond",
@@ -381,7 +394,7 @@
     }
   ],
   "index_version": 1,
-  "generated_at": "2026-08-11T01:45:37Z",
+  "generated_at": "2026-08-11T07:15:38Z",
   "generator": "heyeddi-orchestrator@3.0.2",
-  "installed_count": 27
+  "installed_count": 28
 }

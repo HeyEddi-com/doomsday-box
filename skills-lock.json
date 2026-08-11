@@ -50,31 +50,31 @@
       "computedHash": "4ef1c8b25fe8e3667f7f76b619b43ce49cb60aa363728a1f4f1287ca60afe4ad"
     },
     "heyeddi-ci-config": {
-      "source": "HeyEddi-com/heyeddi-ci-skills",
+      "source": "HeyEddi-com/heyeddi-skills",
       "sourceType": "github",
       "skillPath": "skills/heyeddi-ci-config/SKILL.md",
       "computedHash": "d584737c12b0f3d54498faca8930023ce1401609372d45d4ef5942ed10040abb"
     },
     "heyeddi-ci-fails": {
-      "source": "HeyEddi-com/heyeddi-ci-skills",
+      "source": "HeyEddi-com/heyeddi-skills",
       "sourceType": "github",
       "skillPath": "skills/heyeddi-ci-fails/SKILL.md",
       "computedHash": "b35559979651c2617b2890e3cf0fca45d8cb13ec0cf1f4f06559c04330f1c645"
     },
     "heyeddi-ci-guide": {
-      "source": "HeyEddi-com/heyeddi-ci-skills",
+      "source": "HeyEddi-com/heyeddi-skills",
       "sourceType": "github",
       "skillPath": "skills/heyeddi-ci-guide/SKILL.md",
       "computedHash": "5dd1b27f523bc4be1d642f430190d6c95a365d6a8f8aa203432af817aed449b4"
     },
     "heyeddi-ci-respond": {
-      "source": "HeyEddi-com/heyeddi-ci-skills",
+      "source": "HeyEddi-com/heyeddi-skills",
       "sourceType": "github",
       "skillPath": "skills/heyeddi-ci-respond/SKILL.md",
       "computedHash": "4ab3ac4f67c0b18d21a726059672efbe3a9891b13a1e140bd1fd9b3bb1b83218"
     },
     "heyeddi-ci-runners": {
-      "source": "HeyEddi-com/heyeddi-ci-skills",
+      "source": "HeyEddi-com/heyeddi-skills",
       "sourceType": "github",
       "skillPath": "skills/heyeddi-ci-runners/SKILL.md",
       "computedHash": "d2fc73382f96996dec23f2013201251e94aa013dc74e5e993578f11e764233d0"

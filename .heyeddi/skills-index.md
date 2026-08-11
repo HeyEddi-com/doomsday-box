@@ -1,10 +1,10 @@
 # Skills index
 
-**Generated:** 2026-08-11T01:45:37Z · **Maintained by:** `@heyeddi-orchestrator`
+**Generated:** 2026-08-11T07:15:38Z · **Maintained by:** `@heyeddi-orchestrator`
 
 Cached catalog: read this instead of every `SKILL.md` at session start. Refresh after installing skills: `write_skills_index --project-root .`
 
-**Installed:** 27 / 27 skills
+**Installed:** 28 / 28 skills
 
 | Skill | Invoke | Installed | Description |
 |-------|--------|-----------|-------------|
@@ -13,19 +13,20 @@ Cached catalog: read this instead of every `SKILL.md` at session start. Refresh 
 | dart-type-bridger | @dart-type-bridger | yes | Syncs a local FastAPI OpenAPI file to Dart model stubs and reads Firestore schema hints for Flutter projects. Use whe... |
 | design-handoff-flutter | @design-handoff-flutter | yes | "Implements Flutter screens from designer screenshots and handoff notes using Material 3. Two-pass workflow: mockup-b... |
 | design-system-generalizer | @design-system-generalizer | yes | Scans token and component usage patterns from a golden reference page and diffs violations on other routes. Use when ... |
+| doomsday-box-testing | @doomsday-box-testing | yes | Run and extend software tests for the HeyEddi Doomsday Box appliance (box/api pytest, dashboard vitest, host containe... |
 | engineering-excellence | @engineering-excellence | yes | "Audits code for KISS, YAGNI, DRY, SOLID, and testability; maintains living engineering notes under .heyeddi/docs/eng... |
 | flutter-engineering | @flutter-engineering | yes | "Ensures HeyEddi Flutter projects have the right engineering stack: Flutter (Riverpod, go_router, Material 3), FastAP... |
 | flutter-patterns | @flutter-patterns | yes | "Provides FastAPI Dio and Firebase client patterns for Flutter: repositories, Riverpod providers, auth. Context-first... |
 | heyeddi-ci-config | @heyeddi-ci-config | yes | Author or update eddi-ci.yaml for HeyEddi CI and Spot runners. Use when enabling HeyEddi CI, runners, or the user ask... |
 | heyeddi-ci-fails | @heyeddi-ci-fails | yes | "Diagnose failing GitHub Checks for a PR head: fetch evidence, write ephemeral ci-fails report, optional local fix lo... |
 | heyeddi-ci-guide | @heyeddi-ci-guide | yes | Reference for HeyEddi CI commands, authorize-merge auth, feedback via debate + support@, and Spot runners placeholder... |
-| heyeddi-ci-respond | @heyeddi-ci-respond | yes | "Respond to HeyEddi CI findings only: filter markers/bot, fix-vs-decline, stack-agnostic verify, threaded replies, ne... |
+| heyeddi-ci-respond | @heyeddi-ci-respond | yes | "Respond to HeyEddi CI bot findings only (heyeddi-ci[bot] / <!-- heyeddi-ci-review). Not for human PR reviews — use h... |
 | heyeddi-ci-runners | @heyeddi-ci-runners | yes | "PLACEHOLDER: author eddi-ci.yaml pipeline jobs from live contract + inspect_repo. Spot runners are fail-closed — nev... |
 | heyeddi-design | @heyeddi-design | yes | "End-to-end UI design for HeyEddi stack (PrimeVue, DESIGN.md, semantic tokens: OpenProps on scaffold default). Use wh... |
 | heyeddi-handoff | @heyeddi-handoff | yes | "Implements screens from designer screenshots and handoff notes. Two-pass workflow: designer writes mockup-brief with... |
 | heyeddi-intake | @heyeddi-intake | yes | "Translates vague user prompts into HeyEddi product docs (personas, route intent, voice), route-specific handoff arti... |
 | heyeddi-orchestrator | @heyeddi-orchestrator | yes | Discover HeyEddi skills, auto-sync .heyeddi/ (skills index), detect hub updates (ask before install), cross-pillar op... |
-| heyeddi-pr-respond | @heyeddi-pr-respond | yes | "Addresses PR review feedback: fetch comments, fix-vs-decline, apply fixes, re-gate, reply IN EACH review thread via ... |
+| heyeddi-pr-respond | @heyeddi-pr-respond | yes | "Human PR review response only (teammate/QA comments). Not for HeyEddi CI bot findings — use heyeddi-ci-respond. Fetc... |
 | heyeddi-pr-review | @heyeddi-pr-review | yes | "Reviews submitted PRs using only committed changes: product fit, docs drift, engineering quality, test coverage, and... |
 | heyeddi-product | @heyeddi-product | yes | "Product leadership: user stories, acceptance criteria, backlog, holistic reviews. Verifies the product works and is ... |
 | no-duplicate-ui | @no-duplicate-ui | yes | Scans Vue files for duplicate component names and similar template overlap. Use during PR review or when refactoring ... |
