@@ -1,0 +1,16 @@
+[Unit]
+Description=DoomBox fullscreen browser for claim kiosk (local seat)
+After=doombox-claim-kiosk.service graphical.target
+Requires=doombox-claim-kiosk.service
+
+[Service]
+Type=simple
+Environment=DISPLAY=:0
+ExecStartPre=/bin/sleep 2
+ExecStart=/usr/bin/chromium --kiosk --noerrdialogs --disable-infobars http://127.0.0.1:7901/
+Restart=on-failure
+RestartSec=5
+User=heyeddi
+
+[Install]
+WantedBy=graphical.target

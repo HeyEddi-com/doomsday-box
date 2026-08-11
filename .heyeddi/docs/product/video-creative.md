@@ -1,7 +1,8 @@
 # Video & motion creative (locked)
 
-**Last updated:** 2026-07-23  
-**Status:** Locked for Phase 0 landing; KS bar called out separately
+**Last updated:** 2026-08-10  
+**Status:** Locked for Phase 0 landing; KS bar called out separately  
+**Shoot execution:** `product-imagery-brief.md` (sample PCs — shot list + handoff)
 
 ## Short answer
 
@@ -46,6 +47,7 @@ Table B-roll + concept graphics can **remain** as chapters, but Trust & Safety e
 
 ## Related
 
+- `product-imagery-brief.md` — sample-PC stills + table B-roll shoot  
 - `landing-copy-brief.md`  
 - `campaign-brief.md`  
 - Kickstarter: [Project Claims / honest presentation](https://www.kickstarter.com/honest)

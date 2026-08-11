@@ -1,6 +1,6 @@
 # Product documentation index
 
-**Last updated:** 2026-07-23
+**Last updated:** 2026-08-10
 
 | Doc | Purpose |
 |-----|---------|
@@ -14,11 +14,13 @@
 | [postmark-runbook.md](postmark-runbook.md) | Transactional + campaign email |
 | [ks-stripe-mapping.md](ks-stripe-mapping.md) | How Stripe ≥ $1 maps to KS (priority + early-bird email-match) |
 | [video-creative.md](video-creative.md) | Concept graphics + table B-roll vs KS working-prototype bar |
+| [product-imagery-brief.md](product-imagery-brief.md) | Sample-PC shoot list, capture checklist, asset handoff |
+| [../../../box/host/SECURITY.md](../../../box/host/SECURITY.md) | Host dual-audience security (operator vs service, SSH off by default) |
 | [stripe-reservation-policy.md](stripe-reservation-policy.md) | $0 lead / ≥ $1 paid intent (custom ∞) |
-| [marketing-hosting.md](marketing-hosting.md) | Canonical heyeddi.com/doomsday-box + box CNAME |
+| [marketing-hosting.md](marketing-hosting.md) | Canonical heyeddi.com/projects/doomsday-box + box CNAME |
 | [landing-copy-brief.md](landing-copy-brief.md) | Hero / perks / intent copy |
 | [campaign-brief.md](campaign-brief.md) | Kickstarter skeleton |
-| [hardware-bom.md](hardware-bom.md) | N100/N150, landed COGS |
+| [hardware-bom.md](hardware-bom.md) | Basic (DDR4) / Premium (DDR5) SKUs, all-in COGS, accessories |
 | [oss-release-promise.md](oss-release-promise.md) | Early access → public OSS |
 | [friend-seed-status.md](friend-seed-status.md) | Seed deal checklist |
 | [box-architecture.md](box-architecture.md) | On-device architecture draft |

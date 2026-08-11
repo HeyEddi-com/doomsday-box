@@ -1,0 +1,46 @@
+/* Semantic tokens — Hub (light) default, Survival overrides on .skin-doomsday */
+:root,
+.skin-hub {
+  color-scheme: light;
+  --canvas: #f4f6f3;
+  --canvas-soft: #e8ece6;
+  --ink: #1a221c;
+  --muted: #5c6b62;
+  --accent: #3d7a62;
+  --accent-soft: #d5e6dc;
+  --danger: #a33b3b;
+  --border: rgba(26, 34, 28, 0.12);
+  --panel: rgba(255, 255, 255, 0.72);
+  --glow-a: rgba(61, 122, 98, 0.14);
+  --glow-b: rgba(26, 34, 28, 0.04);
+  --btn-fg: #f4f6f3;
+  --font-display: "IBM Plex Serif", Georgia, serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, "IBM Plex Mono", "Cascadia Code", monospace;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --shell-max: 40rem;
+  --shell-max-wide: 52rem;
+}
+
+.skin-doomsday {
+  color-scheme: dark;
+  --canvas: #0e1014;
+  --canvas-soft: #161a20;
+  --ink: #e8e6e1;
+  --muted: #9a968c;
+  --accent: #c4a574;
+  --accent-soft: rgba(196, 165, 116, 0.16);
+  --danger: #e08a8a;
+  --border: rgba(255, 255, 255, 0.1);
+  --panel: rgba(255, 255, 255, 0.04);
+  --glow-a: rgba(196, 165, 116, 0.1);
+  --glow-b: rgba(30, 40, 50, 0.45);
+  --btn-fg: #0e1014;
+}
+
+html {
+  --p-primary-color: var(--accent);
+  --p-primary-contrast-color: var(--btn-fg);
+}

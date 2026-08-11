@@ -1,6 +1,6 @@
 # Product backlog
 
-**Last updated:** 2026-07-24
+**Last updated:** 2026-08-10
 
 Prioritized by user value. PM owns order: engineering estimates inform but do not override user pain.
 
@@ -12,10 +12,11 @@ Prioritized by user value. PM owns order: engineering estimates inform but do no
 | P0 | Dual path + disclosure | Not a KS pledge; measure paid_intent KPI | planned | Primary KPI ≥ $1 |
 | P0 | Domains | `heyeddi.com/doomsday-box`; box/doomsday aliases | planned | `marketing-hosting.md` |
 | P1 | KS↔Stripe mapping ops | Priority email + early-bird email-match at launch | done (doc) | `ks-stripe-mapping.md` |
-| P1 | Concept + table video | Landing creative OK now | planned | `video-creative.md` — KS still needs working prototype later |
+| P1 | Concept + table video | Landing creative OK now | planned | Brief exists (`product-imagery-brief.md`); paused — active track is host Linux image |
 | P1 | Thanks / confirmation | Inline success on same page | planned | |
 | P1 | Kickstarter pre-launch CTA | “Notify me on Kickstarter” | blocked | Needs KS approval |
-| P1 | `box/` scaffold | FastAPI + Vue dashboard shell | planned | After/alongside demand |
+| P1 | Host golden image | Debian bookworm appliance on sample PCs | **active** | `box/host/` bootstrap + RUNBOOK scaffolded; flash sample next |
+| P1 | `box/` scaffold | FastAPI + Vue dashboard shell | planned | After host v0 smoke on sample PC |
 | P2 | Prototype + demo video | Required for KS submit only | later | **Not** a Phase 0 blocker |
 | P2 | heyeddi.com hero CTA | Brand site points to `/doomsday-box` | planned | hey-eddi-website |
 | P2 | Campaign analytics | lead vs paid_intent rates | planned | |

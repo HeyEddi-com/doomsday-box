@@ -1,8 +1,8 @@
 # Box software architecture
 
-**Last updated:** 2026-07-24  
+**Last updated:** 2026-08-10  
 **Code root:** `box/`  
-**Status:** Locked layout for scaffold
+**Status:** Locked layout; host v0 bootstrap active
 
 ## Purpose
 
@@ -23,8 +23,12 @@ Offline-first personal cloud, inline network protection / ad-tarpit, local AI �
 | **Ship / prod host** | **Debian** (bookworm = 12 for v1; next major only after a tested bump) |
 | **Not ship** | Arch / CachyOS / other full rolling desktops as the customer appliance OS |
 | **Dev** | Debian VM preferred; CachyOS (or any modern Linux) OK for coding if Compose targets Debian |
+| **v0 image method** | Stock Debian (UEFI) + idempotent `box/host/scripts/bootstrap.sh` |
+| **Factory image** | Cloned golden disk **after** bootstrap is proven (`box/host/GOLDEN.md`) |
 
 Host stays minimal: kernel, Docker Engine, nftables, Wi‑Fi/AP helpers, sysctl. Not a general desktop.
+
+**Host v0 smoke:** headless + Docker + `/mnt/storage` + SSH + mDNS `box.local`/`doomsday.local` + nginx stub. Runbook: `box/host/RUNBOOK.md`.
 
 ## Updates (locked)
 
@@ -87,17 +91,19 @@ box/
 | VPN | WireGuard/Gluetun optional profile |
 | Local AI | Ollama + `llama3.2:3b` + `all-minilm` |
 | Scaling | Detect RAM/CPU; single-user default under 16GB |
+| Browser remote compute | Optional Compose app (Kasm-class): **authenticated**, prefer **HTTPS :443**; convenience when a VPN client cannot be installed — **not** an EDR-evasion feature |
 
 ## First-run unboxing (locked)
 
 1. Plug in power + network (or use AP setup path).  
 2. Wait for boot (~1–2 minutes).  
-3. On a phone/laptop browser, open **either**:
-   - `http://box.local` — everyday / household hub skin  
-   - `http://doomsday.local` — resilience / offline / protection skin  
-4. Complete `/setup` (network mode, admin password, apps). No Linux desktop login required.
+3. On a phone/laptop browser, open any of:
+   - `http://box.heyeddi.local` (preferred branded) or short `http://box.local` — hub skin  
+   - `http://doomsday.heyeddi.local` or short `http://doomsday.local` — doomsday skin  
+4. Complete `/setup` (network mode, **dashboard admin password**, apps). No Linux desktop login required.  
+5. Advanced / operator toggles live under **Settings** (web) — not required for household use.
 
-Fallback: device IP (kiosk / router list) if mDNS fails. Optional HDMI kiosk shows both URLs when ready.
+Fallback: device IP (kiosk / router list) if mDNS fails. Optional HDMI kiosk shows branded URLs when ready.
 
 ## Local hostnames + dual UI (locked)
 
@@ -105,15 +111,35 @@ Same appliance, same API, same features. **Hostname picks the dashboard skin** (
 
 | Hostname | Skin | Focus (IA / copy / visual) |
 |----------|------|----------------------------|
-| **`box.local`** | Hub / “happy” | Media, personal cloud, family-friendly status, everyday apps |
-| **`doomsday.local`** | Doomsday | Offline readiness, network protection, tarpit/VPN, resilience |
+| **`box.heyeddi.local`** (alias **`box.local`**) | Hub / “happy” | Media, personal cloud, family-friendly status, everyday apps |
+| **`doomsday.heyeddi.local`** (alias **`doomsday.local`**) | Doomsday | Offline readiness, network protection, tarpit/VPN, resilience |
 
 Rules:
 
 1. One codebase (`dashboard/`); theme + nav order + home widgets switch by hostname (user can also toggle skin in settings).  
 2. **No feature fork** — every capability reachable from both skins; only emphasis and layout differ.  
-3. Advertise **both** on the quick-start card and optional kiosk.  
-4. Setup wizard works on either hostname; after setup, bookmarks to either are fine.
+3. Advertise **branded names first** on quick-start / kiosk; keep short `.local` aliases for convenience.  
+4. Setup wizard works on any of the four names; after setup, bookmarks to any are fine.  
+5. Windows mDNS can be flaky for multi-label names — always show IP fallback in UI.
+
+## Browser remote compute (locked product framing)
+
+| Do | Don't |
+|----|-------|
+| Position as **reachability + UX** (no VPN client, works on HTTPS :443 networks) | Claim “invisible to CrowdStrike / EDR” or market bypass of corp security tools |
+| Require **dashboard auth**; default **off**; prefer access via our gateway on 443 | Expose an unauthenticated desktop port on the raw WAN |
+| Treat accidental friendliness to restrictive networks as a **side-effect win** | Design or document evasion techniques |
+
+SSH and WireGuard remain first-class for tech users who want them. Browser remote is the household-friendly path.
+
+## Operator / advanced (web-first)
+
+| Path | Who |
+|------|-----|
+| **Settings → Advanced** on `box.heyeddi.local` | Product path: enable browser remote, publish profiles, optional remote shell (pubkey) |
+| `doombox-enable-operator` on console | Break-glass / early host v0 before dashboard exists |
+
+Non-tech users never open Advanced → Linux `heyeddi` stays locked, sshd stays off (`box/host/SECURITY.md`).
 
 ## Dashboard routes (locked for first IA)
 
@@ -124,7 +150,7 @@ Rules:
 | `/network` | AP vs bridge, tarpit toggle |
 | `/apps` | Enable/disable Compose apps |
 | `/ai` | Model status / simple chat |
-| `/settings` | Updates, supporters credit, power |
+| `/settings` | Updates, supporters credit, power, **Advanced / operator** |
 | `/founders` | Founding Supporters list |
 
 ## Non-goals (v1)
@@ -134,9 +160,11 @@ Rules:
 - Billing inside the appliance  
 - Shipping Arch/CachyOS as the appliance host  
 - Silent Debian major upgrades  
+- **Marketing or engineering for EDR / CrowdStrike evasion**  
 
 ## Related
 
 - Epic: `features/box-hub.md`  
+- Host security: `box/host/SECURITY.md`  
 - OSS: `oss-release-promise.md`  
 - Pointer: `.docs/architecture.md`  

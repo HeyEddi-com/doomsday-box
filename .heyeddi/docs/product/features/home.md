@@ -17,7 +17,7 @@ Casey needs to show demand for the Doomsday Box **before** a prototype video exi
 
 ## Acceptance criteria
 
-1. Single page at `heyeddi.com/doomsday-box` (Nuxt in hey-eddi-website); `box.heyeddi.com` aliases/redirects here
+1. Single page at `heyeddi.com/projects/doomsday-box` (Nuxt in hey-eddi-website); `box.heyeddi.com` aliases/redirects here; legacy `/doomsday-box` redirects here
 2. Above-the-fold: brand, locked headline, support line, path into email + amount capture (no prototype video required); hero links into feature pillars (stream / compute / AI / offline / network)
 3. Amount input: default `$1`, allows `$0`, allows any amount ≥ `$0` (USD); email required
 4. `$0` path: store lead + Postmark **double opt-in**; no Stripe charge
@@ -26,7 +26,7 @@ Casey needs to show demand for the Doomsday Box **before** a prototype video exi
 7. Planned perk table with Subject to change; no claim that payment alone locks a KS reward without pledging
 8. Optional concept graphics + table B-roll allowed; no fake live-demo claims (`video-creative.md`); landing shows graphic feature rows for streaming (incl. LAN/TV playback), computing, local AI, offline archives (no tarpit mix-in), and network (bridge vs AP, ad-tarpit explained, firewall, VPN-ready)
 9. Kickstarter pre-launch button only if `VITE_KICKSTARTER_PRELAUNCH_URL` set
-10. Footer: disclosure, mapping honesty, privacy@heyeddi.com, Postmark, Stripe, heyeddi.com/doomsday-box (+ box alias)
+10. Footer: disclosure, mapping honesty, privacy@heyeddi.com, Postmark, Stripe, heyeddi.com/projects/doomsday-box (+ box alias)
 
 ## Success metric
 

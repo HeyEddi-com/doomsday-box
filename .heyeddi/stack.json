@@ -2,6 +2,14 @@
   "frontend": "vue",
   "backends": ["fastapi"],
   "api_port": 8090,
-  "web_port": 5173,
-  "package_root": "website"
+  "web_port": 8080,
+  "ci": {
+    "workflow": ".github/workflows/ci.yml",
+    "api_tests": "box/api/tests",
+    "dashboard_tests": "box/dashboard/src/**/*.test.ts",
+    "host_smoke": "box/host/test/run-container-smoke.sh",
+    "compose_smoke": "box/test/run-compose-smoke.sh",
+    "local_all": "box/test/run-software-tests.sh"
+  },
+  "notes": "On-device DoomBox stack under box/; marketing stays on hey-eddi-website"
 }

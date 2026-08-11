@@ -1,0 +1,48 @@
+HeyEddi Doomsday Box — maker account (heyeddi)
+==============================================
+
+You are a maker, not root.
+
+What you CAN do
+---------------
+- Shell access (after doombox-enable-operator unlocks the account)
+- Edit projects under your home directory
+- Install language libraries in user space:
+    pip install --user …
+    npm install -g …   (with a user prefix / nvm)
+    rustup, go install, etc.
+- Flatpak (user install) when available
+- Rootless Podman (optional):
+    sudo doombox-install-rootless-podman
+    then as heyeddi: podman info
+
+What you CANNOT do
+------------------
+- Full sudo / apt as root (no blanket ALL)
+- docker group (that is effectively root)
+- Read claim PIN or factory-reset over SSH
+- Call any HTTP factory-reset (there is none)
+
+Host tools (local console + your password via sudo)
+---------------------------------------------------
+  sudo doombox-show-setup-pin
+  sudo doombox-export-claim-label
+  sudo doombox-print-claim-label
+  sudo doombox-factory-reset-claim
+  sudo doombox-disable-remote-admin
+
+HDMI claim kiosk (loopback only — not on the LAN)
+-------------------------------------------------
+  sudo doombox-enable-claim-kiosk
+  # optional fullscreen browser on a graphical seat:
+  sudo doombox-enable-claim-kiosk --with-browser
+  # open http://127.0.0.1:7901/ on the box display
+
+These refuse SSH where noted. Stolen login ≠ reclaim the box.
+
+Enable shell (physical console as root first)
+---------------------------------------------
+  sudo doombox-enable-operator --set-password
+  sudo doombox-enable-operator --pubkey 'ssh-ed25519 …' --enable-ssh
+
+Households that only use the browser never need this account.

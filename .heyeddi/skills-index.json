@@ -1,186 +1,400 @@
 {
-  "index_version": 1,
-  "generated_at": "2026-07-23T22:27:22Z",
-  "generator": "heyeddi-auto-sync-minimal",
-  "skill_count": 22,
-  "installed_count": 22,
+  "hub_root": null,
+  "project_root": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box",
+  "skill_count": 28,
   "skills": [
     {
       "name": "backend-type-bridger",
-      "folder": "backend-type-bridger",
       "description": "Syncs a local FastAPI OpenAPI file to TypeScript types and reads Firestore schema hints. Use when writing Vue composables against FastAPI or Firebase backends.",
-      "version": "",
+      "scoring_text": "Syncs a local FastAPI OpenAPI file to TypeScript types and reads Firestore schema hints. Use when writing Vue composables against FastAPI or Firebase backends.",
+      "version": "1.0.0",
       "installed": true,
-      "at": "@backend-type-bridger"
+      "skill_md": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/backend-type-bridger/SKILL.md",
+      "skill_dir": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/backend-type-bridger",
+      "invoke_as": "@backend-type-bridger",
+      "has_triggers_file": false,
+      "triggers": [],
+      "source": "local-only"
     },
     {
       "name": "composable-patterns",
-      "folder": "composable-patterns",
-      "description": "Provides FastAPI JWT and Firebase client composable patterns for consistent auth and data layers. Context-first skill: use when writing or reviewing Vue composables for API access.",
-      "version": "",
+      "description": "\"Provides FastAPI JWT and Firebase client composable patterns for consistent auth and data layers. Context-first skill: use when writing or reviewing Vue composables for API access.\"",
+      "scoring_text": "\"Provides FastAPI JWT and Firebase client composable patterns for consistent auth and data layers. Context-first skill: use when writing or reviewing Vue composables for API access.\"",
+      "version": "1.0.0",
       "installed": true,
-      "at": "@composable-patterns"
+      "skill_md": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/composable-patterns/SKILL.md",
+      "skill_dir": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/composable-patterns",
+      "invoke_as": "@composable-patterns",
+      "has_triggers_file": false,
+      "triggers": [],
+      "source": "local-only"
     },
     {
       "name": "dart-type-bridger",
-      "folder": "dart-type-bridger",
       "description": "Syncs a local FastAPI OpenAPI file to Dart model stubs and reads Firestore schema hints for Flutter projects. Use when writing Flutter repositories against FastAPI or Firebase backends.",
-      "version": "",
+      "scoring_text": "Syncs a local FastAPI OpenAPI file to Dart model stubs and reads Firestore schema hints for Flutter projects. Use when writing Flutter repositories against FastAPI or Firebase backends.",
+      "version": "1.0.0",
       "installed": true,
-      "at": "@dart-type-bridger"
+      "skill_md": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/dart-type-bridger/SKILL.md",
+      "skill_dir": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/dart-type-bridger",
+      "invoke_as": "@dart-type-bridger",
+      "has_triggers_file": false,
+      "triggers": [],
+      "source": "local-only"
     },
     {
       "name": "design-handoff-flutter",
-      "folder": "design-handoff-flutter",
-      "description": "Implements Flutter screens from designer screenshots and handoff notes using Material 3. Two-pass workflow: mockup-brief with Implementation spec, then AppShell + route screens. Use when approved mockups exist for a HeyEddi Flutter app.",
-      "version": "",
+      "description": "\"Implements Flutter screens from designer screenshots and handoff notes using Material 3. Two-pass workflow: mockup-brief with Implementation spec, then AppShell + route screens. Use when approved mockups exist for a HeyEddi Flutter app.\"",
+      "scoring_text": "\"Implements Flutter screens from designer screenshots and handoff notes using Material 3. Two-pass workflow: mockup-brief with Implementation spec, then AppShell + route screens. Use when approved mockups exist for a HeyEddi Flutter app.\"",
+      "version": "1.1.0",
       "installed": true,
-      "at": "@design-handoff-flutter"
+      "skill_md": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/design-handoff-flutter/SKILL.md",
+      "skill_dir": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/design-handoff-flutter",
+      "invoke_as": "@design-handoff-flutter",
+      "has_triggers_file": false,
+      "triggers": [],
+      "source": "local-only"
     },
     {
       "name": "design-system-generalizer",
-      "folder": "design-system-generalizer",
       "description": "Scans token and component usage patterns from a golden reference page and diffs violations on other routes. Use when spreading a well-built page's patterns across the app in PR-sized chunks.",
-      "version": "",
+      "scoring_text": "Scans token and component usage patterns from a golden reference page and diffs violations on other routes. Use when spreading a well-built page's patterns across the app in PR-sized chunks.",
+      "version": "1.0.0",
       "installed": true,
-      "at": "@design-system-generalizer"
+      "skill_md": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/design-system-generalizer/SKILL.md",
+      "skill_dir": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/design-system-generalizer",
+      "invoke_as": "@design-system-generalizer",
+      "has_triggers_file": false,
+      "triggers": [],
+      "source": "local-only"
+    },
+    {
+      "name": "doomsday-box-testing",
+      "description": "Run and extend software tests for the HeyEddi Doomsday Box appliance (box/api pytest, dashboard vitest, host container smoke, compose smoke, GitHub Actions CI). Use when adding tests, fixing CI, or validating claim/auth/host bootstrap behavior.",
+      "scoring_text": "Run and extend software tests for the HeyEddi Doomsday Box appliance (box/api pytest, dashboard vitest, host container smoke, compose smoke, GitHub Actions CI). Use when adding tests, fixing CI, or validating claim/auth/host bootstrap behavior.",
+      "version": "1.0.0",
+      "installed": true,
+      "skill_md": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/doomsday-box-testing/SKILL.md",
+      "skill_dir": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/doomsday-box-testing",
+      "invoke_as": "@doomsday-box-testing",
+      "has_triggers_file": false,
+      "triggers": [],
+      "source": "local-only"
     },
     {
       "name": "engineering-excellence",
-      "folder": "engineering-excellence",
-      "description": "Audits code for KISS, YAGNI, DRY, SOLID, and testability; maintains living engineering notes under .heyeddi/docs/engineering/. Use when refactoring, before merge, or when the user asks for simple scalable design, architecture notes, reuse c",
+      "description": "\"Audits code for KISS, YAGNI, DRY, SOLID, and testability; maintains living engineering notes under .heyeddi/docs/engineering/. Use when refactoring, before merge, or when the user asks for simple scalable design, architecture notes, reuse catalog, or engineering ADRs: not for visual UX (use ux-flow-auditor) or CI gates (use pre-merge-gate).\"",
+      "scoring_text": "\"Audits code for KISS, YAGNI, DRY, SOLID, and testability; maintains living engineering notes under .heyeddi/docs/engineering/. Use when refactoring, before merge, or when the user asks for simple scalable design, architecture notes, reuse catalog, or engineering ADRs: not for visual UX (use ux-flow-auditor) or CI gates (use pre-merge-gate).\"",
       "version": "1.0.0",
       "installed": true,
-      "at": "@engineering-excellence"
+      "skill_md": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/engineering-excellence/SKILL.md",
+      "skill_dir": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/engineering-excellence",
+      "invoke_as": "@engineering-excellence",
+      "has_triggers_file": false,
+      "triggers": [],
+      "source": "local-only"
     },
     {
       "name": "flutter-engineering",
-      "folder": "flutter-engineering",
-      "description": "Ensures HeyEddi Flutter projects have the right engineering stack: Flutter (Riverpod, go_router, Material 3), FastAPI backend, or Firebase tooling. Audits gaps, scaffolds as needed, runs flutter test/analyze, documents local dev servers. Us",
-      "version": "",
+      "description": "\"Ensures HeyEddi Flutter projects have the right engineering stack: Flutter (Riverpod, go_router, Material 3), FastAPI backend, or Firebase tooling. Audits gaps, scaffolds as needed, runs flutter test/analyze, documents local dev servers. Use when frontend is Flutter or before design/feature work on a HeyEddi mobile/web app.\"",
+      "scoring_text": "\"Ensures HeyEddi Flutter projects have the right engineering stack: Flutter (Riverpod, go_router, Material 3), FastAPI backend, or Firebase tooling. Audits gaps, scaffolds as needed, runs flutter test/analyze, documents local dev servers. Use when frontend is Flutter or before design/feature work on a HeyEddi mobile/web app.\"",
+      "version": "1.0.0",
       "installed": true,
-      "at": "@flutter-engineering"
+      "skill_md": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/flutter-engineering/SKILL.md",
+      "skill_dir": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/flutter-engineering",
+      "invoke_as": "@flutter-engineering",
+      "has_triggers_file": false,
+      "triggers": [],
+      "source": "local-only"
     },
     {
       "name": "flutter-patterns",
-      "folder": "flutter-patterns",
-      "description": "Provides FastAPI Dio and Firebase client patterns for Flutter: repositories, Riverpod providers, auth. Context-first skill; use when writing or reviewing Dart data layers for HeyEddi Flutter apps.",
-      "version": "",
+      "description": "\"Provides FastAPI Dio and Firebase client patterns for Flutter: repositories, Riverpod providers, auth. Context-first skill; use when writing or reviewing Dart data layers for HeyEddi Flutter apps.\"",
+      "scoring_text": "\"Provides FastAPI Dio and Firebase client patterns for Flutter: repositories, Riverpod providers, auth. Context-first skill; use when writing or reviewing Dart data layers for HeyEddi Flutter apps.\"",
+      "version": "1.0.0",
       "installed": true,
-      "at": "@flutter-patterns"
+      "skill_md": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/flutter-patterns/SKILL.md",
+      "skill_dir": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/flutter-patterns",
+      "invoke_as": "@flutter-patterns",
+      "has_triggers_file": false,
+      "triggers": [],
+      "source": "local-only"
+    },
+    {
+      "name": "heyeddi-ci-config",
+      "description": "Author or update eddi-ci.yaml for HeyEddi CI and Spot runners. Use when enabling HeyEddi CI, runners, or the user asks to create/configure eddi-ci.yaml. Loads the live policy contract from cihook.heyeddi.com so knobs stay current.",
+      "scoring_text": "Author or update eddi-ci.yaml for HeyEddi CI and Spot runners. Use when enabling HeyEddi CI, runners, or the user asks to create/configure eddi-ci.yaml. Loads the live policy contract from cihook.heyeddi.com so knobs stay current.",
+      "version": "1.1.0",
+      "installed": true,
+      "skill_md": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/heyeddi-ci-config/SKILL.md",
+      "skill_dir": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/heyeddi-ci-config",
+      "invoke_as": "@heyeddi-ci-config",
+      "has_triggers_file": false,
+      "triggers": [],
+      "source": "local-only"
+    },
+    {
+      "name": "heyeddi-ci-fails",
+      "description": "\"Diagnose failing GitHub Checks for a PR head: fetch evidence, write ephemeral ci-fails report, optional local fix loop. Never merge without authorize merge. Companion to /heyeddi fails.\"",
+      "scoring_text": "\"Diagnose failing GitHub Checks for a PR head: fetch evidence, write ephemeral ci-fails report, optional local fix loop. Never merge without authorize merge. Companion to /heyeddi fails.\"",
+      "version": "1.0.0",
+      "installed": true,
+      "skill_md": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/heyeddi-ci-fails/SKILL.md",
+      "skill_dir": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/heyeddi-ci-fails",
+      "invoke_as": "@heyeddi-ci-fails",
+      "has_triggers_file": false,
+      "triggers": [],
+      "source": "local-only"
+    },
+    {
+      "name": "heyeddi-ci-guide",
+      "description": "Reference for HeyEddi CI commands, authorize-merge auth, feedback via debate + support@, and Spot runners placeholder status. Use when asking how to work with HeyEddi CI.",
+      "scoring_text": "Reference for HeyEddi CI commands, authorize-merge auth, feedback via debate + support@, and Spot runners placeholder status. Use when asking how to work with HeyEddi CI.",
+      "version": "1.0.0",
+      "installed": true,
+      "skill_md": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/heyeddi-ci-guide/SKILL.md",
+      "skill_dir": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/heyeddi-ci-guide",
+      "invoke_as": "@heyeddi-ci-guide",
+      "has_triggers_file": false,
+      "triggers": [],
+      "source": "local-only"
+    },
+    {
+      "name": "heyeddi-ci-respond",
+      "description": "\"Respond to HeyEddi CI bot findings only (heyeddi-ci[bot] / <!-- heyeddi-ci-review). Not for human PR reviews \u2014 use heyeddi-pr-respond. Filter, fix-vs-decline, commit+push, threaded replies; never merge without authorize merge.\"",
+      "scoring_text": "\"Respond to HeyEddi CI bot findings only (heyeddi-ci[bot] / <!-- heyeddi-ci-review). Not for human PR reviews \u2014 use heyeddi-pr-respond. Filter, fix-vs-decline, commit+push, threaded replies; never merge without authorize merge.\"",
+      "version": "1.1.1",
+      "installed": true,
+      "skill_md": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/heyeddi-ci-respond/SKILL.md",
+      "skill_dir": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/heyeddi-ci-respond",
+      "invoke_as": "@heyeddi-ci-respond",
+      "has_triggers_file": false,
+      "triggers": [],
+      "source": "local-only"
+    },
+    {
+      "name": "heyeddi-ci-runners",
+      "description": "\"PLACEHOLDER: author eddi-ci.yaml pipeline jobs from live contract + inspect_repo. Spot runners are fail-closed \u2014 never claim jobs ran. Use when configuring runners or pipeline YAML.\"",
+      "scoring_text": "\"PLACEHOLDER: author eddi-ci.yaml pipeline jobs from live contract + inspect_repo. Spot runners are fail-closed \u2014 never claim jobs ran. Use when configuring runners or pipeline YAML.\"",
+      "version": "1.0.0",
+      "installed": true,
+      "skill_md": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/heyeddi-ci-runners/SKILL.md",
+      "skill_dir": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/heyeddi-ci-runners",
+      "invoke_as": "@heyeddi-ci-runners",
+      "has_triggers_file": false,
+      "triggers": [],
+      "source": "local-only"
     },
     {
       "name": "heyeddi-design",
-      "folder": "heyeddi-design",
-      "description": "End-to-end UI design for HeyEddi stack (PrimeVue, DESIGN.md, semantic tokens: OpenProps on scaffold default). Use when the user wants to design, explore, critique, or improve existing frontend: e.g. \\\"enterprise view\\\", \\\"critique the login",
-      "version": "2.1.0",
+      "description": "\"End-to-end UI design for HeyEddi stack (PrimeVue, DESIGN.md, semantic tokens: OpenProps on scaffold default). Use when the user wants to design, explore, critique, or improve existing frontend: e.g. \\\"enterprise view\\\", \\\"critique the login page\\\", \\\"this UI looks bad\\\", \\\"settings page\\\". Runs discovery, critique, polish, craft, document. Sub-commands init, discover, shape, craft, critique, polish, document. Not for pre-made screenshot handoff: use heyeddi-handoff instead.\"",
+      "scoring_text": "\"End-to-end UI design for HeyEddi stack (PrimeVue, DESIGN.md, semantic tokens: OpenProps on scaffold default). Use when the user wants to design, explore, critique, or improve existing frontend: e.g. \\\"enterprise view\\\", \\\"critique the login page\\\", \\\"this UI looks bad\\\", \\\"settings page\\\". Runs discovery, critique, polish, craft, document. Sub-commands init, discover, shape, craft, critique, polish, document. Not for pre-made screenshot handoff: use heyeddi-handoff instead.\"",
+      "version": "2.3.0",
       "installed": true,
-      "at": "@heyeddi-design"
+      "skill_md": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/heyeddi-design/SKILL.md",
+      "skill_dir": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/heyeddi-design",
+      "invoke_as": "@heyeddi-design",
+      "has_triggers_file": false,
+      "triggers": [],
+      "source": "local-only"
     },
     {
       "name": "heyeddi-handoff",
-      "folder": "heyeddi-handoff",
-      "description": "Implements screens from designer screenshots and handoff notes. Two-pass workflow: designer writes mockup-brief with Implementation spec, implementer builds shell then route, verify_handoff checks tokens and layout. Use when approved mockup",
-      "version": "",
+      "description": "\"Implements screens from designer screenshots and handoff notes. Two-pass workflow: designer writes mockup-brief with Implementation spec, implementer builds shell then route, verify_handoff checks tokens and layout. Use when approved mockups exist: not for greenfield design.\"",
+      "scoring_text": "\"Implements screens from designer screenshots and handoff notes. Two-pass workflow: designer writes mockup-brief with Implementation spec, implementer builds shell then route, verify_handoff checks tokens and layout. Use when approved mockups exist: not for greenfield design.\"",
+      "version": "1.2.0",
       "installed": true,
-      "at": "@heyeddi-handoff"
+      "skill_md": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/heyeddi-handoff/SKILL.md",
+      "skill_dir": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/heyeddi-handoff",
+      "invoke_as": "@heyeddi-handoff",
+      "has_triggers_file": false,
+      "triggers": [],
+      "source": "local-only"
     },
     {
       "name": "heyeddi-intake",
-      "folder": "heyeddi-intake",
-      "description": "Translates vague user prompts into HeyEddi product docs (personas, route intent, voice), route-specific handoff artifacts (wireframes, user mockups, or briefs), and skill-routing under .heyeddi/. Use first on new projects before @heyeddi-de",
+      "description": "\"Translates vague user prompts into HeyEddi product docs (personas, route intent, voice), route-specific handoff artifacts (wireframes, user mockups, or briefs), and skill-routing under .heyeddi/. Use first on new projects before @heyeddi-design, @heyeddi-handoff, or @flutter-engineering. Never hand-write product.md: use write_product.\"",
+      "scoring_text": "\"Translates vague user prompts into HeyEddi product docs (personas, route intent, voice), route-specific handoff artifacts (wireframes, user mockups, or briefs), and skill-routing under .heyeddi/. Use first on new projects before @heyeddi-design, @heyeddi-handoff, or @flutter-engineering. Never hand-write product.md: use write_product.\"",
       "version": "1.3.0",
       "installed": true,
-      "at": "@heyeddi-intake"
+      "skill_md": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/heyeddi-intake/SKILL.md",
+      "skill_dir": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/heyeddi-intake",
+      "invoke_as": "@heyeddi-intake",
+      "has_triggers_file": false,
+      "triggers": [],
+      "source": "local-only"
     },
     {
       "name": "heyeddi-orchestrator",
-      "folder": "heyeddi-orchestrator",
-      "description": "Discover HeyEddi skills, auto-sync .heyeddi/ (skills index), cross-pillar opinions, and suggest @skills. Use at session start, after reinstalling skills, or when connecting heyeddi-product, ux-flow-auditor, and heyeddi-design on a route.",
-      "version": "3.0.3",
+      "description": "Discover HeyEddi skills, auto-sync .heyeddi/ (skills index), detect hub updates (ask before install), cross-pillar opinions, and suggest @skills. Use at session start, after reinstalling skills, or when connecting heyeddi-product, ux-flow-auditor, and heyeddi-design on a route.",
+      "scoring_text": "Discover HeyEddi skills, auto-sync .heyeddi/ (skills index), detect hub updates (ask before install), cross-pillar opinions, and suggest @skills. Use at session start, after reinstalling skills, or when connecting heyeddi-product, ux-flow-auditor, and heyeddi-design on a route.",
+      "version": "3.1.0",
       "installed": true,
-      "at": "@heyeddi-orchestrator"
+      "skill_md": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/heyeddi-orchestrator/SKILL.md",
+      "skill_dir": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/heyeddi-orchestrator",
+      "invoke_as": "@heyeddi-orchestrator",
+      "has_triggers_file": true,
+      "triggers": [
+        {
+          "pattern": "which skill",
+          "regex": false
+        },
+        {
+          "pattern": "what skill",
+          "regex": false
+        },
+        {
+          "pattern": "available skills",
+          "regex": false
+        },
+        {
+          "pattern": "route to",
+          "regex": false
+        },
+        {
+          "pattern": "orchestrat",
+          "regex": false
+        },
+        {
+          "pattern": "skill catalog",
+          "regex": false
+        }
+      ],
+      "source": "local-only"
     },
     {
       "name": "heyeddi-pr-respond",
-      "folder": "heyeddi-pr-respond",
-      "description": "Addresses PR review feedback: fetch all comment types, fix-vs-decline decisions, apply fixes, re-run pre-merge gate, threaded replies. Use when responding to human review comments as the PR author. For reviewing a submitted PR use heyeddi-p",
-      "version": "",
+      "description": "\"Human PR review response only (teammate/QA comments). Not for HeyEddi CI bot findings \u2014 use heyeddi-ci-respond. Fetch comments, fix-vs-decline, commit+push, threaded /replies, verify_response.\"",
+      "scoring_text": "\"Human PR review response only (teammate/QA comments). Not for HeyEddi CI bot findings \u2014 use heyeddi-ci-respond. Fetch comments, fix-vs-decline, commit+push, threaded /replies, verify_response.\"",
+      "version": "1.4.1",
       "installed": true,
-      "at": "@heyeddi-pr-respond"
+      "skill_md": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/heyeddi-pr-respond/SKILL.md",
+      "skill_dir": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/heyeddi-pr-respond",
+      "invoke_as": "@heyeddi-pr-respond",
+      "has_triggers_file": false,
+      "triggers": [],
+      "source": "local-only"
     },
     {
       "name": "heyeddi-pr-review",
-      "folder": "heyeddi-pr-review",
-      "description": "Reviews submitted PRs using only committed changes: product fit, docs drift, engineering quality, test coverage, and pre-merge gate. Use when approving a PR, doing reviewer QA, or self-checking before requesting review. Not for replying to ",
-      "version": "1.0.0",
+      "description": "\"Reviews submitted PRs using only committed changes: product fit, docs drift, engineering quality, test coverage, and pre-merge gate. Use when approving a PR, doing reviewer QA, or self-checking before requesting review. Not for replying to review comments (use heyeddi-pr-respond).\"",
+      "scoring_text": "\"Reviews submitted PRs using only committed changes: product fit, docs drift, engineering quality, test coverage, and pre-merge gate. Use when approving a PR, doing reviewer QA, or self-checking before requesting review. Not for replying to review comments (use heyeddi-pr-respond).\"",
+      "version": "1.1.0",
       "installed": true,
-      "at": "@heyeddi-pr-review"
+      "skill_md": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/heyeddi-pr-review/SKILL.md",
+      "skill_dir": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/heyeddi-pr-review",
+      "invoke_as": "@heyeddi-pr-review",
+      "has_triggers_file": false,
+      "triggers": [],
+      "source": "local-only"
     },
     {
       "name": "heyeddi-product",
-      "folder": "heyeddi-product",
-      "description": "Product leadership: user stories, acceptance criteria, backlog, holistic reviews. Verifies the product works and is useful; delegates UX flow, design critique, visual contrast, and engineering audits; synthesizes plans and change recommenda",
+      "description": "\"Product leadership: user stories, acceptance criteria, backlog, holistic reviews. Verifies the product works and is useful; delegates UX flow, design critique, visual contrast, and engineering audits; synthesizes plans and change recommendations. Use after @heyeddi-intake, before ship, or when the user asks for PM review, user stories, acceptance criteria, or \\\"is this feature good enough?\\\"\"",
+      "scoring_text": "\"Product leadership: user stories, acceptance criteria, backlog, holistic reviews. Verifies the product works and is useful; delegates UX flow, design critique, visual contrast, and engineering audits; synthesizes plans and change recommendations. Use after @heyeddi-intake, before ship, or when the user asks for PM review, user stories, acceptance criteria, or \\\"is this feature good enough?\\\"\"",
       "version": "1.0.0",
       "installed": true,
-      "at": "@heyeddi-product"
+      "skill_md": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/heyeddi-product/SKILL.md",
+      "skill_dir": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/heyeddi-product",
+      "invoke_as": "@heyeddi-product",
+      "has_triggers_file": false,
+      "triggers": [],
+      "source": "local-only"
     },
     {
       "name": "no-duplicate-ui",
-      "folder": "no-duplicate-ui",
       "description": "Scans Vue files for duplicate component names and similar template overlap. Use during PR review or when refactoring UI to enforce DRY architecture.",
-      "version": "",
+      "scoring_text": "Scans Vue files for duplicate component names and similar template overlap. Use during PR review or when refactoring UI to enforce DRY architecture.",
+      "version": "1.0.0",
       "installed": true,
-      "at": "@no-duplicate-ui"
+      "skill_md": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/no-duplicate-ui/SKILL.md",
+      "skill_dir": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/no-duplicate-ui",
+      "invoke_as": "@no-duplicate-ui",
+      "has_triggers_file": false,
+      "triggers": [],
+      "source": "local-only"
     },
     {
       "name": "pre-merge-gate",
-      "folder": "pre-merge-gate",
       "description": "Runs pre-merge checks (tests, build, types, optional UI audit) and returns a markdown pass/fail report. Use when QA approves a PR or before merge to main.",
-      "version": "",
+      "scoring_text": "Runs pre-merge checks (tests, build, types, optional UI audit) and returns a markdown pass/fail report. Use when QA approves a PR or before merge to main.",
+      "version": "1.0.0",
       "installed": true,
-      "at": "@pre-merge-gate"
+      "skill_md": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/pre-merge-gate/SKILL.md",
+      "skill_dir": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/pre-merge-gate",
+      "invoke_as": "@pre-merge-gate",
+      "has_triggers_file": false,
+      "triggers": [],
+      "source": "local-only"
     },
     {
       "name": "primevue-openprops-architect",
-      "folder": "primevue-openprops-architect",
       "description": "Enforces PrimeVue + project design tokens when editing Vue or CSS. OpenProps rules apply only when the project already uses open-props. Runs vue-tsc and stylelint when available.",
-      "version": "",
+      "scoring_text": "Enforces PrimeVue + project design tokens when editing Vue or CSS. OpenProps rules apply only when the project already uses open-props. Runs vue-tsc and stylelint when available.",
+      "version": "1.0.0",
       "installed": true,
-      "at": "@primevue-openprops-architect"
+      "skill_md": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/primevue-openprops-architect/SKILL.md",
+      "skill_dir": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/primevue-openprops-architect",
+      "invoke_as": "@primevue-openprops-architect",
+      "has_triggers_file": false,
+      "triggers": [],
+      "source": "local-only"
     },
     {
       "name": "project-engineering",
-      "folder": "project-engineering",
-      "description": "Ensures HeyEddi projects have the right engineering stack: Vue (Vite/Vitest), FastAPI backend, or Firebase tooling. Audits gaps, scaffolds as needed, installs deps, runs tests, documents local dev servers. Use when the repo is thin or befor",
-      "version": "",
+      "description": "\"Ensures HeyEddi projects have the right engineering stack: Vue (Vite/Vitest), FastAPI backend, or Firebase tooling. Audits gaps, scaffolds as needed, installs deps, runs tests, documents local dev servers. Use when the repo is thin or before design/feature work on any HeyEddi app.\"",
+      "scoring_text": "\"Ensures HeyEddi projects have the right engineering stack: Vue (Vite/Vitest), FastAPI backend, or Firebase tooling. Audits gaps, scaffolds as needed, installs deps, runs tests, documents local dev servers. Use when the repo is thin or before design/feature work on any HeyEddi app.\"",
+      "version": "1.1.0",
       "installed": true,
-      "at": "@project-engineering"
+      "skill_md": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/project-engineering/SKILL.md",
+      "skill_dir": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/project-engineering",
+      "invoke_as": "@project-engineering",
+      "has_triggers_file": false,
+      "triggers": [],
+      "source": "local-only"
     },
     {
       "name": "ux-flow-auditor",
-      "folder": "ux-flow-auditor",
-      "description": "Traces user task flows with Playwright: click depth, step success, friction: and writes reports to .heyeddi/docs/ux-flows/. Use when measuring ease of use, clicks to complete a task, or onboarding friction. Not for static visual critique (u",
+      "description": "\"Traces user task flows with Playwright: click depth, step success, friction: and writes reports to .heyeddi/docs/ux-flows/. Use when measuring ease of use, clicks to complete a task, or onboarding friction. Not for static visual critique (use heyeddi-design critique) or layout screenshots (use visual-auditor).\"",
+      "scoring_text": "\"Traces user task flows with Playwright: click depth, step success, friction: and writes reports to .heyeddi/docs/ux-flows/. Use when measuring ease of use, clicks to complete a task, or onboarding friction. Not for static visual critique (use heyeddi-design critique) or layout screenshots (use visual-auditor).\"",
       "version": "1.0.0",
       "installed": true,
-      "at": "@ux-flow-auditor"
+      "skill_md": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/ux-flow-auditor/SKILL.md",
+      "skill_dir": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/ux-flow-auditor",
+      "invoke_as": "@ux-flow-auditor",
+      "has_triggers_file": false,
+      "triggers": [],
+      "source": "local-only"
     },
     {
       "name": "verify-build",
-      "folder": "verify-build",
       "description": "Runs npm run build to catch Vite/Rollup failures before merge. Use when validating frontend changes or in CI pre-merge loops.",
-      "version": "",
+      "scoring_text": "Runs npm run build to catch Vite/Rollup failures before merge. Use when validating frontend changes or in CI pre-merge loops.",
+      "version": "1.0.0",
       "installed": true,
-      "at": "@verify-build"
+      "skill_md": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/verify-build/SKILL.md",
+      "skill_dir": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/verify-build",
+      "invoke_as": "@verify-build",
+      "has_triggers_file": false,
+      "triggers": [],
+      "source": "local-only"
     },
     {
       "name": "visual-auditor",
-      "folder": "visual-auditor",
-      "description": "Captures screenshots, reviews UI against product.md and design.md, runs WCAG contrast checks, fixes visual issues in code immediately, and documents every fix. Use after craft/handoff or when UI looks wrong: not report-only QA.",
+      "description": "\"Captures screenshots, reviews UI against product.md and design.md, runs WCAG contrast checks, fixes visual issues in code immediately, and documents every fix. Use after craft/handoff or when UI looks wrong: not report-only QA.\"",
+      "scoring_text": "\"Captures screenshots, reviews UI against product.md and design.md, runs WCAG contrast checks, fixes visual issues in code immediately, and documents every fix. Use after craft/handoff or when UI looks wrong: not report-only QA.\"",
       "version": "3.0.0",
       "installed": true,
-      "at": "@visual-auditor"
+      "skill_md": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/visual-auditor/SKILL.md",
+      "skill_dir": "/home/eddi/Projects/heyeddi/heyeddi-doomsday-box/.agents/skills/visual-auditor",
+      "invoke_as": "@visual-auditor",
+      "has_triggers_file": false,
+      "triggers": [],
+      "source": "local-only"
     }
   ],
-  "note": "Minimal index from install-tree SKILL.md scan. Run @heyeddi-orchestrator sync for full catalog."
+  "index_version": 1,
+  "generated_at": "2026-08-11T07:15:38Z",
+  "generator": "heyeddi-orchestrator@3.0.2",
+  "installed_count": 28
 }
