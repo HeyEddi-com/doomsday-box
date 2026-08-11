@@ -84,7 +84,8 @@ install_maker_readme() {
     tmp="$(mktemp)"
     install -m 0644 "${HOST_ROOT}/docs/MAKER.txt" "${tmp}"
     chown "${ADMIN_USER}:${ADMIN_USER}" "${tmp}"
-    mv -f "${tmp}" "${readme}"
+    [[ ! -L "${readme}" ]] || { rm -f "${tmp}"; die "refusing to overwrite symlink ${readme}"; }
+    mv -fT "${tmp}" "${readme}"
   fi
 }
 
