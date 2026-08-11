@@ -34,9 +34,17 @@ app = FastAPI(
     openapi_url="/api/openapi.json",
 )
 
+# Starlette rejects allow_origins=["*"] with allow_credentials=True.
+_LOCAL_ORIGIN_RE = (
+    r"https?://("
+    r"localhost|127\.0\.0\.1|"
+    r"box\.local|doomsday\.local|"
+    r"box\.heyeddi\.local|doomsday\.heyeddi\.local"
+    r")(:\d+)?$"
+)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origin_regex=_LOCAL_ORIGIN_RE,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -138,8 +146,17 @@ def _load_state() -> dict[str, Any]:
         return {}
 
 
+_PBKDF2_ROUNDS = 600_000
+
+
 def _hash_secret(value: str, salt: str) -> str:
-    return hashlib.sha256(f"{salt}:{value}".encode("utf-8")).hexdigest()
+    dk = hashlib.pbkdf2_hmac(
+        "sha256",
+        value.encode("utf-8"),
+        salt.encode("utf-8"),
+        _PBKDF2_ROUNDS,
+    )
+    return dk.hex()
 
 
 def _generate_claim_pin() -> str:
@@ -424,11 +441,18 @@ def me(request: Request) -> Me:
     return Me(authenticated=_session_valid(request) or not complete, setup_complete=complete)
 
 
+def _remote_admin_enabled() -> bool:
+    try:
+        return REMOTE_ADMIN_MARKER.is_file()
+    except OSError:
+        return False
+
+
 @app.get("/api/operator-status", response_model=OperatorStatus)
 def operator_status(request: Request) -> OperatorStatus:
     """Read-only Advanced panel data. Never enables SSH or exposes claim PIN."""
     _require_auth(request)
-    enabled = REMOTE_ADMIN_MARKER.is_file()
+    enabled = _remote_admin_enabled()
     notes = [
         "Remote shell is opt-in on the local console: doombox-enable-operator --pubkey … --enable-ssh",
         "Disable on the local console: doombox-disable-remote-admin",
