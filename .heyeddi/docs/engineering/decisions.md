@@ -27,3 +27,11 @@ Engineering ADRs: separate from the **Design Decision log** in `.heyeddi/design.
 **Decision:** `allow_origin_regex` matching `box.local`, `doomsday.local`, `*.heyeddi.local`, `localhost`, `127.0.0.1`.
 
 **Consequences:** Dashboard session cookies work only from legitimate local origins.
+
+### 2026-08-11: Remote coding MVP = browser desktop, not SSH / code-server
+
+**Context:** Founder needs Cursor on sample boxes via browser; no product SSH for now. Cursor is a desktop app (no VS Code Agent extension; code-server is not Cursor).
+
+**Decision:** First Compose workspace profile is authenticated Kasm-class full desktop (default off, gateway-fronted). Golden flash blocked until that path works on hardware. code-server and SSH remain later optional modes.
+
+**Consequences:** Higher RAM/CPU budget for the desktop profile than a browser IDE; document Cursor install on the desktop; keep host itself headless.

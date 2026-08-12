@@ -11,6 +11,8 @@
 | Router guard tests | `box/dashboard/src/router.test.ts` | Mock `fetchStatus`; vitest + happy-dom |
 | Host container smoke | `box/host/test/run-container-smoke.sh` | Debian 12 bootstrap without real hardware |
 | Compose stack smoke | `box/test/run-compose-smoke.sh` | Full gateway + claim via curl |
+| Remote desktop compose | `box/compose/services/remote-desktop.yml` | Optional webtop profile; gateway `/desktop/` |
+| Remote desktop runbook | `.heyeddi/docs/product/remote-desktop.md` | Enable desktop → install Cursor |
 | Full software gate | `box/test/run-software-tests.sh` | Local CI parity |
 | Post-bootstrap checks | `box/host/scripts/smoke-check.sh` | On hardware after `bootstrap.sh` |
 | Physical console gate | `box/host/scripts/lib/physical-console.sh` | Refuse SSH for PIN/reset/label ops |
