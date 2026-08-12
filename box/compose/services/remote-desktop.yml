@@ -19,7 +19,6 @@ services:
       - ${STORAGE_ROOT:-/mnt/storage}/remote-desktop:/config:rw
       - ${STORAGE_ROOT:-/mnt/storage}/workspace:/config/workspace:rw
       - ../remote-desktop/custom-cont-init.d:/custom-cont-init.d:ro
-      - ../remote-desktop/custom-services.d:/custom-services.d:ro
       - ../remote-desktop/desktop-help:/usr/local/share/doombox-desktop-help:ro
     # No host ports — only reachable via gateway /desktop/
     expose:
