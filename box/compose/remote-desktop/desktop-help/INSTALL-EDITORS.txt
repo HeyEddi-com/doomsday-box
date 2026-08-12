@@ -14,8 +14,9 @@ Do NOT use Ubuntu Software / PackageKit. They fail in this container
 
 That installs via apt AND saves a copy under ~/cache/debs.
 
-After each apt install (and once at desktop start) extra packages and
-.debs are cached. No background polling (lean N150). If this desktop
+Extra packages/.debs are cached: after each apt install, at desktop
+start, once a day, and when the desktop is stopped (not when you only
+close the browser tab). Lean N150 — no frequent polling. If this desktop
 container is recreated, those packages
 (Cursor, VS Code, and anything else you apt-installed) are restored.
 

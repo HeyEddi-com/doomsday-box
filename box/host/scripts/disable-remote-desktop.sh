@@ -32,6 +32,10 @@ p.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
 p.chmod(0o600)
 PY
 
+log "Flushing apt software cache before stop"
+docker compose -f compose/docker-compose.yml --env-file .env --profile remote-desktop \
+  exec -T remote-desktop /usr/local/bin/doombox-sync-apt-cache || true
+
 log "Stopping remote-desktop"
 docker compose -f compose/docker-compose.yml --env-file .env --profile remote-desktop stop remote-desktop || true
 

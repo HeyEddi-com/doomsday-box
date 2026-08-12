@@ -399,6 +399,25 @@ def _compose_cmd(*extra: str) -> list[str]:
     return cmd
 
 
+def _sync_remote_desktop_cache() -> None:
+    """Flush apt software cache before stopping the desktop."""
+    try:
+        subprocess.run(
+            _compose_cmd(
+                "exec",
+                "-T",
+                "remote-desktop",
+                "/usr/local/bin/doombox-sync-apt-cache",
+            ),
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=180,
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        return
+
+
 def _apply_remote_desktop(enabled: bool) -> str:
     """Start/stop compose profile when docker control is enabled."""
     if not DOCKER_CONTROL:
@@ -419,6 +438,7 @@ def _apply_remote_desktop(enabled: bool) -> str:
         (STORAGE / "workspace").mkdir(parents=True, exist_ok=True)
         parts = ["up", "-d", "remote-desktop"]
     else:
+        _sync_remote_desktop_cache()
         parts = ["stop", "remote-desktop"]
     try:
         result = subprocess.run(

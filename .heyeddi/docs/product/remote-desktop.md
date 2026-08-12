@@ -60,7 +60,7 @@ sudo apt-get install -y /tmp/code_*.deb
 
 Ignore PackageKit “Permission denied” and “unsandboxed as root” notices.
 
-**Apt restore (N150-friendly, no polling):** syncs on **desktop start** and immediately after each `apt install` (DPkg hook). No background loop.
+**Apt restore (N150-friendly):** syncs on **desktop start**, immediately after each `apt install`, **once per day** (sleeping 24h — ~0 CPU), and when the **desktop stops** (Disable / compose stop). Closing a browser tab is not a stop.
 
 | Path | What |
 |------|------|

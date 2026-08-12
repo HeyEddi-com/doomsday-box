@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Keep persisted apt cache + extra-package manifest up to date.
-# Safe to run from apt Post-Invoke or desktop start (root). No polling.
+# Run from apt Post-Invoke, desktop start, daily sleeper, or stop (root).
 set -uo pipefail
 
 CACHE_ROOT="/config/cache"
