@@ -71,3 +71,29 @@ export async function fetchOperatorStatus(): Promise<OperatorStatus> {
   if (!res.ok) throw new Error(await readError(res));
   return res.json() as Promise<OperatorStatus>;
 }
+
+export type RemoteDesktopStatus = {
+  id: string;
+  desired: boolean;
+  running: boolean;
+  path: string;
+  docker_control: boolean;
+  message: string;
+};
+
+export async function fetchRemoteDesktop(): Promise<RemoteDesktopStatus> {
+  const res = await fetch("/api/apps/remote-desktop", { credentials: "include" });
+  if (!res.ok) throw new Error(await readError(res));
+  return res.json() as Promise<RemoteDesktopStatus>;
+}
+
+export async function setRemoteDesktop(enabled: boolean): Promise<RemoteDesktopStatus> {
+  const res = await fetch("/api/apps/remote-desktop", {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ enabled }),
+  });
+  if (!res.ok) throw new Error(await readError(res));
+  return res.json() as Promise<RemoteDesktopStatus>;
+}

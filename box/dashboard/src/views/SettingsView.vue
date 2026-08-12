@@ -1,19 +1,33 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, onUnmounted, ref } from "vue";
 import Accordion from "primevue/accordion";
 import AccordionPanel from "primevue/accordionpanel";
 import AccordionHeader from "primevue/accordionheader";
 import AccordionContent from "primevue/accordioncontent";
 import Select from "primevue/select";
 import Message from "primevue/message";
+import Button from "primevue/button";
+import ToggleSwitch from "primevue/toggleswitch";
+import ProgressSpinner from "primevue/progressspinner";
 import { detectSkin } from "../skin";
 import { useI18n, type Locale } from "../i18n";
-import { fetchOperatorStatus, type OperatorStatus } from "../api";
+import {
+  fetchOperatorStatus,
+  fetchRemoteDesktop,
+  setRemoteDesktop,
+  type OperatorStatus,
+  type RemoteDesktopStatus,
+} from "../api";
 
 const skin = detectSkin();
 const { t, locale, setLocale } = useI18n();
 const op = ref<OperatorStatus | null>(null);
 const opError = ref("");
+const desktop = ref<RemoteDesktopStatus | null>(null);
+const desktopError = ref("");
+/** True while POST is in flight or while waiting for container Ready after enable. */
+const desktopBusy = ref(false);
+let pollTimer: ReturnType<typeof setInterval> | null = null;
 
 const lead = computed(() =>
   skin === "doomsday"
@@ -26,19 +40,187 @@ const localeOptions = computed(() => [
   { label: t.value("localeEs"), value: "es" as Locale },
 ]);
 
+const isStarting = computed(
+  () =>
+    desktopBusy.value ||
+    Boolean(desktop.value?.desired && !desktop.value.running),
+);
+
+const statusPill = computed(() => {
+  if (!desktop.value) return t.value("remoteDesktopOff");
+  if (desktop.value.running) return t.value("remoteDesktopRunning");
+  if (desktop.value.desired || desktopBusy.value) return t.value("remoteDesktopStarting");
+  return t.value("remoteDesktopStopped");
+});
+
+async function refreshDesktop() {
+  desktop.value = await fetchRemoteDesktop();
+}
+
+function stopPoll() {
+  if (pollTimer) {
+    clearInterval(pollTimer);
+    pollTimer = null;
+  }
+}
+
+function startPollUntilRunning() {
+  stopPoll();
+  let tries = 0;
+  pollTimer = setInterval(() => {
+    void (async () => {
+      tries += 1;
+      try {
+        await refreshDesktop();
+        if (desktop.value?.running) {
+          desktopBusy.value = false;
+          stopPoll();
+        } else if (tries >= 120) {
+          // ~4 min at 2s interval
+          desktopBusy.value = false;
+          stopPoll();
+        }
+      } catch {
+        if (tries >= 120) {
+          desktopBusy.value = false;
+          stopPoll();
+        }
+      }
+    })();
+  }, 2000);
+}
+
 onMounted(async () => {
   try {
     op.value = await fetchOperatorStatus();
   } catch (e) {
     opError.value = e instanceof Error ? e.message : "operator status unavailable";
   }
+  try {
+    await refreshDesktop();
+    if (desktop.value?.desired && !desktop.value.running) {
+      desktopBusy.value = true;
+      startPollUntilRunning();
+    }
+  } catch (e) {
+    desktopError.value =
+      e instanceof Error ? e.message : "remote desktop status unavailable";
+  }
 });
+
+onUnmounted(() => stopPoll());
+
+async function toggleDesktop(enabled: boolean) {
+  desktopError.value = "";
+  desktopBusy.value = true;
+
+  // Optimistic UI so the toggle and pills match immediately
+  if (desktop.value) {
+    desktop.value = {
+      ...desktop.value,
+      desired: enabled,
+      running: enabled ? desktop.value.running : false,
+      message: enabled
+        ? t.value("remoteDesktopStartingBody")
+        : t.value("remoteDesktopBusy"),
+    };
+  }
+
+  try {
+    desktop.value = await setRemoteDesktop(enabled);
+    if (enabled) {
+      if (desktop.value.running) {
+        desktopBusy.value = false;
+        stopPoll();
+      } else {
+        startPollUntilRunning();
+      }
+    } else {
+      desktopBusy.value = false;
+      stopPoll();
+    }
+  } catch (e) {
+    desktopError.value = e instanceof Error ? e.message : "update failed";
+    desktopBusy.value = false;
+    stopPoll();
+    try {
+      await refreshDesktop();
+    } catch {
+      /* keep error */
+    }
+  }
+}
 </script>
 
 <template>
   <section class="claim-enter">
     <h1>{{ t("settingsTitle") }}</h1>
     <p class="lead">{{ lead }}</p>
+
+    <div class="panel">
+      <h2>{{ t("remoteDesktop") }}</h2>
+      <p class="muted">{{ t("remoteDesktopLead") }}</p>
+      <Message severity="info" :closable="false" class="desktop-protect">
+        {{ t("remoteDesktopProtected") }}
+      </Message>
+      <Message v-if="desktopError" severity="warn" :closable="false">{{ desktopError }}</Message>
+      <template v-if="desktop">
+        <div class="desktop-toggle-row">
+          <label for="remote-desktop-toggle">{{ t("remoteDesktopEnableLabel") }}</label>
+          <ToggleSwitch
+            input-id="remote-desktop-toggle"
+            :model-value="desktop.desired"
+            :disabled="desktopBusy && !desktop.desired"
+            @update:model-value="(v: boolean) => toggleDesktop(v)"
+          />
+        </div>
+
+        <div v-if="isStarting" class="desktop-loading" role="status" aria-live="polite">
+          <ProgressSpinner
+            style="width: 2rem; height: 2rem"
+            stroke-width="6"
+            animation-duration="0.9s"
+          />
+          <div>
+            <p class="desktop-loading-title">{{ t("remoteDesktopStarting") }}</p>
+            <p class="advanced-note" style="margin: 0">{{ t("remoteDesktopStartingBody") }}</p>
+          </div>
+        </div>
+
+        <p class="muted">
+          <span class="pill">{{
+            desktop.desired ? t("remoteDesktopOn") : t("remoteDesktopOff")
+          }}</span>
+          <span class="pill" style="margin-left: 0.5rem">{{ statusPill }}</span>
+          <span v-if="desktop.docker_control" class="pill" style="margin-left: 0.5rem">{{
+            t("remoteDesktopControlOn")
+          }}</span>
+        </p>
+        <p v-if="!isStarting" class="advanced-note">{{ desktop.message }}</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 0.75rem">
+          <a
+            class="desktop-open-link"
+            href="/desktop/"
+            target="_blank"
+            rel="noopener noreferrer"
+            :aria-disabled="!desktop.running"
+            :class="{ 'is-disabled': !desktop.running }"
+            @click="(e) => { if (!desktop?.running) e.preventDefault(); }"
+          >
+            {{ t("remoteDesktopOpen") }}
+          </a>
+          <Button
+            v-if="isStarting"
+            severity="secondary"
+            :label="t('remoteDesktopRefresh')"
+            @click="refreshDesktop"
+          />
+        </div>
+        <p v-if="!desktop.running && !isStarting" class="advanced-note" style="margin-top: 0.75rem">
+          {{ t("remoteDesktopOpenHint") }}
+        </p>
+      </template>
+    </div>
 
     <div class="panel">
       <h2>{{ t("settingsUpdates") }}</h2>
@@ -80,6 +262,8 @@ onMounted(async () => {
 
           <p class="advanced-note" style="margin-top: 1rem">{{ t("founderTips") }}</p>
           <div class="mono-block">
+            doombox-enable-remote-desktop<br />
+            doombox-disable-remote-desktop<br />
             doombox-enable-operator --pubkey '…' --enable-ssh<br />
             doombox-disable-remote-admin<br />
             doombox-enable-claim-kiosk<br />

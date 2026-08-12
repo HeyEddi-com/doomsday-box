@@ -2,8 +2,14 @@
 # Usage (on appliance or Docker Desktop):
 #   cp .env.example .env
 #   docker compose -f compose/docker-compose.yml --env-file .env up -d --build
+#
+# Settings → Remote desktop Enable starts the webtop profile via docker.sock (default).
+# Set DOOMBOX_DOCKER_CONTROL=0 to disable API start/stop (desired-state only).
 
 name: doombox
+
+include:
+  - path: services/remote-desktop.yml
 
 services:
   api:
@@ -16,11 +22,17 @@ services:
       - ${STORAGE_ROOT:-/mnt/storage}:/mnt/storage:rw
       # Read-only host marker for Advanced → remote admin status (optional on pure compose)
       - ${DOOMBOX_HOST_STATE:-/var/lib/doombox}:/var/lib/doombox:ro
+      # UI Enable/Disable for remote desktop (authenticated admin only)
+      - ${DOOMBOX_DOCKER_SOCK:-/var/run/docker.sock}:/var/run/docker.sock
+      - ${DOOMBOX_BOX_ROOT:-..}:/box:ro
     environment:
       # Always the in-container path; host maps STORAGE_ROOT → /mnt/storage
       DOOMBOX_STORAGE: /mnt/storage
       DOOMBOX_HOST_STATE: /var/lib/doombox
       DOOMBOX_ENV: appliance
+      DOOMBOX_DOCKER_CONTROL: ${DOOMBOX_DOCKER_CONTROL:-1}
+      DOOMBOX_BOX_ROOT: /box
+      DOOMBOX_REMOTE_DESKTOP_URL: http://remote-desktop:3000/desktop/
     expose:
       - "8090"
     cpus: ${API_CPUS:-0.50}

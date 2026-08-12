@@ -1,0 +1,3 @@
+# Persist apt downloads + refresh manifest after every install.
+Dir::Cache::Archives "/config/cache/apt-archives/";
+DPkg::Post-Invoke { "/usr/local/share/doombox-desktop-help/doombox-sync-apt-cache.sh || true"; };

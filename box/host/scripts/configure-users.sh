@@ -163,6 +163,8 @@ install_host_tools() {
   install -m 0750 -o root -g root "${HOST_ROOT}/scripts/print-claim-label.sh" /usr/local/sbin/doombox-print-claim-label
   install -m 0750 -o root -g root "${HOST_ROOT}/scripts/enable-claim-kiosk.sh" /usr/local/sbin/doombox-enable-claim-kiosk
   install -m 0750 -o root -g root "${HOST_ROOT}/scripts/install-rootless-podman.sh" /usr/local/sbin/doombox-install-rootless-podman
+  install -m 0750 -o root -g root "${HOST_ROOT}/scripts/enable-remote-desktop.sh" /usr/local/sbin/doombox-enable-remote-desktop
+  install -m 0750 -o root -g root "${HOST_ROOT}/scripts/disable-remote-desktop.sh" /usr/local/sbin/doombox-disable-remote-desktop
   install -m 0755 "${HOST_ROOT}/kiosk/claim_kiosk.py" /usr/local/lib/doombox/claim_kiosk.py
 }
 

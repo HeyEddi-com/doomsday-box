@@ -1,18 +1,23 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { computed, ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import Button from "primevue/button";
 import Password from "primevue/password";
 import Message from "primevue/message";
 import { postLogin } from "../api";
 import { useI18n } from "../i18n";
 import { refreshStatus } from "../useBoxStatus";
+import { safeNextPath } from "../nextPath";
 
 const router = useRouter();
+const route = useRoute();
 const { t } = useI18n();
 const password = ref("");
 const busy = ref(false);
 const error = ref("");
+
+const nextPath = computed(() => safeNextPath(route.query.next));
+const afterDesktop = computed(() => nextPath.value?.startsWith("/desktop") ?? false);
 
 async function submit() {
   error.value = "";
@@ -20,7 +25,12 @@ async function submit() {
   try {
     await postLogin(password.value);
     await refreshStatus();
-    await router.push("/");
+    const next = nextPath.value;
+    if (next?.startsWith("/desktop")) {
+      window.location.assign(next);
+      return;
+    }
+    await router.push(next || "/");
   } catch (e) {
     error.value = e instanceof Error ? e.message : "Sign-in failed";
   } finally {
@@ -32,7 +42,7 @@ async function submit() {
 <template>
   <section class="claim-enter">
     <h1>{{ t("loginTitle") }}</h1>
-    <p class="lead">{{ t("loginLead") }}</p>
+    <p class="lead">{{ afterDesktop ? t("loginLeadDesktop") : t("loginLead") }}</p>
     <Message v-if="error" severity="error" :closable="false">{{ error }}</Message>
     <div class="panel stack">
       <div class="field">

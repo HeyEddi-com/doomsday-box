@@ -31,6 +31,8 @@ chmod a+rx "${HOST_STATE}"
 export STORAGE_ROOT="${STORAGE}"
 export DOOMBOX_HOST_STATE="${HOST_STATE}"
 export GATEWAY_HTTP_PORT="${GATEWAY_HTTP_PORT:-8080}"
+# Smoke must not pull webtop via API toggle
+export DOOMBOX_DOCKER_CONTROL=0
 
 log "Building and starting compose stack (storage=${STORAGE})"
 "${COMPOSE[@]}" up -d --build --wait
@@ -62,5 +64,24 @@ curl -fsS -b "${COOKIE_JAR}" "${BASE}/api/me" | grep -q '"authenticated":true'
 log "Operator status contract"
 curl -fsS -b "${COOKIE_JAR}" "${BASE}/api/operator-status" \
   | grep -q '"factory_reset_via_api":false'
+
+log "Auth session for desktop gateway"
+curl -fsS -o /dev/null -b "${COOKIE_JAR}" "${BASE}/api/auth/session"
+curl -s -o /dev/null -w '%{http_code}' "${BASE}/api/auth/session" | grep -q '401'
+
+log "Remote desktop desired-state API (no webtop pull in smoke)"
+curl -fsS -b "${COOKIE_JAR}" "${BASE}/api/apps/remote-desktop" | grep -q '"desired":false'
+curl -fsS -b "${COOKIE_JAR}" -X POST "${BASE}/api/apps/remote-desktop" \
+  -H 'Content-Type: application/json' \
+  -d '{"enabled":true}' | grep -q '"desired":true'
+curl -fsS -b "${COOKIE_JAR}" -X POST "${BASE}/api/apps/remote-desktop" \
+  -H 'Content-Type: application/json' \
+  -d '{"enabled":false}' | grep -q '"desired":false'
+
+log "Desktop path redirects unsigned browsers to hub login"
+code="$(curl -s -o /dev/null -w '%{http_code}' "${BASE}/desktop/")"
+[[ "${code}" == "302" ]] || die "expected /desktop/ 302 without cookie, got ${code}"
+loc="$(curl -sI "${BASE}/desktop/" | tr -d '\r' | awk 'tolower($1)=="location:"{print $2}')"
+[[ "${loc}" == *"/login?next=/desktop/"* ]] || die "expected Location /login?next=/desktop/, got ${loc}"
 
 log "Compose stack smoke OK"
