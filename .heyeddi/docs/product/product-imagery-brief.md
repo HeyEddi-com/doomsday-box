@@ -50,7 +50,7 @@ Keyed to the locked 45–75s cut in `video-creative.md` (table B-roll = 15–20s
 
 | ID | Shot | Notes |
 |----|------|-------|
-| N1 | Two chassis side-by-side | Basic vs Premium story later (DDR4 vs DDR5) — only if both samples available |
+| N1 | Two chassis side-by-side | Optional: with / without NVMe HAT or UPS — only if both samples available |
 | N2 | Soft packaging / foam (if any) | Honest “sample packaging” if not retail |
 | N3 | Desk + router / mesh node context | Suggests network role without claiming mesh software works |
 
@@ -59,7 +59,7 @@ Keyed to the locked 45–75s cut in `video-creative.md` (table B-roll = 15–20s
 - Photoreal CGI pretending to be the final retail box  
 - Screen recordings of features that do not boot yet  
 - Overlay badges, fake “AI online” chips, or promo stickers on the hero frame  
-- Claiming N150/DDR5/1TB on camera unless that exact sample is labeled in caption when specs differ
+- Claiming N150 / LattePanda / RAM / storage on camera unless that exact sample is labeled in caption when specs differ
 
 ## Capture checklist (shoot day)
 
@@ -157,5 +157,5 @@ Examples: `ddbox-sample-20260810-T5-still-01.jpg`, `ddbox-sample-20260810-T6-cli
 Fill when known; do not block the shoot:
 
 - Exact sample CPU / RAM / NIC per unit  
-- Whether any sample matches Premium (DDR5) for N1  
+- Whether any sample matches LattePanda IOTA + dual ETH for N1  
 - Preferred hero surface (wood vs mat) for brand continuity with heyeddi.com

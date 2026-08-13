@@ -20,8 +20,11 @@
 | [stripe-reservation-policy.md](stripe-reservation-policy.md) | $0 lead / ≥ $1 paid intent (custom ∞) |
 | [marketing-hosting.md](marketing-hosting.md) | Canonical heyeddi.com/projects/doomsday-box + box CNAME |
 | [landing-copy-brief.md](landing-copy-brief.md) | Hero / perks / intent copy |
+| [gtm-positioning.md](gtm-positioning.md) | Hook, competitor matrix, audience profiles (research) |
 | [campaign-brief.md](campaign-brief.md) | Kickstarter skeleton |
-| [hardware-bom.md](hardware-bom.md) | Basic (DDR4) / Premium (DDR5) SKUs, all-in COGS, accessories |
+| [campaign-economics.md](campaign-economics.md) | 200-unit revenue, fees, profit, shipping/BackerKit (research) |
+| [hardware-bom.md](hardware-bom.md) | LattePanda IOTA single SKU, landed BOM ~$240, tiers, add-ons (research) |
+| [local-ai-hermes3.md](local-ai-hermes3.md) | Hermes 3 / agents / multi-model presets (research target) |
 | [oss-release-promise.md](oss-release-promise.md) | Early access → public OSS |
 | [friend-seed-status.md](friend-seed-status.md) | Seed deal checklist |
 | [box-architecture.md](box-architecture.md) | On-device architecture + delivery status |

@@ -65,7 +65,8 @@ Parallel: Phase 0 market intent on heyeddi.com (Stripe / email).
 - **Perks on page:** Planned references only; payment does not lock a reward.
 - **OSS:** Early access during campaign; public release at physical ship. GPLv3 · public repo at hardware ship.
 - **Email:** Postmark via hey-eddi Cloud Functions; **double opt-in**; Firestore owns the list.
-- **KS goal:** $35,000 USD · 30 days · shipping table in `campaign-brief.md`.
+- **KS goal:** $35,000 USD · 30 days · pledge excl. shipping (BackerKit later) — `campaign-brief.md` / `campaign-economics.md`.
+- **Hardware SKU (research 2026-08-13):** single **LattePanda IOTA**; Super EB / Early / KS Special **$299 / $329 / $349**; MSRP **$399**. Re-quote before buy.
 - **Support defaults:** `hello@heyeddi.com` · 30-day DOA · 12-month warranty.
 - **Privacy contact:** `privacy@heyeddi.com` · no non-essential cookies.
 

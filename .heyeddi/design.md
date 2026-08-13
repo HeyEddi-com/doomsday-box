@@ -238,17 +238,46 @@ Touch targets ≥44px on primary buttons.
 
 **Open questions:** HDMI kiosk browser unit needs a graphical seat on sample hardware; CUPS queue names vary by printer
 
-### 2026-08-11: kiosk + auth + advanced + print + podman (@heyeddi-design / host)
+### 2026-08-13: `/projects/doomsday-box` shape confirmed (@heyeddi-design shape)
 
-**Context:** Finish previously partial items from claim security work.
+**Context:** Refresh pre-launch landing brief after LattePanda single-SKU pricing research and GTM/Hermes docs.
+
+**Primary persona:** Casey. Pattern borrowed: Umbrel product-in-five-seconds + Framework materials honesty. Memorable detail: aluminum full-bleed hero (Probe A) with secondary **See other rewards** into Duo/Trio table.
 
 **We chose:**
-- Loopback-only claim kiosk (`127.0.0.1:7901`) so HDMI can show PIN without LAN leak
-- Post-claim HttpOnly session cookies; `/login` gate for Home/Settings
-- Advanced Settings: read-only remote-admin status; never factory-reset/PIN over web
-- `doombox-print-claim-label` for CUPS raw ZPL
-- Optional `doombox-install-rootless-podman` for makers
+- Probe A (aluminum product thesis) over type-first (B) and form-first (C)
+- Hero focuses one box; button reveals other planned products/packs
+- Show Duo/Trio on Phase 0 perk table
+- Intent form below hero (scroll/CTA), not dominating first viewport
 
 **We rejected:**
-- Exposing kiosk on box.local
-- Web toggles that enable SSH or reclaim without console
+- Form-dominated hero
+- Hiding Duo/Trio until later
+- Purple SaaS / prepper panic aesthetics
+
+**Open questions:** none blocking craft
+
+### 2026-08-13: `/projects/doomsday-box` craft (@heyeddi-design craft)
+
+**Context:** Implement confirmed pre-launch brief on `hey-eddi-website` Nuxt route (not appliance dashboard).
+
+**Primary persona:** Casey (early backer). Pattern borrowed: Framework aluminum honesty + Umbrel five-second product clarity. Memorable detail: moss CTA on full-bleed aluminum single-box hero with secondary **See other rewards** into Duo/Trio table.
+
+**We chose:**
+- Probe A production craft: concept chassis SVG + workshop light plane (photography deferred)
+- Scoped `.doom-landing` moss/stone/aluminum tokens rhyming appliance `design.md` hues
+- Five verb pillars (not card collage / not 01-02-03); remote access as quiet trailing note only
+- Research perk ladder $299/$329/$349/$399 + Insider + Duo/Trio; intent form below with preserved Stripe/DOI fetch
+- en + es i18n for all user strings; `prefers-reduced-motion` on hero/perk highlight
+
+**Component strategy:**
+- Hero / pillars / OSS / perks / intent / footer → custom `PreLaunchLanding.vue`
+- Pillar marks → compact `FeatureArt.vue` (moss/brass)
+- Form → native inputs + existing Cloud Function POST (`doomsdayIntentUrl`)
+
+**We rejected:**
+- Purple SaaS mesh / brutalist site chrome for this route
+- Basic/Premium dual-SKU table
+- Form-first hero and fake demo video
+
+**Open questions:** none (deferred wiring: real LattePanda photography, KS env URL, final cooling/NVMe/cable TBD)

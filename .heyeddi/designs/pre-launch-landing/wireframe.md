@@ -1,8 +1,10 @@
 # Wireframe: Pre-launch landing (HeyEddi Doomsday Box)
 
 Fidelity: wireframe (layout only).  
-Route: `/` · Package: `website/`  
+Route: `/projects/doomsday-box` · Surface: `hey-eddi-website`  
 Purpose: Single-page market intent — email + amount ($0 lead / ≥$1 paid intent) + planned perks + disclosure. No prototype video.
+
+**Updated:** 2026-08-13 · See `wireframes/desktop-mobile.md` + `brief.md`
 
 ## Desktop (ASCII)
 
@@ -10,30 +12,31 @@ Purpose: Single-page market intent — email + amount ($0 lead / ≥$1 paid inte
 +------------------------------------------------------------------+
 | HeyEddi Doomsday Box                                              |
 +------------------------------------------------------------------+
-|  [full-bleed visual / product silhouette]                         |
+|  [full-bleed aluminum appliance visual]                           |
 |                                                                   |
 |  HeyEddi Doomsday Box                                             |
 |  Your network. Your data. Offline when it matters.                |
-|  One low-power box for personal cloud, inline protection,         |
-|  and local AI — open source when units ship.                      |
+|  Stream, compute, local AI, offline, and path protection —        |
+|  open source when units ship.                                     |
 |                                                                   |
-|  [ Continue with email + amount ]                                  |
-|  (amount default $1, allow $0, allow ≥$1 → ∞)                       |
+|  [ Continue with email + amount ]  → #intent                       |
+|  [ See other rewards ]            → #perks                        |
 +------------------------------------------------------------------+
-|  What it does                                                     |
-|  • Personal cloud   • Inline protection   • Local AI              |
+|  Built for sovereignty                                            |
+|  Stream · Compute · Local AI · Offline · Network                  |
 +------------------------------------------------------------------+
 |  Pay for speed and voice — not a permanent software lock          |
 |  (OSS at ship / GPLv3)                                            |
 +------------------------------------------------------------------+
 |  Planned Kickstarter rewards (subject to change)                  |
-|  | Insider $49 | Early Bird $399 | Standard $449 | Retail $499 |  |
+|  | Insider $49 | Super $299 | Early $329 | KS $349 | Retail $399 ||
+|  | Duo $558+ | Trio $797+ (show on Phase 0) · shipping later      ||
 +------------------------------------------------------------------+
-|  Waitlist / support: [ email ] [ amount USD (default 1, allow 0) ] [ Continue ]|
+|  #intent  Show us the demand                                      |
+|  [ email ] [ amount USD default 1 ] [ Continue ]                  |
 |  (hidden until set) [ Notify me on Kickstarter ]                  |
 +------------------------------------------------------------------+
-|  Footer: demand-first (no video yet) · disclosure · privacy@      |
-|  Postmark · Stripe · box.heyeddi.com                              |
+|  Footer: disclosure · privacy@ · Postmark · Stripe · box alias    |
 +------------------------------------------------------------------+
 ```
 
@@ -45,12 +48,10 @@ HeyEddi Doomsday Box
 Headline (2 lines)
 Support (2 lines)
 [ Continue ]
-amount default 1, allow 0
-What it does (stacked bullets)
-OSS honesty (short)
-Perk table (scroll)
-Email + join
-Reserve + toggle
+Pillars (stacked)
+OSS honesty
+Perk rows
+Email + amount + Continue
 Footer disclosure
 ```
 
@@ -58,15 +59,16 @@ Footer disclosure
 
 | Region | Desktop | Mobile | Notes |
 |--------|---------|--------|-------|
-| Brand hero | Brand + headline + support + dual CTA on visual | Stacked | No nav links to other pages |
-| Capabilities | One section, 3 bullets | Stack | Not card chrome if avoidable |
+| Brand hero | Brand + headline + support + CTA into intent on visual | Stacked | No multi-page nav |
+| Capabilities | Five pillars, not card chrome | Stack | No remote-access lead |
 | OSS honesty | One short block | Same | |
-| Perks | Table | Compact rows | Label subject to change |
-| Capture | Email + reserve mid/lower page | Same | DOI microcopy |
+| Perks | Table | Compact rows | Subject to change; research prices |
+| Capture | Email + amount | Same | DOI / Stripe |
 | Footer | Disclosure | Same | Required legal points |
 
 ## Anti-patterns
 
-- No Features/Pricing/Sign-in nav (not a SaaS marketing multi-page)
+- No Features/Pricing/Sign-in nav
 - No floating badge clusters or stat strips in hero
 - No multi-route IA
+- No Basic/Premium dual SKU

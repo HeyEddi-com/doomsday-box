@@ -1,9 +1,10 @@
 # Landing copy brief (single-page SPA)
 
-**Last updated:** 2026-08-10  
-**Surface:** `heyeddi-tool/hey-eddi-website` · route `/projects/doomsday-box` 
-**Status:** Locked for craft  
-**Phase:** Market intent first. **No prototype video required** for this page
+**Last updated:** 2026-08-13  
+**Surface:** `heyeddi-tool/hey-eddi-website` · route `/projects/doomsday-box`  
+**Status:** Craft-ready; **perk prices are research** (cooling / storage / cables TBD)  
+**Phase:** Market intent first. **No prototype video required** for this page  
+**Related:** `gtm-positioning.md`, `hardware-bom.md`, `local-ai-hermes3.md`
 
 ## Brand
 
@@ -29,12 +30,14 @@ Do **not** claim a live working demo until software boots on camera. Concept gra
 Five pillars (stream · compute · AI · offline · network):
 
 1. **Streaming**: personal video/audio library; play on LAN devices including connected TVs/speakers; no forced cloud account.  
-2. **Computing**: Docker-friendly N100/N150 stack; lean always-on home services; ARM64 DIY path.  
-3. **Local AI**: on-box models (Ollama-class) without shipping prompts to a vendor cloud.  
+2. **Computing**: Docker-friendly N150 (LattePanda IOTA target) stack; lean always-on home services; ARM64 DIY path.  
+3. **Local AI**: on-box **Hermes 3** orchestrator + agents (Ollama; `hermes3:8b` target) without shipping prompts to a vendor cloud — see `local-ai-hermes3.md`.  
 4. **Offline**: knowledge archives (Kiwix-style) and core services reachable on the LAN with no uplink. Do **not** mix firewall/tarpit into this pillar.  
 5. **Network**: dual topology (inline bridge ISP→box→mesh/LAN **or** Wi‑Fi AP mode); explain **ad-tarpit** (hold tracker connections so they waste time/bandwidth, not only block); host firewall (nftables); VPN-ready (WireGuard/Gluetun optional profile); **multi-box mesh**: two or three boxes can join as nodes for coverage, load split, and household redundancy (pairs with Duo/Trio KS packs).
 
-One-liner: Designed for Intel N100/N150; DIY on ARM64-compatible boards.
+One-liner: Designed for Intel N150 (LattePanda IOTA research target); DIY on ARM64-compatible boards.
+
+Do **not** lead the page with remote access. If mentioned later on the scroll: authenticated browser desktop and optional zero-trust remote tunnels — **no third-party tunnel brand names**.
 
 ## Open-source honesty (locked)
 
@@ -47,17 +50,18 @@ Kickstarter Insiders will get early software access and a say in the roadmap. Wh
 **Headline:** Planned Kickstarter rewards  
 **Label:** Subject to change. Supporting here does **not** lock a reward.
 
-Hardware uses **Basic (DDR4)** and **Premium (DDR5)** ladders (Super Early Bird → Early Bird → Standard), then retail. Multi-box packs are Basic SKU for v1.
+Hardware is **one LattePanda SKU** (Super Early Bird → Early Bird → Kickstarter Special), then retail. Open options still TBD: active cooling, whether extra NVMe is included, Ethernet cable length.
 
 | Perk | Planned price | Snapshot |
 |------|---------------|----------|
 | Founding Insider (digital) | $49 | Early builds, VIP channel, feature votes, credit |
-| Basic Super / Early / Standard | $399 / $429 / $449 | N150 · DDR4 · 1TB · 1m Cat6 · dual path NIC/dongle |
-| Premium Super / Early / Standard | $529 / $549 / $579 | N150 · DDR5 · 1TB · same accessories |
-| Household Duo (2× Basic) | $759 / $819 / $859 | Staged; mesh multi-node; saves vs 2 singles |
-| Mesh Trio (3× Basic) | $1,099 / $1,189 / $1,249 | Staged; mesh multi-node; saves vs 3 singles |
+| Super / Early / KS Special | $299 / $329 / $349 | N150 LattePanda · dual ETH · 2× cables (length TBD) · OLED/killswitch planned |
+| Household Duo (2×) | $558 / $618 / $658 | Staged; mesh multi-node; ~$40 vs 2 singles |
+| Mesh Trio (3×) | $797 / $887 / $947 | Staged; mesh multi-node; ~$100 vs 3 singles |
 | Tee (optional) | ~$29 / thank-you | **Only if campaign success allows** — not guaranteed on landing |
-| Retail Basic / Premium | $499 / $649 | After campaign, not a pre-sale |
+| Retail MSRP | $399 | After campaign, not a pre-sale |
+
+Label clearly: **subject to change**; shipping charged later (not in pledge price).
 
 ## Intent / support block (locked)
 

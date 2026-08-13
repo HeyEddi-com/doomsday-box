@@ -1,7 +1,7 @@
 # Crowdfunding & pre-launch strategy
 
-**Last updated:** 2026-07-23  
-**Status:** Locked — market intent first
+**Last updated:** 2026-08-13  
+**Status:** Locked phasing — perk prices are **research** (see `hardware-bom.md`, `campaign-economics.md`)
 
 ## Phasing (locked)
 
@@ -59,14 +59,13 @@ Shown as planned only — site payment does **not** lock a reward.
 | Ref | Planned price |
 |-----|---------------|
 | Founding Insider | $49 |
-| Basic Super EB / Early / Standard (DDR4) | $399 / $429 / $449 |
-| Premium Super EB / Early / Standard (DDR5) | $529 / $549 / $579 |
-| Household Duo (2× Basic) | $759 / $819 / $859 (staged) |
-| Mesh Trio (3× Basic) | $1,099 / $1,189 / $1,249 (staged) |
+| Super EB / Early / KS Special (single LattePanda SKU) | $299 / $329 / $349 |
+| Household Duo (2×) | $558 / $618 / $658 (staged; subject to change) |
+| Mesh Trio (3×) | $797 / $887 / $947 (staged; subject to change) |
 | Tee (optional) | ~$29 / thank-you — **only if campaign success allows** |
-| Retail Basic / Premium | $499 / $649 |
+| Retail MSRP | $399 |
 
-Multi-box packs support **mesh / multi-node** homes (coverage, load split, redundancy).
+Single SKU; open options (cooling, base vs add-on NVMe, cable length) TBD. Multi-box packs support **mesh / multi-node** homes. Economics: `campaign-economics.md`. Positioning: `gtm-positioning.md`.
 
 ## Domain
 

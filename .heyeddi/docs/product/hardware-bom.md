@@ -1,91 +1,95 @@
 # Hardware BOM & sourcing
 
-**Last updated:** 2026-07-24  
-**Status:** Planning lock — two campaign SKUs; swap $ when OEM quote signs  
-**FX planning:** $1 USD ≈ $18 MXN  
-**Finance detail:** `.docs/unit-economics-skus.md`
+**Last updated:** 2026-08-13  
+**Status:** Research / planning draft — **re-quote OEM, freight, and customs before buying or confirming accounting**  
+**FX planning:** $1 USD ≈ **$19 MXN** (research; reconfirm)  
+**Related:** `campaign-economics.md`, `campaign-brief.md`, `local-ai-hermes3.md`
 
-## Platform (locked)
+Supersedes 2026-07 Basic (DDR4) / Premium (DDR5) dual-SKU planning.
+
+## Platform (research target)
 
 | Item | Decision |
 |------|----------|
-| CPUs | Intel **N150** primary (N100 OK if cheaper / same quote) |
-| Memory SKUs | **Basic = DDR4** · **Premium = DDR5** |
-| Storage | **1TB** both SKUs |
+| Board | **LattePanda IOTA (DFR1227)** — Intel N150, 16GB LPDDR5, 128GB eMMC, RP2040 MCU |
+| SKU model | **One retail / KS SKU** (no Basic/Premium split) |
+| Storage | Base eMMC; **1TB/2TB NVMe** via M.2 HAT (campaign add-on / include TBD) |
+| Networking | **Always two Ethernet paths** (native + USB 3.2 → 2.5G LAN dongle if needed) |
 | DIY | Keep `box/` software **ARM64-compatible** |
-| Networking | Prefer **dual LAN**; else **USB‑ETH dongle included** so every unit has two Ethernet paths |
+| Open options | Active cooling, whether extra drive is included by default — **TBD before lock** |
 
-## SKU quotes (planning)
+## Landed BOM (research — 200-unit OEM batch)
 
-| SKU | Spec snapshot | OEM box (approx) |
-|-----|---------------|-----------------:|
-| **Basic** | N150 · DDR4 · 1TB | **$290** |
-| **Premium** | N150 · DDR5 · 1TB | **$380** |
+*Target production batch: 200 units via direct OEM factory sourcing. Unit costs are research estimates only.*
 
-## All-in COGS vs pledge (planning)
+| Component / subsystem | Specs | Unit OEM cost (USD) |
+|-----------------------|-------|--------------------:|
+| LattePanda IOTA (DFR1227) | N150 · 16GB LPDDR5 · 128GB eMMC · RP2040 | $185.00 |
+| Custom aluminum chassis | Anodized extruded shell + CNC front/rear panels | $12.00 |
+| USB 3.2 → 2.5G LAN dongle | Realtek RTL8156B (2nd LAN for WAN/LAN split) | $9.00 |
+| M.2 NVMe expansion HAT | PCIe 16-pin FPC ribbon HAT for 1TB/2TB AI storage | $8.00 |
+| Hardware control interface | 0.96" OLED + heavy-duty toggle / killswitch | $4.00 |
+| Power adapter | 30W USB-C PD 15V (US/EU/UK plugs) | $8.00 |
+| Packaging & retail box | Printed box, EPE foam, start guide | $4.00 |
+| Bulk freight & customs | Air freight to GDL + DTA handling | $10.00 |
+| **TOTAL LANDED BOM** | Complete retail appliance unit | **~$240.00** |
 
-| Component | Basic (w/ dongle) | Premium (native dual NIC) |
-|-----------|------------------:|--------------------------:|
-| Raw factory PC | $290 | $380 |
-| Packaging + quick-start | $10 | $10 |
-| 1m Cat6 | $3 | $3 |
-| USB‑ETH dongle | $12 | $0 |
-| DDP / import buffer | $30 | $30 |
-| **All-in** | **$345** | **$423** |
+**Not yet in table (TBD cost / include):** 2× Ethernet cables (length TBD — not locked to 1m); optional active cooling; pre-loaded NVMe drive (see add-ons).
 
-Backer pays **Kickstarter shipping** (freight). DDP buffer is on us.
+## Included in every retail / KS unit (planning)
 
-**Owner:** founder. Swap table when quote locks; do not cut campaign prices without margin check in `.docs/unit-economics-skus.md`.
-
-## Included in every retail / KS unit (locked)
-
-- Mini PC unit (Basic or Premium as pledged)  
-- OEM or 30W-class PSU  
-- **1m Ethernet cable (Cat6)**  
-- USB‑ETH dongle **if** the board has only one NIC  
+- LattePanda IOTA appliance in aluminum chassis  
+- OLED status + physical control / killswitch  
+- Dual Ethernet path (board + dongle as required)  
+- **2× Ethernet cables** (length TBD; revisit before price lock)  
+- OEM / 30W-class USB-C PD PSU  
 - Quick-start guide (EN; ES addendum if time)  
 - Matte retail packaging with foam  
 
-## Pricing anchors (locked)
+## Pricing anchors (research)
 
-### Basic (DDR4)
+Sub-$350 campaign tiers aim at impulse / enthusiast buy; **revisit after cooling / storage / cable decisions**.
 
-| Tier | USD |
-|------|-----|
-| Super Early Bird (1 box) | $399 (cap 100) |
-| Early Bird (1 box) | $429 (soft ~150) |
-| Standard (1 box) | $449 |
-| Retail MSRP (1 box) | $499 |
+| Pricing tier | Volume cap | Retail price (USD) | Landed BOM | Net gross margin ($) | Margin (%) | Campaign role |
+|--------------|------------|-------------------:|-----------:|---------------------:|-----------:|---------------|
+| Super Early Bird | 50 | **$299** | $240 | +$59 | 19.7% | Day-1 funding velocity |
+| Early Bird | 100 | **$329** | $240 | +$89 | 27.0% | Day 2–5 velocity |
+| Kickstarter Special | 50 | **$349** | $240 | +$109 | 31.2% | Main 30-day volume |
+| Post-launch MSRP | Web store | **$399** | $240 | +$159 | 39.8% | D2C retail |
 
-### Premium (DDR5)
+Pledge prices **exclude shipping** — see `campaign-economics.md` (BackerKit collection).
 
-| Tier | USD |
-|------|-----|
-| Super Early Bird (1 box) | **$529** (cap **50**) |
-| Early Bird (1 box) | **$549** |
-| Standard (1 box) | **$579** |
-| Retail MSRP (1 box) | **$649** |
+### Multi-box packs (recalculated from single SKU — subject to change)
 
-### Multi-box (Basic SKU packs)
+| Pack | Super EB | Early | KS Special | Soft limit (Super EB) | Snapshot |
+|------|---------:|------:|-----------:|----------------------:|----------|
+| Household Duo (2×) | **$558** | **$618** | **$658** | ~25 | ~$40 off 2 singles; mesh |
+| Mesh Trio (3×) | **$797** | **$887** | **$947** | ~15 | ~$100 off 3 singles; mesh |
 
-| Tier | USD |
-|------|-----|
-| Household Duo Super / Early / Standard | $759 / $819 / $859 |
-| Mesh Trio Super / Early / Standard | $1,099 / $1,189 / $1,249 |
+Floor: do not list single box below **$299** without revisiting fees + landed BOM in `campaign-economics.md`.
 
-Floor: never list **Basic** below $399 or **Premium** below $529 without revisiting fees + all-in COGS.
+## High-margin pledge-manager add-ons (BackerKit — research)
 
-## Sourcing assumptions (locked until quote)
+| Add-on | Price | BOM (est.) | Net | Notes |
+|--------|------:|-----------:|----:|-------|
+| 1TB NVMe (pre-loaded local AI) | +$89 | ~$50 | +$39 (43.8%) | `hermes3:8b`, `qwen2.5-coder:7b`, security fine-tunes — see `local-ai-hermes3.md` |
+| Doomsday Battery UPS HAT (≈8h) | +$59 | ~$25 | +$34 (57.6%) | Dual 18650 + auto-shutdown daemon |
+
+Whether the NVMe is **included** in base SKU vs add-only: **TBD**.
+
+## Sourcing assumptions (research until quote)
 
 | Assumption | Value |
 |------------|-------|
-| Planning MOQ | **50** units first factory order (mix Basic/Premium after KS) |
-| Lead time | **6–8 weeks** after deposit |
+| Planning batch | **200** units first factory order |
+| Lead time | Reconfirm with OEM (prior planning was 6–8 weeks after deposit) |
 | Spare / DOA buffer | **2%** extra units in first batch |
 | Fulfillment hub | **Zapopan, Jalisco** (self-ship until volume justifies 3PL) |
 
 ## Founder actions (not product TBD)
 
-1. Sign OEM quotes for Basic + Premium → paste SKU/MOQ/lead time/NIC count here  
-2. Confirm dual-LAN on samples; order dongles only for single-NIC boards  
-3. Order friend-seed prototypes if not already on desk  
+1. Re-quote LattePanda IOTA + chassis + dongle + HAT + OLED kit → replace table above  
+2. Decide: active cooling; base vs add-on NVMe; Ethernet cable length + cost  
+3. Confirm dual-LAN on samples; QC dongle path  
+4. Order friend-seed / prototype units if not already on desk  
+5. Re-run unit economics in `campaign-economics.md` before any purchase PO  

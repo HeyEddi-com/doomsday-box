@@ -1,8 +1,8 @@
 {
-  "route": "/setup",
-  "feature": "setup",
+  "route": "/projects/doomsday-box",
+  "feature": "projects-doomsday-box",
   "last_pillar": "design",
-  "updated": "2026-08-10",
+  "updated": "2026-08-13",
   "pending_pillars": [
     "product",
     "ux"
