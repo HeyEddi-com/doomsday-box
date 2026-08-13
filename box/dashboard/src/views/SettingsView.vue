@@ -25,6 +25,7 @@ const op = ref<OperatorStatus | null>(null);
 const opError = ref("");
 const desktop = ref<RemoteDesktopStatus | null>(null);
 const desktopError = ref("");
+const desktopLoading = ref(true);
 /** True while POST is in flight or while waiting for container Ready after enable. */
 const desktopBusy = ref(false);
 let pollTimer: ReturnType<typeof setInterval> | null = null;
@@ -42,14 +43,22 @@ const localeOptions = computed(() => [
 
 const isStarting = computed(
   () =>
-    desktopBusy.value ||
-    Boolean(desktop.value?.desired && !desktop.value.running),
+    Boolean(desktop.value?.desired) &&
+    (desktopBusy.value || !desktop.value?.running),
+);
+
+const isStopping = computed(
+  () =>
+    Boolean(desktop.value) &&
+    !desktop.value!.desired &&
+    (desktopBusy.value || desktop.value!.running),
 );
 
 const statusPill = computed(() => {
   if (!desktop.value) return t.value("remoteDesktopOff");
+  if (isStopping.value) return t.value("remoteDesktopStopping");
   if (desktop.value.running) return t.value("remoteDesktopRunning");
-  if (desktop.value.desired || desktopBusy.value) return t.value("remoteDesktopStarting");
+  if (isStarting.value) return t.value("remoteDesktopStarting");
   return t.value("remoteDesktopStopped");
 });
 
@@ -64,7 +73,7 @@ function stopPoll() {
   }
 }
 
-function startPollUntilRunning() {
+function startPollUntilSettled(wantRunning: boolean) {
   stopPoll();
   let tries = 0;
   pollTimer = setInterval(() => {
@@ -72,10 +81,10 @@ function startPollUntilRunning() {
       tries += 1;
       try {
         await refreshDesktop();
-        if (desktop.value?.running) {
-          desktopBusy.value = false;
-          stopPoll();
-        } else if (tries >= 120) {
+        const done = wantRunning
+          ? Boolean(desktop.value?.running)
+          : !desktop.value?.running;
+        if (done || tries >= 120) {
           // ~4 min at 2s interval
           desktopBusy.value = false;
           stopPoll();
@@ -100,15 +109,36 @@ onMounted(async () => {
     await refreshDesktop();
     if (desktop.value?.desired && !desktop.value.running) {
       desktopBusy.value = true;
-      startPollUntilRunning();
+      startPollUntilSettled(true);
+    } else if (!desktop.value?.desired && desktop.value?.running) {
+      desktopBusy.value = true;
+      startPollUntilSettled(false);
+    }
+  } catch (e) {
+    desktopError.value =
+      e instanceof Error ? e.message : "remote desktop status unavailable";
+  } finally {
+    desktopLoading.value = false;
+  }
+});
+
+onUnmounted(() => stopPoll());
+
+async function onRefreshDesktop() {
+  try {
+    await refreshDesktop();
+    if (
+      (desktop.value?.desired && desktop.value.running) ||
+      (!desktop.value?.desired && !desktop.value?.running)
+    ) {
+      desktopBusy.value = false;
+      stopPoll();
     }
   } catch (e) {
     desktopError.value =
       e instanceof Error ? e.message : "remote desktop status unavailable";
   }
-});
-
-onUnmounted(() => stopPoll());
+}
 
 async function toggleDesktop(enabled: boolean) {
   desktopError.value = "";
@@ -133,8 +163,10 @@ async function toggleDesktop(enabled: boolean) {
         desktopBusy.value = false;
         stopPoll();
       } else {
-        startPollUntilRunning();
+        startPollUntilSettled(true);
       }
+    } else if (desktop.value.running) {
+      startPollUntilSettled(false);
     } else {
       desktopBusy.value = false;
       stopPoll();
@@ -164,26 +196,45 @@ async function toggleDesktop(enabled: boolean) {
         {{ t("remoteDesktopProtected") }}
       </Message>
       <Message v-if="desktopError" severity="warn" :closable="false">{{ desktopError }}</Message>
-      <template v-if="desktop">
+      <div v-if="desktopLoading" class="desktop-loading" role="status" aria-live="polite">
+        <ProgressSpinner
+          style="width: 2rem; height: 2rem"
+          stroke-width="6"
+          animation-duration="0.9s"
+        />
+        <div>
+          <p class="desktop-loading-title">{{ t("remoteDesktopLoading") }}</p>
+        </div>
+      </div>
+      <template v-else-if="desktop">
         <div class="desktop-toggle-row">
           <label for="remote-desktop-toggle">{{ t("remoteDesktopEnableLabel") }}</label>
           <ToggleSwitch
             input-id="remote-desktop-toggle"
             :model-value="desktop.desired"
-            :disabled="desktopBusy && !desktop.desired"
+            :disabled="desktopBusy"
             @update:model-value="(v: boolean) => toggleDesktop(v)"
           />
         </div>
 
-        <div v-if="isStarting" class="desktop-loading" role="status" aria-live="polite">
+        <div
+          v-if="isStarting || isStopping"
+          class="desktop-loading"
+          role="status"
+          aria-live="polite"
+        >
           <ProgressSpinner
             style="width: 2rem; height: 2rem"
             stroke-width="6"
             animation-duration="0.9s"
           />
           <div>
-            <p class="desktop-loading-title">{{ t("remoteDesktopStarting") }}</p>
-            <p class="advanced-note" style="margin: 0">{{ t("remoteDesktopStartingBody") }}</p>
+            <p class="desktop-loading-title">
+              {{ isStopping ? t("remoteDesktopStopping") : t("remoteDesktopStarting") }}
+            </p>
+            <p class="advanced-note" style="margin: 0">
+              {{ isStopping ? t("remoteDesktopStoppingBody") : t("remoteDesktopStartingBody") }}
+            </p>
           </div>
         </div>
 
@@ -196,7 +247,7 @@ async function toggleDesktop(enabled: boolean) {
             t("remoteDesktopControlOn")
           }}</span>
         </p>
-        <p v-if="!isStarting" class="advanced-note">{{ desktop.message }}</p>
+        <p v-if="!isStarting && !isStopping" class="advanced-note">{{ desktop.message }}</p>
         <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 0.75rem">
           <a
             class="desktop-open-link"
@@ -210,13 +261,17 @@ async function toggleDesktop(enabled: boolean) {
             {{ t("remoteDesktopOpen") }}
           </a>
           <Button
-            v-if="isStarting"
+            v-if="isStarting || isStopping"
             severity="secondary"
             :label="t('remoteDesktopRefresh')"
-            @click="refreshDesktop"
+            @click="onRefreshDesktop"
           />
         </div>
-        <p v-if="!desktop.running && !isStarting" class="advanced-note" style="margin-top: 0.75rem">
+        <p
+          v-if="!desktop.running && !isStarting && !isStopping"
+          class="advanced-note"
+          style="margin-top: 0.75rem"
+        >
           {{ t("remoteDesktopOpenHint") }}
         </p>
       </template>

@@ -1,0 +1,130 @@
+#!/usr/bin/env python3
+"""Docker-safe bubblewrap shim for glycin/GTK image loaders.
+
+Real bwrap fails in unprivileged containers ("Failed to make / slave"),
+which aborts xfce4-session/panel and leaves a blank screen with only a cursor.
+We skip nested sandboxing and exec the intended command (already inside a
+container). Prefer enabling native bwrap later via userns/mount privileges;
+this shim is the appliance-safe workaround.
+"""
+from __future__ import annotations
+
+import os
+import sys
+
+# Options that take one following argument (or --key=VAL).
+_ONE_ARG = {
+    "--chdir",
+    "--unsetenv",
+    "--uid",
+    "--gid",
+    "--hostname",
+    "--size",
+    "--perms",
+    "--seccomp",
+    "--add-seccomp-fd",
+    "--uid-fd",
+    "--gid-fd",
+    "--info-fd",
+    "--json-status-fd",
+    "--userns-block-fd",
+    "--userns-fd",
+    "--assert-userns-fd",
+    "--pidns-fd",
+    "--args",
+    "--file-label",
+    "--exec-label",
+    "--remount-ro",
+    "--tmpfs",
+    "--dir",
+    "--proc",
+    "--dev",
+    "--mqueue",
+    "--lock-file",
+    "--sync-fd",
+    "--block-fd",
+    "--userns",
+    "--userns2",
+    "--pidns",
+    "--cap-add",
+    "--cap-drop",
+}
+
+# Options that take two following arguments (SRC DEST or KEY VALUE),
+# or --key=VAL plus one following argument.
+_TWO_ARG = {
+    "--ro-bind",
+    "--ro-bind-try",
+    "--bind",
+    "--bind-try",
+    "--dev-bind",
+    "--dev-bind-try",
+    "--symlink",
+    "--setenv",
+    "--file",
+    "--bind-fd",
+    "--ro-bind-fd",
+    "--bind-data",
+    "--ro-bind-data",
+    "--chmod",
+}
+
+
+def _exec_command(cmd: list[str]) -> None:
+    if not cmd:
+        raise SystemExit("bwrap-shim: empty command")
+    os.execvp(cmd[0], cmd)
+
+
+def _looks_like_option(arg: str) -> bool:
+    return arg.startswith("-") and arg != "-"
+
+
+def main() -> int:
+    args = sys.argv[1:]
+    if not args:
+        sys.stderr.write("bwrap-shim: missing command\n")
+        return 1
+
+    if args in (["--version"], ["-V"]):
+        sys.stdout.write("bwrap-shim (doombox) 0\n")
+        return 0
+
+    # Sequential parse only — never scan ahead for "--" (it can be a flag value).
+    i = 0
+    while i < len(args):
+        arg = args[i]
+        if arg == "--":
+            cmd = args[i + 1 :]
+            if cmd:
+                _exec_command(cmd)
+            break
+        if arg.startswith("--"):
+            key = arg.split("=", 1)[0]
+            if "=" in arg:
+                # --key=VAL consumes this token; two-arg options still need DEST/VALUE.
+                if key in _TWO_ARG:
+                    i += 2
+                else:
+                    i += 1
+                continue
+            if key in _TWO_ARG:
+                i += 3
+                continue
+            if key in _ONE_ARG:
+                i += 2
+                continue
+            # Unknown flag: if next token looks like a value, skip it too.
+            if i + 1 < len(args) and not _looks_like_option(args[i + 1]):
+                i += 2
+            else:
+                i += 1
+            continue
+        _exec_command(args[i:])
+
+    sys.stderr.write("bwrap-shim: could not find command in: %r\n" % (args,))
+    return 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

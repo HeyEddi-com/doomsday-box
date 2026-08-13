@@ -55,6 +55,19 @@ Remote desktop image is **pre-pulled**. Desktop stays **off** until claimed + en
 
 6. Flash clones; first boot runs `doombox-first-boot` (new `machine-id`, SSH host keys, wipe claim leftovers) then `doombox-compose` brings the hub up. Read PIN with `doombox-show-setup-pin` / label export.
 
+## Lab VM (workstation, not a flash stick)
+
+On a machine with KVM (this does **not** replace N150 flash proof):
+
+```bash
+./box/host/scripts/run-golden-vm.sh
+# hub: http://127.0.0.1:18080/
+# serial: telnet 127.0.0.1 18700   (lab root password: doombox)
+# then: doombox-show-setup-pin
+```
+
+Disk/ISO live in `.golden/` (gitignored). `./box/host/scripts/run-golden-vm.sh --rebuild` wipes and reprovisions.
+
 ## Units & helpers
 
 | Unit / command | Role |

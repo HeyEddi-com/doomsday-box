@@ -15,12 +15,21 @@ services:
       # Serve under gateway path /desktop/ (authenticated)
       SUBFOLDER: /desktop/
       TITLE: Doomsday Workspace
+      # Avoid Zink/GL paths that crash XFCE in headless VMs (cursor-only screen)
+      DISABLE_ZINK: "true"
+      LIBGL_ALWAYS_SOFTWARE: "1"
+      # Cap Xvfb max below default 16K — huge fb + software GL aborts XFCE (cursor-only)
+      MAX_RES: ${REMOTE_DESKTOP_MAX_RES:-1920x1080}
+      SELKIES_MANUAL_WIDTH: ${REMOTE_DESKTOP_WIDTH:-1280}
+      SELKIES_MANUAL_HEIGHT: ${REMOTE_DESKTOP_HEIGHT:-720}
     volumes:
       - ${STORAGE_ROOT:-/mnt/storage}/remote-desktop:/config:rw
       - ${STORAGE_ROOT:-/mnt/storage}/workspace:/config/workspace:rw
       - ../remote-desktop/custom-cont-init.d:/custom-cont-init.d:ro
       - ../remote-desktop/custom-services.d:/custom-services.d:ro
       - ../remote-desktop/desktop-help:/usr/local/share/doombox-desktop-help:ro
+      # Glycin/GTK uses bwrap; nested bwrap fails in Docker and aborts XFCE (cursor-only).
+      - ../remote-desktop/bwrap-shim/bwrap:/usr/bin/bwrap:ro
     # No host ports — only reachable via gateway /desktop/
     expose:
       - "3000"

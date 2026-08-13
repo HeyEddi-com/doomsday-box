@@ -363,6 +363,29 @@ def _save_apps(data: dict[str, Any]) -> None:
 
 
 def _remote_desktop_running() -> bool:
+    """True when the webtop container is up.
+
+    Prefer a local docker compose probe — HTTP to the service hostname can hang
+    for a long time on DNS when the profile container is not running (urlopen
+    timeouts do not always cover getaddrinfo).
+    """
+    try:
+        result = subprocess.run(
+            _compose_cmd("ps", "--status", "running", "-q", "remote-desktop"),
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+        if (result.stdout or "").strip():
+            return True
+        if result.returncode == 0:
+            return False
+    except (OSError, subprocess.TimeoutExpired):
+        pass
+
+    # Fallback for environments without a working docker CLI in the API image.
+    # Use urlopen timeout only — never mutate socket.setdefaulttimeout (process-global).
     try:
         req = urllib.request.Request(REMOTE_DESKTOP_URL, method="GET")
         with urllib.request.urlopen(req, timeout=2) as resp:
@@ -436,31 +459,39 @@ def _apply_remote_desktop(enabled: bool) -> str:
         # Ensure host dirs exist for webtop mounts (API sees STORAGE path).
         (STORAGE / "remote-desktop").mkdir(parents=True, exist_ok=True)
         (STORAGE / "workspace").mkdir(parents=True, exist_ok=True)
-        parts = ["up", "-d", "remote-desktop"]
-    else:
-        _sync_remote_desktop_cache()
-        parts = ["stop", "remote-desktop"]
-    try:
-        result = subprocess.run(
-            _compose_cmd(*parts),
-            check=False,
-            capture_output=True,
-            text=True,
-            timeout=300,
+        try:
+            subprocess.Popen(
+                _compose_cmd("up", "-d", "remote-desktop"),
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+                start_new_session=True,
+            )
+        except OSError as exc:
+            raise HTTPException(
+                status_code=503,
+                detail=f"Docker control failed: {exc}",
+            ) from exc
+        return (
+            "Remote desktop starting. Refresh status or wait for Ready, "
+            "then open /desktop/."
         )
-    except (OSError, subprocess.TimeoutExpired) as exc:
+
+    # Stop in the background (same as enable) so Settings never hits a gateway 504.
+    # Apt-cache sync stays on the host disable script; API path prioritizes a fast reply.
+    try:
+        subprocess.Popen(
+            _compose_cmd("stop", "remote-desktop"),
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            start_new_session=True,
+        )
+    except OSError as exc:
         raise HTTPException(
             status_code=503,
             detail=f"Docker control failed: {exc}",
         ) from exc
 
-    if result.returncode != 0:
-        err = (result.stderr or result.stdout or "compose failed").strip()
-        raise HTTPException(status_code=503, detail=err[:500])
-
-    if enabled:
-        return "Remote desktop starting. Use Open remote desktop when the status shows running."
-    return "Remote desktop stop requested."
+    return "Remote desktop stop requested. Status updates when the container exits."
 
 
 @app.on_event("startup")
