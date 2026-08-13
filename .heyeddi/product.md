@@ -35,8 +35,8 @@ HeyEddi product line: practical digital sovereignty appliance with campaign ener
 
 ## Competitors
 
-- Users compare us to: Umbrel, CasaOS, Firewalla, Protectli / mini PC firewall builds, Synology / NAS appliances, Raspberry Pi DIY stacks
-- We win on: One appliance combining sovereign personal cloud, inline firewall/ad-tarpit, and offline local AI—open-source after campaign fulfillment, with a high-trust Kickstarter path
+- Users compare us to: Umbrel, CasaOS, Firewalla, Protectli / mini PC firewall builds, Beelink / Minisforum mini PCs, Synology / NAS appliances, Raspberry Pi DIY stacks
+- We win on: One aluminum appliance combining sovereign personal cloud, inline firewall/ad-tarpit, and offline local **Hermes** AI/agents—open-source after campaign fulfillment, with a high-trust Kickstarter path under ~$300 early-bird research pricing
 
 ## Anti-audience
 

@@ -112,7 +112,7 @@ Modular Compose overrides under `compose/services/` arrive with app profiles (re
 | Network | Dual-port bridge **and** single-port AP; tarpit optional | later |
 | Multi-box mesh | Optional 2–3 nodes | later |
 | VPN | WireGuard/Gluetun optional | later |
-| Local AI | Ollama + `llama3.2:3b` + `all-minilm` | later |
+| Local AI | Ollama + **`hermes3:8b`** (Hermes agents / tool-calling) + coder / low-power presets; embeddings for RAG | later — see `local-ai-hermes3.md` |
 | Scaling | Detect RAM/CPU; single-user default under 16GB | design when desktop lands |
 | Browser VS Code | Optional code-server profile | later; not Cursor |
 | SSH Remote | Optional Advanced pubkey | deferred |
