@@ -1,6 +1,6 @@
 # Repository scope (monorepo)
 
-**Last updated:** 2026-08-11  
+**Last updated:** 2026-08-13  
 **Repo:** `heyeddi-doomsday-box`
 
 This repository holds **on-box appliance software** and product docs. The public marketing site is **not** here.
@@ -34,7 +34,7 @@ heyeddi-doomsday-box/
 ### `box/` (this monorepo)
 
 - Host OS install scripts (Debian bookworm appliance)
-- Docker Compose stacks (gateway, API, dashboard; next: remote desktop + app profiles)
+- Docker Compose stacks (gateway, API, dashboard, optional remote desktop)
 - FastAPI API + Vue/PrimeVue dashboard
 - nftables / topologies / WireGuard-related config as applicable
 - Software tests + GitHub Actions CI
@@ -45,8 +45,8 @@ heyeddi-doomsday-box/
 |-------|--------|-------|--------|
 | 0 | Market intent ($0 / ≥ $1) | `hey-eddi-website` | Landing UI done; Stripe/email CF planned |
 | 1a | Stage-1 hub shell (claim + dual-skin UI) | `box/` | **done** |
-| 1b | Browser remote desktop + Cursor (no SSH) | `box/` | **active MVP** |
-| 1c | Golden flash on sample PCs | `box/host/` | Blocked until 1b works on hardware |
+| 1b | Browser remote desktop + Cursor (no SSH) | `box/` | **done (software)** |
+| 1c | USB / golden image (boot-on-power, no SSH per box) | `box/host/` | **active** |
 | 2 | Household hub features + KS prototype | `box/` + ops | later |
 | 3 | Hardware ship + public OSS v1.0 | `box/` + GitHub | later |
 | 4 | Post-campaign retail / Late Pledge | ops; retail may stay on heyeddi.com | later |

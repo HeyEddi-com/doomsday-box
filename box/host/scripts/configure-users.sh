@@ -165,6 +165,12 @@ install_host_tools() {
   install -m 0750 -o root -g root "${HOST_ROOT}/scripts/install-rootless-podman.sh" /usr/local/sbin/doombox-install-rootless-podman
   install -m 0750 -o root -g root "${HOST_ROOT}/scripts/enable-remote-desktop.sh" /usr/local/sbin/doombox-enable-remote-desktop
   install -m 0750 -o root -g root "${HOST_ROOT}/scripts/disable-remote-desktop.sh" /usr/local/sbin/doombox-disable-remote-desktop
+  install -m 0750 -o root -g root "${HOST_ROOT}/scripts/compose-up.sh" /usr/local/sbin/doombox-compose-up
+  install -m 0750 -o root -g root "${HOST_ROOT}/scripts/compose-down.sh" /usr/local/sbin/doombox-compose-down
+  install -m 0750 -o root -g root "${HOST_ROOT}/scripts/first-boot.sh" /usr/local/sbin/doombox-first-boot
+  install -m 0750 -o root -g root "${HOST_ROOT}/scripts/prepare-golden.sh" /usr/local/sbin/doombox-prepare-golden
+  install -m 0750 -o root -g root "${HOST_ROOT}/scripts/bake-golden.sh" /usr/local/sbin/doombox-bake-golden
+  install -m 0750 -o root -g root "${HOST_ROOT}/scripts/install-compose-boot.sh" /usr/local/sbin/doombox-install-compose-boot
   install -m 0755 "${HOST_ROOT}/kiosk/claim_kiosk.py" /usr/local/lib/doombox/claim_kiosk.py
   install -m 0755 "${HOST_ROOT}/scripts/lib/update-apps-json.py" /usr/local/lib/doombox/update-apps-json.py
 }

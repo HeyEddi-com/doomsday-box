@@ -1,14 +1,14 @@
 # Box software architecture
 
-**Last updated:** 2026-08-11  
+**Last updated:** 2026-08-13  
 **Code root:** `box/`  
-**Status:** Stage-1 shipped; remote-desktop MVP next
+**Status:** Stage-1 + remote-desktop software shipped; USB golden image next
 
 ## Purpose
 
 Offline-first personal cloud, inline network protection / ad-tarpit, local AI — local dashboard, **no forced cloud**.
 
-**Near-term MVP:** authenticated browser full desktop so founders can run **Cursor** on the box without SSH. Golden image flash comes **after** that path works on hardware.
+**Near-term:** founders code on boxes via authenticated browser desktop (Cursor). **Next:** flashable USB/golden disk so clones boot the hub **without SSH or per-machine bootstrap**.
 
 ## Principles
 
@@ -25,10 +25,11 @@ Offline-first personal cloud, inline network protection / ad-tarpit, local AI �
 | Host bootstrap (`box/host/`) | **Shipped** — Debian scripts, mDNS, claim kiosk/label, operator console, compose enable |
 | Compose gateway + API + dashboard | **Shipped** — claim/auth, dual skins, Home / Setup / Login / Settings |
 | Software CI | **Shipped** — dashboard, API, host smoke, compose smoke |
-| Browser remote desktop (KasmVNC webtop) | **Scaffolded** — profile, auth gateway, Settings toggle, host scripts; pull/enable on hardware next |
+| Browser remote desktop (KasmVNC webtop) | **Shipped (software)** — Settings toggle, `/desktop/` login redirect, apt cache restore; proven in compose |
 | Browser VS Code (code-server) | Later optional profile (not Cursor) |
 | `/network`, `/apps`, `/ai`, `/founders` | Not started |
-| Golden image flash | **Blocked** until browser desktop works on a real PC |
+| Boot-on-power compose | **Next** — systemd so hub starts with no manual `compose up` |
+| USB / golden appliance image | **Scripts done** — flash proof on N150 still pending (`GOLDEN.md`) |
 | Product SSH path | Deferred (console break-glass only for now) |
 
 ## Host OS (locked)
@@ -38,8 +39,8 @@ Offline-first personal cloud, inline network protection / ad-tarpit, local AI �
 | **Ship / prod host** | **Debian** (bookworm = 12 for v1; next major only after a tested bump) |
 | **Not ship** | Arch / CachyOS / other full rolling desktops as the customer appliance OS |
 | **Dev** | Debian VM preferred; CachyOS (or any modern Linux) OK for coding if Compose targets Debian |
-| **v0 image method** | Stock Debian (UEFI) + idempotent `box/host/scripts/bootstrap.sh` |
-| **Factory image** | Cloned golden disk **after** remote-desktop MVP proven on hardware (`box/host/GOLDEN.md`) |
+| **Dev / first reference** | Stock Debian (UEFI) + idempotent `box/host/scripts/bootstrap.sh` |
+| **Clone / friend-seed / factory** | USB or `.img.gz` with stack **already in the image**, compose **on boot**, fresh claim PIN per clone (`box/host/GOLDEN.md`) |
 
 Host stays minimal: kernel, Docker Engine, nftables, Wi‑Fi/AP helpers, sysctl. Not a general desktop — the **desktop for Cursor** lives in a Compose workspace, not on the host DE.
 

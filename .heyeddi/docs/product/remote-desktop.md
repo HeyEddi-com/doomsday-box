@@ -1,7 +1,7 @@
 # Remote desktop (browser workspace)
 
-**Last updated:** 2026-08-11  
-**Status:** MVP — enable from Settings UI
+**Last updated:** 2026-08-13  
+**Status:** software shipped (compose + Settings). USB golden image is the next appliance track (`GOLDEN.md`).
 
 ## What this is
 

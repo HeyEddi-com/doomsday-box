@@ -4,16 +4,16 @@
 **Target:** Debian 12 (bookworm)  
 **CPU:** **amd64 (x86_64)** primary (N100/N150) **and arm64** DIY from day one — same bootstrap, no arch fork  
 **Method:** stock Debian install → idempotent `scripts/bootstrap.sh`  
-**Later:** clone a known-good disk to a factory golden `.img` **per arch**
+**Clone path (active):** USB / golden `.img` per arch with stack already installed — see `GOLDEN.md`
 
 ## Staged usable image
 
 | Stage | What you get | Proof |
 |-------|--------------|-------|
-| **Now** | Host bootstrap + compose API/dashboard/gateway | `./test/run-container-smoke.sh` · `docker compose … up` → :8080 |
-| **Next** | Same on sample mini PC / Pi | `RUNBOOK.md` + `enable-compose-stack.sh` |
-| **Then** | Apps (cloud/AI/network) + Advanced settings | Compose services |
-| **Factory** | Flashable `.img` per arch | `GOLDEN.md` |
+| **Now** | Host bootstrap + hub + remote desktop (software) | compose `:8080` + Settings `/desktop/` |
+| **Next** | USB golden flash proof on N150 (scripts ready) | `GOLDEN.md` |
+| **Then** | Household apps (cloud/AI/network) | Compose services |
+| **Factory** | Repeatable bake of `.img.gz` per arch | bake script (not in git as blobs) |
 
 One script path for both arches — never “amd64-only until later.”
 
@@ -36,10 +36,10 @@ One script path for both arches — never “amd64-only until later.”
 ## On appliance (after host bootstrap)
 
 ```bash
-sudo ./scripts/enable-compose-stack.sh
+sudo ./scripts/enable-compose-stack.sh --pull-remote-desktop
 ```
 
-Brings up API + dashboard + gateway and points host nginx `:80` at compose `:8080`.
+Brings up API + dashboard + gateway, points host nginx `:80` at compose `:8080`, and enables `doombox-compose.service` + `doombox-first-boot.service` for boot-on-power.
 
 See [RUNBOOK.md](./RUNBOOK.md). Short version:
 
@@ -66,12 +66,16 @@ host/
 │   ├── configure-mdns.sh
 │   ├── publish-doomsday-mdns.sh
 │   ├── install-stub-http.sh
+│   ├── enable-compose-stack.sh
+│   ├── install-compose-boot.sh
+│   ├── first-boot.sh / prepare-golden.sh / bake-golden.sh
 │   └── smoke-check.sh
 ├── conf/
 │   ├── sysctl/99-doombox.conf
 │   ├── nginx/doombox-stub.conf
 │   ├── ssh/sshd_doombox.conf
-│   └── systemd/doombox-mdns-alias.service
+│   ├── default/doombox
+│   └── systemd/ (mdns, compose, first-boot, kiosk)
 └── stub/
     └── index.html
 ```

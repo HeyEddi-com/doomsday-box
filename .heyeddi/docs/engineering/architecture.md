@@ -1,6 +1,6 @@
 # Architecture
 
-**Last updated:** 2026-08-11
+**Last updated:** 2026-08-13
 
 HeyEddi Doomsday Box — on-device appliance software under `box/`.
 
@@ -12,7 +12,7 @@ See `.heyeddi/stack.json`. Summary:
 |-------|------|------|
 | Host OS | Debian 12 bootstrap | `box/host/scripts/` |
 | Containers | Docker Compose v2 | `box/compose/` |
-| API | FastAPI 0.2.x (Python 3.12) | `box/api/app/main.py` |
+| API | FastAPI 0.3.x (Python 3.12) | `box/api/app/main.py` |
 | Dashboard | Vue 3 + PrimeVue + Vite | `box/dashboard/src/` |
 | Gateway | nginx reverse proxy | `box/compose/gateway/` |
 
@@ -22,7 +22,7 @@ Published on appliance at `http://box.local` / `http://doomsday.local` (dual ski
 
 | Layer | Location | Responsibility |
 |-------|----------|----------------|
-| API routes | `box/api/app/main.py` | Claim, auth, status, operator read-only panel |
+| API routes | `box/api/app/main.py` | Claim, auth, status, operator panel, remote-desktop toggle |
 | Dashboard views | `box/dashboard/src/views/` | Setup, Login, Home, Settings |
 | Router guards | `box/dashboard/src/router.ts` | Redirect unclaimed → `/setup`; authed gate |
 | API client | `box/dashboard/src/api.ts` | `fetch` + cookies; no PIN over HTTP |

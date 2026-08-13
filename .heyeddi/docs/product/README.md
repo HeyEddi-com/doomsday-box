@@ -1,15 +1,15 @@
 # Product documentation index
 
-**Last updated:** 2026-08-11
+**Last updated:** 2026-08-13
 
 | Doc | Purpose |
 |-----|---------|
 | [../../product.md](../../product.md) | Personas, routes, voice, competitors |
 | [repo-scope.md](repo-scope.md) | Monorepo: `box/` (+ marketing on hey-eddi-website) |
-| [backlog.md](backlog.md) | Priorities + roadmap (stage-1 done; remote-desktop MVP active) |
+| [backlog.md](backlog.md) | Priorities + roadmap (remote-desktop software done; USB golden active) |
 | [crowdfunding-strategy.md](crowdfunding-strategy.md) | KS-first, multi-platform rules |
 | [features/home.md](features/home.md) | Landing SPA stories + AC |
-| [features/box-hub.md](features/box-hub.md) | On-box software epic (stage-1 shipped; MVP next) |
+| [features/box-hub.md](features/box-hub.md) | On-box software epic (remote-desktop shipped; USB golden next) |
 | [remote-desktop.md](remote-desktop.md) | Browser desktop MVP (Cursor host, no SSH) |
 | [privacy-consent.md](privacy-consent.md) | Data, consent, footer requirements |
 | [postmark-runbook.md](postmark-runbook.md) | Transactional + campaign email |

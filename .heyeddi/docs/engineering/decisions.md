@@ -32,6 +32,14 @@ Engineering ADRs: separate from the **Design Decision log** in `.heyeddi/design.
 
 **Context:** Founder needs Cursor on sample boxes via browser; no product SSH for now. Cursor is a desktop app (no VS Code Agent extension; code-server is not Cursor).
 
-**Decision:** First Compose workspace profile is authenticated Kasm-class full desktop (default off, gateway-fronted). Golden flash blocked until that path works on hardware. code-server and SSH remain later optional modes.
+**Decision:** First Compose workspace profile is authenticated Kasm-class full desktop (default off, gateway-fronted). code-server and SSH remain later optional modes.
 
 **Consequences:** Higher RAM/CPU budget for the desktop profile than a browser IDE; document Cursor install on the desktop; keep host itself headless.
+
+### 2026-08-13: USB golden image — no per-box SSH
+
+**Context:** Founder will clone many N150s and must not power each one to bootstrap or `compose up`.
+
+**Decision:** Next appliance work is compose-on-boot (systemd) + pre-pulled images + first-boot PIN generalize + bake to `.img.gz` / USB. Debian netinst remains **dev** only. Artifacts stay off git.
+
+**Consequences:** Image is multi-GB (webtop). amd64 and arm64 are separate. First boot must wipe identity so clones do not share claim PINs.

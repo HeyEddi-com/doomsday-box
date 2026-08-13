@@ -1,0 +1,5 @@
+# DoomBox appliance paths — installed to /etc/default/doombox
+# DOOMBOX_BOX_ROOT must contain compose/docker-compose.yml and .env (the box/ tree).
+
+DOOMBOX_BOX_ROOT=/opt/doombox
+DOOMBOX_STORAGE=/mnt/storage

@@ -1,0 +1,17 @@
+[Unit]
+Description=DoomBox Compose appliance stack
+Documentation=file:///opt/doombox/host/GOLDEN.md
+After=docker.service network-online.target doombox-first-boot.service
+Requires=docker.service
+Wants=network-online.target doombox-first-boot.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+EnvironmentFile=-/etc/default/doombox
+ExecStart=/usr/local/sbin/doombox-compose-up
+ExecStop=/usr/local/sbin/doombox-compose-down
+TimeoutStartSec=600
+
+[Install]
+WantedBy=multi-user.target

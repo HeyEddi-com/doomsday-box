@@ -1,6 +1,6 @@
 # `box/` — on-device Doomsday Box software
 
-**Status:** stage-1 usable stack (host + API + dashboard)  
+**Status:** stage-1 hub + optional remote desktop; USB golden image next (`host/GOLDEN.md`)  
 **Arches:** amd64 + arm64 from day one  
 
 ## Layout
