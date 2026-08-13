@@ -12,6 +12,28 @@ from __future__ import annotations
 import os
 import sys
 
+# Flags that take no following argument.
+_ZERO_ARG = {
+    "--help",
+    "-h",
+    "--unshare-user",
+    "--unshare-user-try",
+    "--unshare-ipc",
+    "--unshare-pid",
+    "--unshare-net",
+    "--unshare-uts",
+    "--unshare-cgroup",
+    "--unshare-cgroup-try",
+    "--unshare-all",
+    "--share-net",
+    "--die-with-parent",
+    "--as-pid-1",
+    "--clearenv",
+    "--new-session",
+    "--disable-userns",
+    "--assert-userns-disabled",
+}
+
 # Options that take one following argument (or --key=VAL).
 _ONE_ARG = {
     "--chdir",
@@ -76,10 +98,6 @@ def _exec_command(cmd: list[str]) -> None:
     os.execvp(cmd[0], cmd)
 
 
-def _looks_like_option(arg: str) -> bool:
-    return arg.startswith("-") and arg != "-"
-
-
 def main() -> int:
     args = sys.argv[1:]
     if not args:
@@ -91,6 +109,8 @@ def main() -> int:
         return 0
 
     # Sequential parse only — never scan ahead for "--" (it can be a flag value).
+    # Unknown flags advance by 1 only (never consume the next token) so zero-arg
+    # flags like --unshare-all cannot swallow the real executable path.
     i = 0
     while i < len(args):
         arg = args[i]
@@ -99,7 +119,7 @@ def main() -> int:
             if cmd:
                 _exec_command(cmd)
             break
-        if arg.startswith("--"):
+        if arg.startswith("--") or arg in ("-h",):
             key = arg.split("=", 1)[0]
             if "=" in arg:
                 # --key=VAL consumes this token; two-arg options still need DEST/VALUE.
@@ -108,17 +128,17 @@ def main() -> int:
                 else:
                     i += 1
                 continue
+            if key in _ZERO_ARG:
+                i += 1
+                continue
             if key in _TWO_ARG:
                 i += 3
                 continue
             if key in _ONE_ARG:
                 i += 2
                 continue
-            # Unknown flag: if next token looks like a value, skip it too.
-            if i + 1 < len(args) and not _looks_like_option(args[i + 1]):
-                i += 2
-            else:
-                i += 1
+            # Unknown flag: do not guess a value — treat as zero-arg.
+            i += 1
             continue
         _exec_command(args[i:])
 
