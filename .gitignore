@@ -9,6 +9,9 @@ dist/
 # Private founder finance / legal working notes
 .docs/
 
+# Local golden / QEMU lab artifacts (never commit images)
+.golden/
+
 # Local agent / IDE tooling (not product source)
 .agents/
 .cursor/

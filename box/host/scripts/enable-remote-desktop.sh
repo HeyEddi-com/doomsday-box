@@ -3,9 +3,29 @@
 set -euo pipefail
 
 HOST_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-BOX_ROOT="$(cd "${HOST_ROOT}/.." && pwd)"
-# shellcheck source=lib/host-env.sh
-source "${HOST_ROOT}/scripts/lib/host-env.sh"
+if [[ -f /etc/default/doombox ]]; then
+  # shellcheck source=/dev/null
+  source /etc/default/doombox
+fi
+if [[ -n "${DOOMBOX_BOX_ROOT:-}" && -f "${DOOMBOX_BOX_ROOT}/compose/docker-compose.yml" ]]; then
+  BOX_ROOT="${DOOMBOX_BOX_ROOT}"
+  HOST_ROOT="${BOX_ROOT}/host"
+elif [[ -f "${HOST_ROOT}/../compose/docker-compose.yml" ]]; then
+  BOX_ROOT="$(cd "${HOST_ROOT}/.." && pwd)"
+elif [[ -f /opt/doombox/compose/docker-compose.yml ]]; then
+  BOX_ROOT=/opt/doombox
+  HOST_ROOT=/opt/doombox/host
+else
+  echo "ERROR: cannot locate box compose root (set DOOMBOX_BOX_ROOT)" >&2
+  exit 1
+fi
+if [[ -f /usr/local/lib/doombox/host-env.sh ]]; then
+  # shellcheck source=/dev/null
+  source /usr/local/lib/doombox/host-env.sh
+else
+  # shellcheck source=lib/host-env.sh
+  source "${HOST_ROOT}/scripts/lib/host-env.sh"
+fi
 
 log() { printf '==> %s\n' "$*"; }
 die() { printf 'ERROR: %s\n' "$*" >&2; exit 1; }
@@ -51,7 +71,7 @@ done
 # Mark desired state for the dashboard (locked; never wipe on corrupt JSON)
 python3 "${update_apps_json}" --key remote_desktop --value true
 
-log "Starting remote-desktop profile (pull may take a few minutes)"
+log "Starting remote-desktop profile (pull may take a few minutes if image not cached)"
 docker compose -f compose/docker-compose.yml --env-file .env --profile remote-desktop up -d remote-desktop
 
 log "Desktop starting. Sign in to the hub, then open http://box.local/desktop/"
