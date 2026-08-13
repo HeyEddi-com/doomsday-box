@@ -8,7 +8,6 @@ import os
 import platform
 import secrets
 import shutil
-import socket
 import subprocess
 import urllib.error
 import urllib.request
@@ -386,15 +385,11 @@ def _remote_desktop_running() -> bool:
         pass
 
     # Fallback for environments without a working docker CLI in the API image.
+    # Use urlopen timeout only — never mutate socket.setdefaulttimeout (process-global).
     try:
-        old_timeout = socket.getdefaulttimeout()
-        socket.setdefaulttimeout(2.0)
-        try:
-            req = urllib.request.Request(REMOTE_DESKTOP_URL, method="GET")
-            with urllib.request.urlopen(req, timeout=2) as resp:
-                return 200 <= int(resp.status) < 500
-        finally:
-            socket.setdefaulttimeout(old_timeout)
+        req = urllib.request.Request(REMOTE_DESKTOP_URL, method="GET")
+        with urllib.request.urlopen(req, timeout=2) as resp:
+            return 200 <= int(resp.status) < 500
     except (urllib.error.URLError, TimeoutError, ValueError, OSError):
         return False
 

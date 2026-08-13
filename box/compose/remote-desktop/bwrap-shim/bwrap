@@ -3,12 +3,70 @@
 
 Real bwrap fails in unprivileged containers ("Failed to make / slave"),
 which aborts xfce4-session/panel and leaves a blank screen with only a cursor.
-We skip sandboxing and exec the intended command (already inside a container).
+We skip nested sandboxing and exec the intended command (already inside a
+container). Prefer enabling native bwrap later via userns/mount privileges;
+this shim is the appliance-safe workaround.
 """
 from __future__ import annotations
 
 import os
 import sys
+
+# Options that take one following argument.
+_ONE_ARG = {
+    "--chdir",
+    "--unsetenv",
+    "--uid",
+    "--gid",
+    "--hostname",
+    "--size",
+    "--perms",
+    "--seccomp",
+    "--uid-fd",
+    "--gid-fd",
+    "--info-fd",
+    "--json-status-fd",
+    "--userns-block-fd",
+    "--userns-fd",
+    "--pidns-fd",
+    "--args",
+    "--file-label",
+    "--remount-ro",
+    "--tmpfs",
+    "--dir",
+    "--proc",
+    "--dev",
+    "--lock-file",
+    "--sync-fd",
+    "--block-fd",
+    "--userns",
+    "--cap-add",
+    "--cap-drop",
+}
+
+# Options that take two following arguments (SRC DEST or KEY VALUE).
+_TWO_ARG = {
+    "--ro-bind",
+    "--ro-bind-try",
+    "--bind",
+    "--bind-try",
+    "--dev-bind",
+    "--dev-bind-try",
+    "--symlink",
+    "--setenv",
+    "--file",
+    "--bind-fd",
+    "--ro-bind-fd",
+    "--bind-data",
+    "--ro-bind-data",
+    "--chmod",
+}
+
+
+def _exec_command(cmd: list[str]) -> None:
+    if not cmd:
+        raise SystemExit("bwrap-shim: empty command")
+    os.execvp(cmd[0], cmd)
 
 
 def main() -> int:
@@ -17,76 +75,41 @@ def main() -> int:
         sys.stderr.write("bwrap-shim: missing command\n")
         return 1
 
-    # Prefer glycin loaders (the usual callers of bwrap in webtop).
-    for i, arg in enumerate(args):
-        if arg.startswith("/usr/libexec/glycin") and os.access(arg, os.X_OK):
-            os.execv(arg, args[i:])
+    if args in (["--version"], ["-V"]):
+        # Real bwrap --version is used by some probes; keep them quiet.
+        sys.stdout.write("bwrap-shim (doombox) 0\n")
+        return 0
 
-    # Generic: first absolute executable that is not clearly a bind path pair.
-    skip_next = False
-    path_taking = {
-        "--chdir",
-        "--ro-bind",
-        "--ro-bind-try",
-        "--bind",
-        "--bind-try",
-        "--dev-bind",
-        "--dev-bind-try",
-        "--symlink",
-        "--setenv",
-        "--unsetenv",
-        "--uid",
-        "--gid",
-        "--hostname",
-        "--size",
-        "--perms",
-        "--file",
-        "--bind-fd",
-        "--tmpfs",
-        "--dir",
-        "--seccomp",
-        "--uid-fd",
-        "--gid-fd",
-        "--info-fd",
-        "--json-status-fd",
-        "--userns-block-fd",
-        "--userns-fd",
-        "--pidns-fd",
-        "--args",
-        "--file-label",
-        "--remount-ro",
-    }
+    # Explicit command separator always wins.
+    if "--" in args:
+        cmd = args[args.index("--") + 1 :]
+        if cmd:
+            _exec_command(cmd)
+
+    # Skip bwrap options; first remaining token is the command (glycin path, etc.).
     i = 0
     while i < len(args):
         arg = args[i]
-        if skip_next:
-            skip_next = False
-            i += 1
-            continue
         if arg == "--":
             cmd = args[i + 1 :]
-            if not cmd:
-                break
-            os.execvp(cmd[0], cmd)
-        if arg.startswith("--") and "=" not in arg and arg in path_taking:
-            # Most of these take 1 arg; bind-style take 2.
-            if arg in {
-                "--ro-bind",
-                "--ro-bind-try",
-                "--bind",
-                "--bind-try",
-                "--dev-bind",
-                "--dev-bind-try",
-                "--symlink",
-                "--setenv",
-            }:
+            if cmd:
+                _exec_command(cmd)
+            break
+        if arg.startswith("--"):
+            key = arg.split("=", 1)[0]
+            if "=" in arg:
+                i += 1
+                continue
+            if key in _TWO_ARG:
                 i += 3
                 continue
-            i += 2
+            if key in _ONE_ARG:
+                i += 2
+                continue
+            # Unknown flag with no args (e.g. --unshare-all, --die-with-parent).
+            i += 1
             continue
-        if arg.startswith("/") and os.path.isfile(arg) and os.access(arg, os.X_OK):
-            os.execv(arg, args[i:])
-        i += 1
+        _exec_command(args[i:])
 
     sys.stderr.write("bwrap-shim: could not find command in: %r\n" % (args,))
     return 1

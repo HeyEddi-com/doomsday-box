@@ -54,15 +54,22 @@ qemu_running() {
 }
 
 cmd_stop() {
-  if qemu_running; then
-    log "Stopping lab VM pid $(cat "${PID_FILE}")"
-    kill "$(cat "${PID_FILE}")" 2>/dev/null || true
-    sleep 1
-    if qemu_running; then
-      kill -9 "$(cat "${PID_FILE}")" 2>/dev/null || true
-    fi
-  else
+  if [[ ! -f "${PID_FILE}" ]]; then
     log "Lab VM is not running"
+    return 0
+  fi
+  local pid
+  pid="$(cat "${PID_FILE}" 2>/dev/null || true)"
+  if [[ -z "${pid}" ]] || ! kill -0 "${pid}" 2>/dev/null; then
+    log "Lab VM is not running"
+    rm -f "${PID_FILE}"
+    return 0
+  fi
+  log "Stopping lab VM pid ${pid}"
+  kill "${pid}" 2>/dev/null || true
+  sleep 1
+  if kill -0 "${pid}" 2>/dev/null; then
+    kill -9 "${pid}" 2>/dev/null || true
   fi
   rm -f "${PID_FILE}"
 }
@@ -176,7 +183,11 @@ EOF
   mcopy -oi "${SEED_IMG}" "${seed}/meta-data" ::meta-data
   mcopy -oi "${SEED_IMG}" "${seed}/provision.sh" ::provision.sh
   mcopy -oi "${SEED_IMG}" "${seed}/box.tar.gz" ::box.tar.gz
-  log "cidata disk $(du -h "${SEED_IMG}" | awk '{print $1}') label=$(dosfslabel "${SEED_IMG}")"
+  local label="CIDATA"
+  if command -v dosfslabel >/dev/null 2>&1; then
+    label="$(dosfslabel "${SEED_IMG}" 2>/dev/null || echo CIDATA)"
+  fi
+  log "cidata disk $(du -h "${SEED_IMG}" | awk '{print $1}') label=${label}"
 }
 
 prepare_disk() {
@@ -207,12 +218,12 @@ boot_vm() {
     -m "${MEM_MB}" \
     -drive if=pflash,format=raw,readonly=on,file="${OVMF_CODE}" \
     -drive if=pflash,format=raw,file="${OVMF_VARS}" \
-    -drive if=none,id=sysdisk,file="${DISK_IMG}",cache=writeback,discard=unmap \
+    -drive if=none,id=sysdisk,file="${DISK_IMG}",format=qcow2,cache=writeback,discard=unmap \
     -device virtio-blk-pci,drive=sysdisk,bootindex=1 \
     -drive if=none,id=cidata,file="${SEED_IMG}",format=raw,readonly=on \
     -device virtio-blk-pci,drive=cidata \
     -smbios type=1,serial=ds=nocloud \
-    -netdev "user,id=net0,hostfwd=tcp::${HTTP_PORT}-:80" \
+    -netdev "user,id=net0,hostfwd=tcp:127.0.0.1:${HTTP_PORT}-:80" \
     -device virtio-net-pci,netdev=net0 \
     -device virtio-rng-pci \
     -display none \
@@ -236,7 +247,10 @@ wait_for_hub() {
     if ! qemu_running; then
       die "QEMU exited during provision — see ${SERIAL_LOG}"
     fi
-    if curl -fsS --max-time 3 "http://127.0.0.1:${HTTP_PORT}/api/health" 2>/dev/null | grep -q '"ok"'; then
+    # Avoid `curl | grep -q` under pipefail (SIGPIPE / flaky false negatives).
+    local health
+    health="$(curl -fsS --max-time 3 "http://127.0.0.1:${HTTP_PORT}/api/health" 2>/dev/null || true)"
+    if [[ "${health}" == *'"ok"'* ]]; then
       log "Hub is up after ${elapsed}s → http://127.0.0.1:${HTTP_PORT}/"
       log "Claim PIN: telnet 127.0.0.1 ${SERIAL_PORT}  then  doombox-show-setup-pin"
       return 0
