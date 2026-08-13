@@ -50,7 +50,11 @@ EOF
 }
 
 qemu_running() {
-  [[ -f "${PID_FILE}" ]] && kill -0 "$(cat "${PID_FILE}")" 2>/dev/null
+  local pid
+  [[ -f "${PID_FILE}" ]] || return 1
+  pid="$(cat "${PID_FILE}" 2>/dev/null || true)"
+  [[ -n "${pid}" ]] || return 1
+  kill -0 "${pid}" 2>/dev/null
 }
 
 cmd_stop() {
@@ -67,16 +71,28 @@ cmd_stop() {
   fi
   log "Stopping lab VM pid ${pid}"
   kill "${pid}" 2>/dev/null || true
-  sleep 1
+  # Give ACPI shutdown time before SIGKILL (avoids qcow2/fs corruption).
+  local waited=0
+  while (( waited < 15 )); do
+    if ! kill -0 "${pid}" 2>/dev/null; then
+      rm -f "${PID_FILE}"
+      return 0
+    fi
+    sleep 1
+    waited=$((waited + 1))
+  done
   if kill -0 "${pid}" 2>/dev/null; then
+    log "QEMU still running after ${waited}s — sending SIGKILL"
     kill -9 "${pid}" 2>/dev/null || true
   fi
   rm -f "${PID_FILE}"
 }
 
 cmd_status() {
-  if qemu_running; then
-    log "QEMU running pid=$(cat "${PID_FILE}")"
+  local pid
+  pid="$(cat "${PID_FILE}" 2>/dev/null || true)"
+  if [[ -n "${pid}" ]] && kill -0 "${pid}" 2>/dev/null; then
+    log "QEMU running pid=${pid}"
   else
     log "QEMU not running"
   fi
