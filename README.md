@@ -2,7 +2,7 @@
 
 Sovereign home hub software: offline-capable personal cloud, network protection, and local AI on a lean Debian appliance (Intel N100/N150; ARM64 DIY path).
 
-**Status:** stage-1 hub shell shipped under `box/` (host bootstrap, claim/auth API, dual-skin dashboard, CI). **Next MVP:** authenticated browser remote desktop so you can run Cursor on the box (no SSH for now). Marketing / waitlist lives on [heyeddi.com/projects/doomsday-box](https://heyeddi.com/projects/doomsday-box).
+**Status:** stage-1 hub + authenticated remote desktop (Cursor in webtop) shipped as software. **Next:** USB/golden image so clones boot the stack with no SSH. Marketing / waitlist: [heyeddi.com/projects/doomsday-box](https://heyeddi.com/projects/doomsday-box).
 
 ## Layout
 

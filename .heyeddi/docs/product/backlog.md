@@ -1,6 +1,6 @@
 # Product backlog
 
-**Last updated:** 2026-08-11
+**Last updated:** 2026-08-13
 
 Prioritized by user value. PM owns order: engineering estimates inform but do not override user pain.
 
@@ -9,15 +9,16 @@ Prioritized by user value. PM owns order: engineering estimates inform but do no
 | Priority | Feature / route | User story (summary) | Status | Notes |
 |----------|-----------------|--------------------|--------|-------|
 | P0 | Stage-1 hub shell | Claim, login, dual-skin Home/Settings | **done** | Host bootstrap + Compose API/dashboard + CI |
-| P0 | Browser remote desktop | Authenticated KasmVNC webtop; install Cursor on desktop | **active** | Compose profile + Settings toggle + `/desktop/` auth; enable via `doombox-enable-remote-desktop` |
-| P1 | User-configurable remote modes | Owner enables desktop (± later browser VS Code) from Settings / Apps | planned | Same auth + gateway; default off |
-| P1 | `/apps` shell | Enable/disable Compose app profiles + resource limits | planned | Needed to toggle remote desktop cleanly |
-| P2 | Browser VS Code (code-server) | Optional light tab IDE | later | VS Code–like only; **not** Cursor (no Cursor Agent extension exists) |
+| P0 | Browser remote desktop | Authenticated webtop; Cursor on desktop; no SSH | **done (software)** | Settings toggle, `/desktop/` login gate, apt cache restore. Proven in compose. |
+| P0 | Boot-on-power compose | Hub + API + gateway start with no SSH / no manual `compose up` | **done (software)** | `doombox-compose.service` via `enable-compose-stack.sh` / `install-compose-boot.sh` |
+| P0 | Appliance USB / golden image | Flash stick → write disk → plug in → hub is up; fresh claim PIN per clone | **active** | Scripts in `GOLDEN.md`; hardware flash proof still pending |
+| P0 | First-boot generalize | New `machine-id`, SSH keys, claim PIN on every clone | **done (software)** | `doombox-first-boot.service` + `doombox-prepare-golden` |
+| P1 | `/apps` shell | Enable/disable Compose app profiles + resource limits | planned | Remote desktop already has a Settings toggle |
+| P2 | Browser VS Code (code-server) | Optional light tab IDE | later | Not Cursor |
 | P2 | Network wizard | AP vs bridge; tarpit toggle | planned | `/network` |
 | P2 | Local AI | Ollama + small models | planned | `/ai` |
 | P2 | Personal cloud slot | Nextcloud or Immich (Insider vote; default Nextcloud) | planned | |
-| P3 | Golden image flash | Clone proven disk to sample PCs | **blocked** | Flash only after browser connect + remote desktop works on a real PC |
-| P3 | Operator SSH (pubkey) | Optional Advanced remote shell | deferred | Explicitly **not** MVP; console break-glass remains |
+| P3 | Operator SSH (pubkey) | Optional Advanced remote shell | deferred | Console break-glass only |
 
 ## Marketing / campaign (hey-eddi-website)
 
@@ -29,13 +30,13 @@ Prioritized by user value. PM owns order: engineering estimates inform but do no
 | P0 | Dual path + disclosure | Not a KS pledge; measure paid_intent KPI | planned | Primary KPI ≥ $1 |
 | P0 | Domains | Canonical projects URL + box/doomsday aliases | planned | `marketing-hosting.md` |
 | P1 | KS↔Stripe mapping ops | Priority email + early-bird email-match at launch | done (doc) | `ks-stripe-mapping.md` |
-| P1 | Concept + table video | Landing creative OK now | planned | Brief exists; appliance MVP is higher priority |
+| P1 | Concept + table video | Landing creative OK now | planned | Brief exists; appliance USB is higher priority |
 | P1 | Thanks / confirmation | Inline success on same page | planned | |
 | P1 | Kickstarter pre-launch CTA | “Notify me on Kickstarter” | blocked | Needs KS approval |
 | P2 | Prototype + demo video | Required for KS submit only | later | **Not** a Phase 0 blocker |
 | P2 | heyeddi.com hero CTA | Brand site points to projects URL | planned | hey-eddi-website |
 | P2 | Campaign analytics | lead vs paid_intent rates | planned | |
-| P2 | Insider beta on `box/` | Early access builds | planned | After remote-desktop MVP |
+| P2 | Insider beta on `box/` | Early access builds | planned | After USB image exists |
 | P3 | Post-KS Late Pledge / InDemand | After campaign | later | |
 | P3 | Public OSS v1.0 | At hardware ship | later | |
 
@@ -43,8 +44,8 @@ Prioritized by user value. PM owns order: engineering estimates inform but do no
 
 ```
 Stage-1 hub shell (done)
-  → Browser remote desktop + Cursor (MVP, no SSH)
-  → Flash golden when browser path works on hardware
+  → Browser remote desktop + Cursor (software done)
+  → Boot-on-power + USB golden image (scripts done; flash proof active) — flash, don't SSH each box
   → Household hub features (network / apps / AI / cloud)
   → KS with working prototype demo
   → Hardware ship + public OSS v1.0
@@ -71,12 +72,20 @@ Parallel: Phase 0 market intent on heyeddi.com (Stripe / email).
 
 ## Decisions locked (2026-08-11) — remote coding MVP
 
-- **First appliance MVP:** use the boxes as remote coding machines via **browser**, not golden flash.
-- **Cursor required** for founder workflow → MVP = **authenticated browser full desktop** (Kasm-class); install Cursor on that desktop.
+- **First appliance MVP:** use the boxes as remote coding machines via **browser**.
+- **Cursor required** → authenticated **browser full desktop** (webtop / KasmVNC); install Cursor on that desktop.
 - **No SSH for now** (product path). Console break-glass scripts remain.
-- **code-server** is optional later (VS Code–like tab). There is **no** official Cursor Agent extension for VS Code.
-- **Golden flash** blocked until claim → browser → remote desktop works on a real PC.
-- Remote modes are **user-configurable** (default off); prefer gateway auth on :443; never market EDR evasion.
+- **code-server** is optional later. There is **no** official Cursor Agent extension for VS Code.
+- Remote desktop is **user-configurable** (default off); gateway auth; never market EDR evasion.
+
+## Decisions locked (2026-08-13) — flash, don't babysit
+
+- Founder must **not** power on each PC to run bootstrap or `compose up`.
+- **Ship path:** USB / golden disk with Debian + bootstrap already applied + Compose images **pre-pulled** + stack **starts on boot**.
+- Clone first-boot mints a **new claim PIN** (and machine-id / SSH host keys). No shared identity across sticks.
+- **Do not** commit multi-GB `.img` files to git. Bake artifacts stay off-repo (`GOLDEN.md`).
+- Separate **amd64** (N150) and **arm64** images — same scripts, different blobs.
+- Debian netinst + manual bootstrap remains the **dev** path, not the clone path.
 
 ## Explicitly deferred
 

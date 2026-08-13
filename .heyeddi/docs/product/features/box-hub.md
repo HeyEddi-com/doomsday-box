@@ -1,84 +1,85 @@
 # On-box hub software (epic)
 
-**Route:** local appliance UI · **Updated:** 2026-08-11  
+**Route:** local appliance UI · **Updated:** 2026-08-13  
 **Code root:** `box/`  
-**Status:** Stage-1 shipped; remote-desktop MVP active
+**Status:** Stage-1 + remote-desktop software shipped; USB golden image next
 
 ## Problem / user job
 
 Alex and Morgan need to configure and operate the Doomsday Box locally — personal cloud, network protection, and local AI — without cloud accounts or telemetry. Casey’s household may prefer a calmer “box” entry; Alex may prefer the doomsday-framed UI — same product.
 
-**Near-term founder job:** use sample boxes as remote coding machines through the browser (Cursor on an authenticated desktop), before golden imaging.
+**Founder job now:** clone boxes from a USB/golden image. Power on → hub in the browser. No SSH, no per-machine bootstrap. Code via authenticated remote desktop + Cursor.
 
 ## User stories
 
-### Shipped (stage-1)
+### Shipped
 
-- As Morgan, I want to plug the box in, wait for boot, and open a browser to finish setup so that I never log into Linux. *(claim + `/setup` + session auth)*
-- As Casey, I want `http://box.local` / branded aliases to feel like a friendly home hub skin.
-- As Alex, I want `http://doomsday.local` / branded aliases to emphasize offline and protection (same features).
-- As a tech user, I want Settings → Advanced to show remote-admin status (read-only) without factory-reset or PIN over HTTP.
+- As Morgan, I want to plug the box in, wait for boot, and open a browser to finish setup so that I never log into Linux. *(claim + `/setup` + session auth — software; needs compose-on-boot for clones)*
+- As Casey / Alex, I want hub vs doomsday skins on `.local` names — same features.
+- As Alex, I want an authenticated **browser full desktop** so I can run **Cursor** without SSH.
+- As Alex, I want remote desktop **default off** and enableable from Settings.
+- As Alex, I want installed apt software (Cursor/VS Code) to restore after desktop container recreate (N150-friendly cache: start, apt hook, daily sleep, stop).
 
-### Active MVP
+### Active
 
-- As Alex, I want an authenticated **browser full desktop** (Kasm-class) so I can install and run **Cursor** on the box without SSH.
-- As Alex, I want remote desktop **default off** and enableable from the hub (Settings / Apps) so the surface stays lean.
-- As Alex, I want resource limits on the desktop profile so the box stays stable on 12–16GB RAM.
+- As a founder, I want a USB/golden image with the stack **already in it** so I do not start each PC to install Debian or run compose.
+- As Morgan, I want the hub to come up on power with no operator at a keyboard.
 
 ### Later (household v1)
 
-- As Morgan, I want a setup wizard for AP vs inline bridge so that the box protects the household without a consultant.
-- As Alex, I want enable/disable Compose apps with resource limits.
+- As Morgan, I want a setup wizard for AP vs inline bridge.
+- As Alex, I want enable/disable Compose apps with resource limits (`/apps`).
 - As Alex, I want local AI available offline.
-- As Alex, I want optional browser VS Code (code-server) for light editing — knowing it is **not** Cursor.
-- As a tech user, I want optional pubkey SSH under Advanced (deferred; not MVP).
+- As Alex, I want optional browser VS Code (code-server) — not Cursor.
+- As a tech user, I want optional pubkey SSH under Advanced (deferred).
 - As a Founding Insider, I want early builds before public OSS.
 
 ## Acceptance criteria
 
 ### Stage-1 (met)
 
-1. Code lives under monorepo `box/` with tree in `box-architecture.md`
-2. Routes exist for shell: `/`, `/setup`, `/settings` (+ Login); dual skins work
-3. mDNS serves branded + short `.local` names (host scripts)
-4. Dual skins: hostname switches hub vs doomsday; **same features**, no capability fork
-5. First-run: browser claim with admin password; PIN never over HTTP
-6. No mandatory telemetry or cloud login for core operation
-7. No product copy claiming CrowdStrike / EDR evasion
-8. ARM64 compatibility kept for DIY path (images/compose)
-9. Software CI gate: dashboard + API + host/compose smokes
+1. Code lives under `box/`  
+2. Routes: `/`, `/setup`, `/settings`, Login; dual skins  
+3. mDNS branded + short `.local`  
+4. Claim PIN never over HTTP  
+5. CI: dashboard + API + host/compose smokes  
 
-### Remote-desktop MVP (in progress)
+### Remote-desktop MVP (met, software)
 
-10. Authenticated browser desktop Compose profile; prefer access via gateway (:443 when TLS ready)
-11. Owner can enable/disable the profile from the hub UI
-12. Documented path to run Cursor on that desktop (no SSH required)
-13. Golden image flash remains **blocked** until this path works on a real PC
+6. Authenticated `/desktop/` (unsigned → login, then continue)  
+7. Settings enable/disable + Open in new tab + starting spinner  
+8. Documented Cursor/VS Code install (`~/bin/install-linux-editor.sh`)  
+9. Apt cache restore without polling every few minutes  
+
+### USB / golden (in progress)
+
+10. systemd starts compose on boot (no SSH, no manual `up`)  
+11. Docker images pre-pulled in the bake (offline first boot for hub; webtop present)  
+12. First-boot mints unique claim PIN + machine-id  
+13. Bake script documented; artifacts **not** in git (`GOLDEN.md`)  
 
 ### Full hub v1 (open)
 
-14. Routes: `/network`, `/apps`, `/ai`, `/founders`
-15. Settings → Advanced can enable/disable browser remote and (later) other operator options; CLI break-glass remains
-16. Public v1.0 aligns with `oss-release-promise.md` at hardware ship
+14. Routes: `/network`, `/apps`, `/ai`, `/founders`  
+15. Public v1.0 at hardware ship (`oss-release-promise.md`)  
 
 ## Success metric
 
-**MVP:** founder completes claim → enable desktop → open Cursor in the remote desktop and develops without SSH.  
-**v1:** Insider beta completes household setup without founder screenshare; public release ships with hardware fulfillment.
+**Now:** flash a clone → power on → claim in browser → enable desktop → Cursor, with no founder SSH.  
+**v1:** Insider household setup without founder screenshare.
 
 ## Out of scope
 
-- Marketing site (`hey-eddi-website` projects page)
-- Kickstarter hosting
-- Cloud multi-tenant control plane
-- Separate backend products for “box” vs “doomsday”
-- Shipping Cursor as a VS Code extension (does not exist; not our product)
-- SSH-first remote coding for this MVP
+- Marketing site  
+- Kickstarter hosting  
+- Cloud control plane  
+- Cursor-as-VS-Code-extension (does not exist)  
+- SSH-first coding  
+- Committing `.img` files to git  
 
 ## PM review checklist
 
-- [ ] `@ux-flow-auditor`: setup + enable remote desktop within click budget; both skins
-- [ ] `@heyeddi-design critique`: hub vs doomsday skins; same features
-- [ ] `@visual-auditor audit_contrast --check`
-- [ ] `@engineering-excellence`: one dashboard, skin switch not fork; desktop as Compose profile
-- [ ] `check_features` when routes exist in product.md
+- [ ] `@ux-flow-auditor`: setup + enable remote desktop  
+- [ ] `@heyeddi-design critique`: hub vs doomsday skins  
+- [ ] `@visual-auditor audit_contrast --check`  
+- [ ] `@engineering-excellence`: compose-on-boot + first-boot PIN  
