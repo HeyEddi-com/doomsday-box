@@ -47,7 +47,13 @@ GitHub Actions runs the same gates in `.github/workflows/ci.yml`.
 cd /path/to/heyeddi-doomsday-box/box/host
 sudo ./scripts/enable-compose-stack.sh
 # http://box.local/  → dashboard + /api
+
+# Browser remote desktop (Cursor host) — optional
+sudo ./scripts/enable-remote-desktop.sh
+# sign in, then http://box.local/desktop/
 ```
+
+See [`.heyeddi/docs/product/remote-desktop.md`](../.heyeddi/docs/product/remote-desktop.md).
 
 ## Host-only smoke (no compose)
 

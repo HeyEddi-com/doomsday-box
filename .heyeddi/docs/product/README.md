@@ -1,15 +1,16 @@
 # Product documentation index
 
-**Last updated:** 2026-08-10
+**Last updated:** 2026-08-11
 
 | Doc | Purpose |
 |-----|---------|
 | [../../product.md](../../product.md) | Personas, routes, voice, competitors |
 | [repo-scope.md](repo-scope.md) | Monorepo: `box/` (+ marketing on hey-eddi-website) |
-| [backlog.md](backlog.md) | Priorities |
+| [backlog.md](backlog.md) | Priorities + roadmap (stage-1 done; remote-desktop MVP active) |
 | [crowdfunding-strategy.md](crowdfunding-strategy.md) | KS-first, multi-platform rules |
 | [features/home.md](features/home.md) | Landing SPA stories + AC |
-| [features/box-hub.md](features/box-hub.md) | On-box software epic (draft) |
+| [features/box-hub.md](features/box-hub.md) | On-box software epic (stage-1 shipped; MVP next) |
+| [remote-desktop.md](remote-desktop.md) | Browser desktop MVP (Cursor host, no SSH) |
 | [privacy-consent.md](privacy-consent.md) | Data, consent, footer requirements |
 | [postmark-runbook.md](postmark-runbook.md) | Transactional + campaign email |
 | [ks-stripe-mapping.md](ks-stripe-mapping.md) | How Stripe ≥ $1 maps to KS (priority + early-bird email-match) |
@@ -23,7 +24,7 @@
 | [hardware-bom.md](hardware-bom.md) | Basic (DDR4) / Premium (DDR5) SKUs, all-in COGS, accessories |
 | [oss-release-promise.md](oss-release-promise.md) | Early access → public OSS |
 | [friend-seed-status.md](friend-seed-status.md) | Seed deal checklist |
-| [box-architecture.md](box-architecture.md) | On-device architecture draft |
+| [box-architecture.md](box-architecture.md) | On-device architecture + delivery status |
 | [post-campaign-ops.md](post-campaign-ops.md) | Fulfillment / retail outline |
 | [intake-handoffs.md](intake-handoffs.md) | Skill-chain checklist |
 | [review-plan-2026-07-23.md](review-plan-2026-07-23.md) | PM review |

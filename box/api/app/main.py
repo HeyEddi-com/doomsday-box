@@ -7,6 +7,10 @@ import json
 import os
 import platform
 import secrets
+import shutil
+import subprocess
+import urllib.error
+import urllib.request
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
@@ -15,17 +19,29 @@ from fastapi import FastAPI, Header, HTTPException, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-APP_VERSION = "0.2.0"
+APP_VERSION = "0.3.0"
 STORAGE = Path(os.environ.get("DOOMBOX_STORAGE", "/mnt/storage"))
 DATA = STORAGE / "compose"
 STATE_FILE = DATA / "setup-state.json"
 CLAIM_FILE = DATA / "setup-claim.json"
 PIN_PLAINTEXT_FILE = DATA / "SETUP_PIN.txt"  # host/console/kiosk only — never over LAN API
 SESSIONS_FILE = DATA / "sessions.json"
+APPS_FILE = DATA / "apps.json"
 HOST_STATE_DIR = Path(os.environ.get("DOOMBOX_HOST_STATE", "/var/lib/doombox"))
 REMOTE_ADMIN_MARKER = HOST_STATE_DIR / "remote-admin-enabled"
 SESSION_COOKIE = "doombox_session"
 SESSION_DAYS = 14
+BOX_ROOT = Path(os.environ.get("DOOMBOX_BOX_ROOT", "/box"))
+DOCKER_CONTROL = os.environ.get("DOOMBOX_DOCKER_CONTROL", "0").strip() in {
+    "1",
+    "true",
+    "yes",
+}
+REMOTE_DESKTOP_URL = os.environ.get(
+    "DOOMBOX_REMOTE_DESKTOP_URL",
+    "http://remote-desktop:3000/desktop/",
+)
+REMOTE_DESKTOP_PATH = "/desktop/"
 
 app = FastAPI(
     title="HeyEddi Doomsday Box API",
@@ -105,6 +121,19 @@ class OperatorStatus(BaseModel):
     # Explicitly document what the web UI must never do:
     factory_reset_via_api: bool = False
     claim_pin_via_api: bool = False
+
+
+class RemoteDesktopStatus(BaseModel):
+    id: str = "remote-desktop"
+    desired: bool
+    running: bool
+    path: str = REMOTE_DESKTOP_PATH
+    docker_control: bool
+    message: str
+
+
+class RemoteDesktopPayload(BaseModel):
+    enabled: bool
 
 
 def _arch() -> str:
@@ -312,6 +341,128 @@ def _require_auth(request: Request) -> None:
         raise HTTPException(status_code=401, detail="Sign in required.")
 
 
+def _load_apps() -> dict[str, Any]:
+    if not APPS_FILE.is_file():
+        return {"remote_desktop": False}
+    try:
+        data = json.loads(APPS_FILE.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {"remote_desktop": False}
+    if not isinstance(data, dict):
+        return {"remote_desktop": False}
+    return data
+
+
+def _save_apps(data: dict[str, Any]) -> None:
+    _ensure_storage()
+    APPS_FILE.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+    try:
+        APPS_FILE.chmod(0o600)
+    except OSError:
+        pass
+
+
+def _remote_desktop_running() -> bool:
+    try:
+        req = urllib.request.Request(REMOTE_DESKTOP_URL, method="GET")
+        with urllib.request.urlopen(req, timeout=2) as resp:
+            return 200 <= int(resp.status) < 500
+    except (urllib.error.URLError, TimeoutError, ValueError, OSError):
+        return False
+
+
+def _compose_cmd(*extra: str) -> list[str]:
+    compose_file = BOX_ROOT / "compose" / "docker-compose.yml"
+    env_file = BOX_ROOT / ".env"
+    standalone = shutil.which("docker-compose")
+    if standalone:
+        cmd = [
+            standalone,
+            "-f",
+            str(compose_file),
+            "--profile",
+            "remote-desktop",
+        ]
+    else:
+        docker = shutil.which("docker") or "/usr/local/bin/docker"
+        cmd = [
+            docker,
+            "compose",
+            "-f",
+            str(compose_file),
+            "--profile",
+            "remote-desktop",
+        ]
+    if env_file.is_file():
+        cmd.extend(["--env-file", str(env_file)])
+    cmd.extend(extra)
+    return cmd
+
+
+def _sync_remote_desktop_cache() -> None:
+    """Flush apt software cache before stopping the desktop."""
+    try:
+        subprocess.run(
+            _compose_cmd(
+                "exec",
+                "-T",
+                "remote-desktop",
+                "/usr/local/bin/doombox-sync-apt-cache",
+            ),
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=180,
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        return
+
+
+def _apply_remote_desktop(enabled: bool) -> str:
+    """Start/stop compose profile when docker control is enabled."""
+    if not DOCKER_CONTROL:
+        if enabled:
+            return (
+                "Desired state saved. Start the desktop with "
+                "sudo doombox-enable-remote-desktop "
+                "(or compose --profile remote-desktop up -d)."
+            )
+        return (
+            "Desired state saved. Stop the desktop with "
+            "sudo doombox-disable-remote-desktop."
+        )
+
+    if enabled:
+        # Ensure host dirs exist for webtop mounts (API sees STORAGE path).
+        (STORAGE / "remote-desktop").mkdir(parents=True, exist_ok=True)
+        (STORAGE / "workspace").mkdir(parents=True, exist_ok=True)
+        parts = ["up", "-d", "remote-desktop"]
+    else:
+        _sync_remote_desktop_cache()
+        parts = ["stop", "remote-desktop"]
+    try:
+        result = subprocess.run(
+            _compose_cmd(*parts),
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=300,
+        )
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        raise HTTPException(
+            status_code=503,
+            detail=f"Docker control failed: {exc}",
+        ) from exc
+
+    if result.returncode != 0:
+        err = (result.stderr or result.stdout or "compose failed").strip()
+        raise HTTPException(status_code=503, detail=err[:500])
+
+    if enabled:
+        return "Remote desktop starting. Use Open remote desktop when the status shows running."
+    return "Remote desktop stop requested."
+
+
 @app.on_event("startup")
 def on_startup() -> None:
     _ensure_claim()
@@ -458,5 +609,62 @@ def operator_status(request: Request) -> OperatorStatus:
         "Disable on the local console: doombox-disable-remote-admin",
         "Factory reset and claim PIN are never available in this API or dashboard.",
         "Maker account has no full root and no docker group - see README-MAKER.txt",
+        "Browser remote desktop is separate: Settings → Remote desktop (no SSH).",
     ]
     return OperatorStatus(remote_admin_enabled=enabled, notes=notes)
+
+
+@app.get("/api/auth/session")
+def auth_session(request: Request) -> Response:
+    """Used by gateway auth_request for /desktop/. 200 if signed in."""
+    if not _setup_complete():
+        raise HTTPException(status_code=401, detail="Box not claimed.")
+    if not _session_valid(request):
+        raise HTTPException(status_code=401, detail="Sign in required.")
+    return Response(status_code=200)
+
+
+@app.get("/api/apps/remote-desktop", response_model=RemoteDesktopStatus)
+def remote_desktop_status(request: Request) -> RemoteDesktopStatus:
+    _require_auth(request)
+    apps = _load_apps()
+    desired = bool(apps.get("remote_desktop"))
+    running = _remote_desktop_running()
+    if desired and running:
+        message = "Desktop is up. Open /desktop/ in this browser (same sign-in)."
+    elif desired and not running:
+        message = (
+            "Enabled in settings; container not reachable yet. "
+            "Wait, or run sudo doombox-enable-remote-desktop on the box."
+        )
+    elif running:
+        message = "Desktop container is running (desired state is off)."
+    else:
+        message = "Remote desktop is off (safe default)."
+    return RemoteDesktopStatus(
+        desired=desired,
+        running=running,
+        docker_control=DOCKER_CONTROL,
+        message=message,
+    )
+
+
+@app.post("/api/apps/remote-desktop", response_model=RemoteDesktopStatus)
+def remote_desktop_set(
+    payload: RemoteDesktopPayload,
+    request: Request,
+) -> RemoteDesktopStatus:
+    """Toggle browser remote desktop. Does not enable SSH."""
+    _require_auth(request)
+    apps = _load_apps()
+    apps["remote_desktop"] = bool(payload.enabled)
+    apps["remote_desktop_updated_at"] = datetime.now(timezone.utc).isoformat()
+    _save_apps(apps)
+    message = _apply_remote_desktop(bool(payload.enabled))
+    running = _remote_desktop_running()
+    return RemoteDesktopStatus(
+        desired=bool(payload.enabled),
+        running=running,
+        docker_control=DOCKER_CONTROL,
+        message=message,
+    )

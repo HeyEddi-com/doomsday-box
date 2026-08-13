@@ -1,12 +1,14 @@
 # Box software architecture
 
-**Last updated:** 2026-08-10  
+**Last updated:** 2026-08-11  
 **Code root:** `box/`  
-**Status:** Locked layout; host v0 bootstrap active
+**Status:** Stage-1 shipped; remote-desktop MVP next
 
 ## Purpose
 
 Offline-first personal cloud, inline network protection / ad-tarpit, local AI — local dashboard, **no forced cloud**.
+
+**Near-term MVP:** authenticated browser full desktop so founders can run **Cursor** on the box without SSH. Golden image flash comes **after** that path works on hardware.
 
 ## Principles
 
@@ -16,6 +18,19 @@ Offline-first personal cloud, inline network protection / ad-tarpit, local AI �
 4. Lean footprint; always set container `cpus` / `mem_limit`  
 5. **Boring host, moving apps** — Debian stable host; product features live in Compose images we control
 
+## Delivery status
+
+| Layer | Status |
+|-------|--------|
+| Host bootstrap (`box/host/`) | **Shipped** — Debian scripts, mDNS, claim kiosk/label, operator console, compose enable |
+| Compose gateway + API + dashboard | **Shipped** — claim/auth, dual skins, Home / Setup / Login / Settings |
+| Software CI | **Shipped** — dashboard, API, host smoke, compose smoke |
+| Browser remote desktop (KasmVNC webtop) | **Scaffolded** — profile, auth gateway, Settings toggle, host scripts; pull/enable on hardware next |
+| Browser VS Code (code-server) | Later optional profile (not Cursor) |
+| `/network`, `/apps`, `/ai`, `/founders` | Not started |
+| Golden image flash | **Blocked** until browser desktop works on a real PC |
+| Product SSH path | Deferred (console break-glass only for now) |
+
 ## Host OS (locked)
 
 | Item | Choice |
@@ -24,11 +39,11 @@ Offline-first personal cloud, inline network protection / ad-tarpit, local AI �
 | **Not ship** | Arch / CachyOS / other full rolling desktops as the customer appliance OS |
 | **Dev** | Debian VM preferred; CachyOS (or any modern Linux) OK for coding if Compose targets Debian |
 | **v0 image method** | Stock Debian (UEFI) + idempotent `box/host/scripts/bootstrap.sh` |
-| **Factory image** | Cloned golden disk **after** bootstrap is proven (`box/host/GOLDEN.md`) |
+| **Factory image** | Cloned golden disk **after** remote-desktop MVP proven on hardware (`box/host/GOLDEN.md`) |
 
-Host stays minimal: kernel, Docker Engine, nftables, Wi‑Fi/AP helpers, sysctl. Not a general desktop.
+Host stays minimal: kernel, Docker Engine, nftables, Wi‑Fi/AP helpers, sysctl. Not a general desktop — the **desktop for Cursor** lives in a Compose workspace, not on the host DE.
 
-**Host v0 smoke:** headless + Docker + `/mnt/storage` + SSH + mDNS `box.local`/`doomsday.local` + nginx stub. Runbook: `box/host/RUNBOOK.md`.
+**Host smoke:** headless + Docker + `/mnt/storage` + mDNS `box.local`/`doomsday.local` + nginx stub/gateway. Runbook: `box/host/RUNBOOK.md`.
 
 ## Updates (locked)
 
@@ -44,11 +59,11 @@ Host stays minimal: kernel, Docker Engine, nftables, Wi‑Fi/AP helpers, sysctl.
 We **maintain and publish** Doomsday Box images (registry we control), not “always `latest` from random upstreams” on customer boxes.
 
 1. Build/test on CI against **Debian bookworm**-shaped hosts (VM first).  
-2. Tag channels e.g. `stable` / `beta` (names TBD at scaffold).  
+2. Tag channels e.g. `stable` / `beta` (names TBD).  
 3. Auto-update customers only to images we have promoted into their channel.  
 4. Before a **Debian major** bump: rebuild host golden image + all our images, run regression (apps, nftables profiles, Ollama footprint), then open a new channel / upgrade path.
 
-Upstream app images (Nextcloud, Ollama, etc.) may be used as bases, but **what the box pulls** is our tagged/digest-pinned release.
+Upstream app images (Nextcloud, Kasm-class, Ollama, etc.) may be used as bases, but **what the box pulls** is our tagged/digest-pinned release.
 
 ## Stack
 
@@ -58,11 +73,13 @@ Vue / PrimeVue dashboard
 FastAPI
         ↓
 Docker Compose services  ← primary update surface (our registry)
+  · gateway · api · dashboard
+  · remote-desktop (MVP) · later: apps / AI / cloud
         ↓
 Debian (stable major) · Docker · nftables · AP/bridge · WireGuard path
 ```
 
-## Repo tree (locked)
+## Repo tree (current)
 
 ```
 box/
@@ -70,28 +87,35 @@ box/
 ├── compose/
 │   ├── docker-compose.yml
 │   ├── docker-compose.dev.yml
-│   └── services/           # modular overrides
-├── api/                    # FastAPI
-├── dashboard/              # Vue / PrimeVue
-├── host/                   # install, nftables, sysctl, Debian golden image notes
-│   └── scripts/
-├── images/                 # Dockerfiles / bake for our published images (at scaffold)
+│   └── gateway/            # nginx reverse proxy
+├── api/                    # FastAPI (claim, auth, status)
+├── dashboard/              # Vue / PrimeVue (dual skin)
+├── host/                   # Debian bootstrap, security, golden notes
+│   ├── scripts/
+│   ├── kiosk/
+│   └── test/
+├── images/                 # Dockerfiles for api + dashboard
+├── test/                   # software + compose smoke entrypoints
+├── scripts/                # dev claim helpers
 └── .env.example
 ```
 
+Modular Compose overrides under `compose/services/` arrive with app profiles (remote desktop first).
+
 ## Capability areas (locked v1 scope)
 
-| Area | v1 |
-|------|----|
-| Personal cloud | Compose app slots; Nextcloud **or** Immich first via Insider vote defaulting to **Nextcloud** if no vote; LAN media playback to household devices / TVs |
-| Offline archives | Optional Kiwix-style knowledge packs; core services reachable with no WAN |
-| Network | Dual-port bridge **and** single-port AP mode documented; ship wizard picks one |
-| Multi-box mesh | Optional: 2–3 boxes as mesh nodes (coverage, load split, redundancy); pairs with Duo/Trio KS packs |
-| Ad-tarpit | Enabled as optional profile; holds tracker connections (starve), not only block |
-| VPN | WireGuard/Gluetun optional profile |
-| Local AI | Ollama + `llama3.2:3b` + `all-minilm` |
-| Scaling | Detect RAM/CPU; single-user default under 16GB |
-| Browser remote compute | Optional Compose app (Kasm-class): **authenticated**, prefer **HTTPS :443**; convenience when a VPN client cannot be installed — **not** an EDR-evasion feature |
+| Area | v1 | Now |
+|------|----|-----|
+| Browser remote compute | Kasm-class desktop; **authenticated**; prefer **HTTPS :443**; user-toggleable | **MVP** |
+| Personal cloud | Compose app slots; Nextcloud **or** Immich (vote; default Nextcloud) | later |
+| Offline archives | Optional Kiwix-style packs | later |
+| Network | Dual-port bridge **and** single-port AP; tarpit optional | later |
+| Multi-box mesh | Optional 2–3 nodes | later |
+| VPN | WireGuard/Gluetun optional | later |
+| Local AI | Ollama + `llama3.2:3b` + `all-minilm` | later |
+| Scaling | Detect RAM/CPU; single-user default under 16GB | design when desktop lands |
+| Browser VS Code | Optional code-server profile | later; not Cursor |
+| SSH Remote | Optional Advanced pubkey | deferred |
 
 ## First-run unboxing (locked)
 
@@ -100,8 +124,9 @@ box/
 3. On a phone/laptop browser, open any of:
    - `http://box.heyeddi.local` (preferred branded) or short `http://box.local` — hub skin  
    - `http://doomsday.heyeddi.local` or short `http://doomsday.local` — doomsday skin  
-4. Complete `/setup` (network mode, **dashboard admin password**, apps). No Linux desktop login required.  
-5. Advanced / operator toggles live under **Settings** (web) — not required for household use.
+4. Complete `/setup` (**dashboard admin password**, claim PIN from sticker/console/kiosk — never from an API). No Linux desktop login required.  
+5. Enable **Remote desktop** from Settings / Apps when ready to code on the box.  
+6. Other Advanced toggles stay optional for household use.
 
 Fallback: device IP (kiosk / router list) if mDNS fails. Optional HDMI kiosk shows branded URLs when ready.
 
@@ -126,32 +151,34 @@ Rules:
 
 | Do | Don't |
 |----|-------|
-| Position as **reachability + UX** (no VPN client, works on HTTPS :443 networks) | Claim “invisible to CrowdStrike / EDR” or market bypass of corp security tools |
+| Position as **reachability + UX** (work on the box from a browser) | Claim “invisible to CrowdStrike / EDR” or market bypass of corp security tools |
 | Require **dashboard auth**; default **off**; prefer access via our gateway on 443 | Expose an unauthenticated desktop port on the raw WAN |
+| Ship **full desktop** first so **Cursor** (desktop app) can run | Pretend code-server or a VS Code extension is Cursor |
 | Treat accidental friendliness to restrictive networks as a **side-effect win** | Design or document evasion techniques |
+| Offer optional code-server later as a light VS Code tab | Claim Cursor Agent exists as a VS Code extension (it does not) |
 
-SSH and WireGuard remain first-class for tech users who want them. Browser remote is the household-friendly path.
+**MVP constraint (2026-08-11):** no product SSH path yet. WireGuard/SSH may return later under Advanced. Console `doombox-enable-operator` remains break-glass only.
 
 ## Operator / advanced (web-first)
 
 | Path | Who |
 |------|-----|
-| **Settings → Advanced** on `box.heyeddi.local` | Product path: enable browser remote, publish profiles, optional remote shell (pubkey) |
-| `doombox-enable-operator` on console | Break-glass / early host v0 before dashboard exists |
+| **Settings → Advanced** / Apps | Product path: enable browser remote desktop; later other profiles |
+| `doombox-enable-operator` on console | Break-glass only |
 
-Non-tech users never open Advanced → Linux `heyeddi` stays locked, sshd stays off (`box/host/SECURITY.md`).
+Non-tech users never open Advanced → Linux `heyeddi` stays locked, sshd stays off by default (`box/host/SECURITY.md`).
 
-## Dashboard routes (locked for first IA)
+## Dashboard routes
 
-| Route | Purpose |
-|-------|---------|
-| `/` | Status home |
-| `/setup` | First-run wizard |
-| `/network` | AP vs bridge, tarpit toggle |
-| `/apps` | Enable/disable Compose apps |
-| `/ai` | Model status / simple chat |
-| `/settings` | Updates, supporters credit, power, **Advanced / operator** |
-| `/founders` | Founding Supporters list |
+| Route | Purpose | Status |
+|-------|---------|--------|
+| `/` | Status home | shipped |
+| `/setup` | First-run claim wizard | shipped |
+| `/settings` | Updates, power, Advanced | shipped (partial) |
+| `/network` | AP vs bridge, tarpit toggle | planned |
+| `/apps` | Enable/disable Compose apps (incl. remote desktop) | planned (MVP enabler) |
+| `/ai` | Model status / simple chat | planned |
+| `/founders` | Founding Supporters list | planned |
 
 ## Non-goals (v1)
 
@@ -161,10 +188,13 @@ Non-tech users never open Advanced → Linux `heyeddi` stays locked, sshd stays 
 - Shipping Arch/CachyOS as the appliance host  
 - Silent Debian major upgrades  
 - **Marketing or engineering for EDR / CrowdStrike evasion**  
+- SSH-first coding for the current MVP  
 
 ## Related
 
 - Epic: `features/box-hub.md`  
+- Backlog / roadmap: `backlog.md`  
 - Host security: `box/host/SECURITY.md`  
+- Engineering notes: `.heyeddi/docs/engineering/`  
 - OSS: `oss-release-promise.md`  
 - Pointer: `.docs/architecture.md`  

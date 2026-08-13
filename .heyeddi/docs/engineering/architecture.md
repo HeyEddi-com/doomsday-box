@@ -67,6 +67,10 @@ Entrypoints: `box/test/run-software-tests.sh`, `.github/workflows/ci.yml`.
 - Host scripts idempotent; `set -euo pipefail`.
 - Storage root: `/mnt/storage/` (compose maps `STORAGE_ROOT`).
 
+## Near-term MVP (product)
+
+Authenticated **browser full desktop** Compose profile (Kasm-class) so Cursor can run on the box without SSH. See product `backlog.md` / `box-architecture.md`. Optional code-server later is not Cursor.
+
 ## What not to build
 
-See `reuse-catalog.md`. Do not add HTTP endpoints for factory reset, claim PIN display, or remote operator enable.
+See `reuse-catalog.md`. Do not add HTTP endpoints for factory reset, claim PIN display, or remote operator enable. Do not treat SSH as the MVP coding path.

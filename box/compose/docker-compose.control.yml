@@ -1,0 +1,5 @@
+# Deprecated — control is in the main compose file now.
+# Kept so old docs/scripts that reference this file do not break.
+# Prefer: DOOMBOX_DOCKER_CONTROL=1 (default) in box/.env
+
+services: {}

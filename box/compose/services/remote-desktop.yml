@@ -1,0 +1,37 @@
+# Optional remote desktop (browser full desktop / Cursor host).
+# Start: docker compose --profile remote-desktop up -d
+# Or: doombox-enable-remote-desktop / API toggle when DOOMBOX_DOCKER_CONTROL=1
+
+services:
+  remote-desktop:
+    profiles: ["remote-desktop"]
+    image: ${REMOTE_DESKTOP_IMAGE:-lscr.io/linuxserver/webtop:ubuntu-xfce}
+    container_name: doombox-remote-desktop
+    restart: unless-stopped
+    environment:
+      PUID: ${REMOTE_DESKTOP_PUID:-1000}
+      PGID: ${REMOTE_DESKTOP_PGID:-1000}
+      TZ: ${TZ:-Etc/UTC}
+      # Serve under gateway path /desktop/ (authenticated)
+      SUBFOLDER: /desktop/
+      TITLE: Doomsday Workspace
+    volumes:
+      - ${STORAGE_ROOT:-/mnt/storage}/remote-desktop:/config:rw
+      - ${STORAGE_ROOT:-/mnt/storage}/workspace:/config/workspace:rw
+      - ../remote-desktop/custom-cont-init.d:/custom-cont-init.d:ro
+      - ../remote-desktop/custom-services.d:/custom-services.d:ro
+      - ../remote-desktop/desktop-help:/usr/local/share/doombox-desktop-help:ro
+    # No host ports — only reachable via gateway /desktop/
+    expose:
+      - "3000"
+    shm_size: ${REMOTE_DESKTOP_SHM:-1gb}
+    security_opt:
+      - seccomp:unconfined
+    cpus: ${REMOTE_DESKTOP_CPUS:-2.0}
+    mem_limit: ${REMOTE_DESKTOP_MEM:-4g}
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:3000/desktop/ >/dev/null || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 90s

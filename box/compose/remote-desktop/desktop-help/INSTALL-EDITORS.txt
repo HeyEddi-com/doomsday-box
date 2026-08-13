@@ -1,0 +1,25 @@
+Install VS Code or Cursor in this desktop
+========================================
+
+Do NOT use Ubuntu Software / PackageKit. They fail in this container
+(GDBus / Permission denied). Use the terminal.
+
+1) Download the Linux .deb into ~/Downloads (browser is fine).
+
+2) In a terminal:
+
+   ~/bin/install-linux-editor.sh ~/Downloads/code_*.deb
+   # or for Cursor:
+   ~/bin/install-linux-editor.sh ~/Downloads/cursor_*.deb
+
+That installs via apt AND saves a copy under ~/cache/debs.
+
+Extra packages/.debs are cached: after each apt install, at desktop
+start, once a day, and when the desktop is stopped (not when you only
+close the browser tab). Lean N150 — no frequent polling. If this desktop
+container is recreated, those packages
+(Cursor, VS Code, and anything else you apt-installed) are restored.
+
+Projects stay in ~/workspace. Settings stay in ~/.config.
+
+Ignore: "Download is performed unsandboxed as root" and PackageKit errors.

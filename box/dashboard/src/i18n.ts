@@ -83,6 +83,8 @@ const messages = {
     localeEs: "Español",
     loginTitle: "Sign in",
     loginLead: "Use the dashboard password you set when you claimed this box.",
+    loginLeadDesktop:
+      "Sign in to the hub first. After that you will open remote desktop automatically.",
     signIn: "Sign in",
     signingIn: "Signing in…",
     signOut: "Sign out",
@@ -92,6 +94,31 @@ const messages = {
     remoteHint:
       "Enable or disable only at the local console. The web UI cannot turn SSH on or factory-reset the box.",
     advancedNever: "Never available here: claim PIN, factory reset, full root.",
+    remoteDesktop: "Remote desktop",
+    remoteDesktopLead:
+      "Full Linux desktop in the browser — install Cursor there to code on this box. No SSH required.",
+    remoteDesktopProtected:
+      "Protected: open the hub, sign in, then open remote desktop. Unsigned visits are sent to login. No public host port.",
+    remoteDesktopEnableLabel: "Enable remote desktop",
+    remoteDesktopOn: "Enabled",
+    remoteDesktopOff: "Off",
+    remoteDesktopRunning: "Ready",
+    remoteDesktopStopped: "Stopped",
+    remoteDesktopStarting: "Starting…",
+    remoteDesktopControlOn: "UI can start/stop",
+    remoteDesktopOpen: "Open remote desktop",
+    remoteDesktopOpenHint: "Turn it on and wait until status shows Ready, then open the link in a new tab.",
+    remoteDesktopStartingBody:
+      "Starting the desktop. First run downloads a large image — this can take several minutes. Keep this tab open.",
+    remoteDesktopRefresh: "Refresh status",
+    remoteDesktopEnable: "Enable",
+    remoteDesktopDisable: "Disable",
+    remoteDesktopBusy: "Updating…",
+    remoteDesktopHint:
+      "First start may take a few minutes while the desktop image downloads.",
+    homeRemoteDesktop: "Remote desktop",
+    homeRemoteDesktopOpen: "Open remote desktop",
+    homeRemoteDesktopSettings: "Manage in Settings",
   },
   es: {
     brandHub: "HeyEddi · Hub",
@@ -152,6 +179,8 @@ const messages = {
     localeEs: "Español",
     loginTitle: "Iniciar sesión",
     loginLead: "Usa la contraseña del panel que definiste al reclamar esta caja.",
+    loginLeadDesktop:
+      "Primero inicia sesión en el hub. Después se abrirá el escritorio remoto automáticamente.",
     signIn: "Entrar",
     signingIn: "Entrando…",
     signOut: "Salir",
@@ -161,6 +190,32 @@ const messages = {
     remoteHint:
       "Activa o desactiva solo en la consola local. La web no puede encender SSH ni hacer factory reset.",
     advancedNever: "Nunca disponible aquí: PIN de reclamo, factory reset, root completo.",
+    remoteDesktop: "Escritorio remoto",
+    remoteDesktopLead:
+      "Escritorio Linux completo en el navegador — instala Cursor ahí para programar en esta caja. Sin SSH.",
+    remoteDesktopProtected:
+      "Protegido: entra al hub, inicia sesión, luego abre el escritorio remoto. Sin sesión te manda a login. Sin puerto público.",
+    remoteDesktopEnableLabel: "Activar escritorio remoto",
+    remoteDesktopOn: "Activado",
+    remoteDesktopOff: "Apagado",
+    remoteDesktopRunning: "Listo",
+    remoteDesktopStopped: "Detenido",
+    remoteDesktopStarting: "Arrancando…",
+    remoteDesktopControlOn: "La UI puede iniciar/parar",
+    remoteDesktopOpen: "Abrir escritorio remoto",
+    remoteDesktopOpenHint:
+      "Actívalo y espera a que el estado diga Listo; luego abre el enlace en una pestaña nueva.",
+    remoteDesktopStartingBody:
+      "Arrancando el escritorio. La primera vez descarga una imagen grande — puede tardar varios minutos. Deja esta pestaña abierta.",
+    remoteDesktopRefresh: "Actualizar estado",
+    remoteDesktopEnable: "Activar",
+    remoteDesktopDisable: "Desactivar",
+    remoteDesktopBusy: "Actualizando…",
+    remoteDesktopHint:
+      "El primer arranque puede tardar unos minutos mientras se descarga la imagen.",
+    homeRemoteDesktop: "Escritorio remoto",
+    homeRemoteDesktopOpen: "Abrir escritorio remoto",
+    homeRemoteDesktopSettings: "Gestionar en Ajustes",
   },
 } as const;
 

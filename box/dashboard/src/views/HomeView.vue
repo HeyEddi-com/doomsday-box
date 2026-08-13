@@ -1,15 +1,17 @@
 <script setup lang="ts">
-import { computed, onMounted } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import Message from "primevue/message";
 import { detectSkin } from "../skin";
 import { useI18n } from "../i18n";
 import { refreshStatus, useBoxStatus } from "../useBoxStatus";
+import { fetchRemoteDesktop, type RemoteDesktopStatus } from "../api";
 
 const router = useRouter();
 const skin = detectSkin();
 const { t } = useI18n();
 const { status, error, loading } = useBoxStatus();
+const desktop = ref<RemoteDesktopStatus | null>(null);
 
 const title = computed(() =>
   skin === "doomsday" ? t.value("homeTitleSurvival") : t.value("homeTitleHub"),
@@ -25,6 +27,12 @@ onMounted(async () => {
   await refreshStatus();
   if (status.value && !status.value.setup_complete) {
     await router.replace("/setup");
+    return;
+  }
+  try {
+    desktop.value = await fetchRemoteDesktop();
+  } catch {
+    desktop.value = null;
   }
 });
 </script>
@@ -60,6 +68,27 @@ onMounted(async () => {
       <p class="muted" style="margin: 0.75rem 0 0">
         {{ t("statusNames") }}: {{ status.hostnames.join(" · ") }}
       </p>
+    </div>
+
+    <div v-if="status?.setup_complete" class="panel">
+      <h2>{{ t("homeRemoteDesktop") }}</h2>
+      <p class="muted">{{ t("remoteDesktopProtected") }}</p>
+      <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 0.75rem">
+        <a
+          class="desktop-open-link"
+          href="/desktop/"
+          target="_blank"
+          rel="noopener noreferrer"
+          :class="{ 'is-disabled': !desktop?.running }"
+          :aria-disabled="!desktop?.running"
+          @click="(e) => { if (!desktop?.running) e.preventDefault(); }"
+        >
+          {{ t("homeRemoteDesktopOpen") }}
+        </a>
+        <router-link class="desktop-open-link secondary" to="/settings">
+          {{ t("homeRemoteDesktopSettings") }}
+        </router-link>
+      </div>
     </div>
   </section>
 </template>
