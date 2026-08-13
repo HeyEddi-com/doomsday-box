@@ -1,0 +1,16 @@
+[Unit]
+Description=DoomBox first-boot identity (machine-id, SSH host keys, claim wipe)
+Documentation=file:///opt/doombox/host/GOLDEN.md
+DefaultDependencies=no
+After=local-fs.target
+Before=docker.service doombox-compose.service
+ConditionPathExists=!/var/lib/doombox/first-boot.done
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+EnvironmentFile=-/etc/default/doombox
+ExecStart=/usr/local/sbin/doombox-first-boot
+
+[Install]
+WantedBy=multi-user.target

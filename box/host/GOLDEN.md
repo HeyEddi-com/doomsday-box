@@ -1,42 +1,77 @@
-# Golden disk image (later)
+# Golden appliance image (USB / disk clone)
 
-**Status:** deferred until bootstrap is boring on ≥1 sample PC **per arch you ship**  
-**v0 method remains:** Debian install + `scripts/bootstrap.sh`  
-**Arches:** bake **separate** images for `amd64` and `arm64` — same scripts, different disk blobs
+**Last updated:** 2026-08-13  
+**Status:** **active** — bake scripts shipped; hardware flash proof still pending on N150  
+**Arches:** separate **amd64** (N100/N150) and **arm64** blobs — same scripts  
+**Do not** commit multi-GB `.img` files to git
 
-## When to bake
+## Goal (locked)
 
-Bake a flashable image only after:
+Flash a USB (or clone a disk) → write to the PC → **plug in power** → hub is reachable at `http://box.local`. Founder does **not** SSH in, does **not** run `bootstrap.sh`, does **not** `docker compose up` on each unit.
 
-1. `smoke-check.sh` passes on real hardware for that arch (N100/N150 and/or ARM64 board)  
-2. Bootstrap has been re-run cleanly on a fresh install once  
-3. You are preparing friend-seed or factory clones (MOQ-scale)
+Remote desktop image is **pre-pulled**. Desktop stays **off** until claimed + enabled in Settings (lean N150). Cursor is installed inside that desktop after first enable (or baked into cache on the golden).
 
-## Suggested bake flow (outline)
+## What must be in the image
 
-1. Install Debian + run bootstrap on a reference unit.  
-2. Clear machine-id, SSH host keys, and unique state so clones regenerate:
+| Layer | In the golden |
+|-------|----------------|
+| Debian 12 (bookworm), UEFI, headless | yes |
+| Bootstrap already applied | users, mDNS, Docker, nginx |
+| Compose project + `.env` | **`/opt/doombox`** (`box/` tree: `compose/`, `host/`, `.env`) |
+| Docker images | **pre-pulled**: api, dashboard, nginx, webtop |
+| systemd | `doombox-first-boot.service` + `doombox-compose.service` |
+| Claim state | **empty** — first boot mints a new PIN |
+| sshd | **off** |
+
+## Build once (reference unit or VM)
+
+1. Install Debian 12 + run `box/host/scripts/bootstrap.sh`.  
+2. Install the **`box/`** tree at `/opt/doombox` (not the whole monorepo root):
 
    ```bash
-   sudo truncate -s 0 /etc/machine-id
-   sudo rm -f /var/lib/dbus/machine-id
-   sudo rm -f /etc/ssh/ssh_host_*
-   # clear claim + identity so clones mint fresh PIN + HHDB serial:
-   #   /mnt/storage/compose/{SETUP_PIN.txt,setup-*.json,BOX_ID,OEM_SERIAL,identity.json,sessions.json}
-   # optionally: clear founder bash history, wipe other /mnt/storage/* contents
+   sudo rsync -a --delete ./box/ /opt/doombox/
+   cd /opt/doombox/host
+   sudo ./scripts/enable-compose-stack.sh --pull-remote-desktop
    ```
 
-3. Power off; image the disk:
+   That builds/starts the core stack, points nginx at the gateway, writes `/etc/default/doombox`, and **enables compose on boot**.
+
+3. Prove on this reference: claim → Settings → remote desktop → Cursor (once).  
+4. Generalize for imaging (physical console only):
 
    ```bash
-   # from a second machine / USB boot environment — verify device names
-   sudo dd if=/dev/nvme0n1 bs=64M status=progress | gzip -c > doombox-host-bookworm-YYYYMMDD.img.gz
+   sudo doombox-prepare-golden   # type PREPARE
+   # Power off. Do not reboot into multi-user before imaging.
    ```
 
-4. Flash clones; first boot regenerates SSH keys + machine-id (add a first-boot oneshot when you automate this).
+5. Image the disk from a **live USB / second machine** (verify device names):
+
+   ```bash
+   sudo doombox-bake-golden --device /dev/nvme0n1 \
+     --output /mnt/usb/doombox-amd64-$(date +%Y%m%d).img.gz --confirm YES
+   ```
+
+   Or equivalent `dd | gzip`. Artifacts stay outside git.
+
+6. Flash clones; first boot runs `doombox-first-boot` (new `machine-id`, SSH host keys, wipe claim leftovers) then `doombox-compose` brings the hub up. Read PIN with `doombox-show-setup-pin` / label export.
+
+## Units & helpers
+
+| Unit / command | Role |
+|----------------|------|
+| `doombox-first-boot.service` | Oneshot when `/var/lib/doombox/first-boot.done` is missing |
+| `doombox-compose.service` | `docker compose up -d` for core stack (no `--build`) |
+| `doombox-prepare-golden` | Stop stack, wipe claim, empty machine-id, arm first-boot |
+| `doombox-bake-golden` | Safe `dd\|gzip` wrapper (refuses live root disk) |
+| `/etc/default/doombox` | `DOOMBOX_BOX_ROOT` (default `/opt/doombox`) |
+
+## Until bake is proven on hardware (dev only)
+
+Debian **netinst USB** + `RUNBOOK.md` + bootstrap. That is **not** the clone path.
 
 ## Do not
 
 - Ship Arch/CachyOS as the customer image  
-- Bake before Docker/mDNS/stub are stable  
-- Commit multi‑GB `.img` files into this git repo
+- Require SSH or founder presence to start services  
+- Commit `.img` / `.iso` blobs into this repo  
+- Reboot the reference unit after `prepare-golden` before imaging (first-boot would mint a PIN into the golden)

@@ -1,6 +1,6 @@
 # Sample PC runbook — Debian → DoomBox host
 
-**Last updated:** 2026-08-10  
+**Last updated:** 2026-08-13  
 **Hardware:** Intel N100/N150 (**amd64**) or ARM64 DIY (Pi / Orange Pi class). **Same bootstrap** — no arch fork.
 
 ## 0. What you need
@@ -187,8 +187,24 @@ After claim, Home/Settings require the dashboard password (`/login`). Sessions a
 
 Rule: **one sticker ↔ one serial ↔ one live PIN**. Do not reuse a PIN across units. Do not publish the ledger.
 
+## 9. Compose on boot (appliance / golden)
+
+After bootstrap, install the **`box/`** tree and enable the stack (nginx + systemd):
+
+```bash
+# Recommended appliance path:
+sudo rsync -a --delete /path/to/repo/box/ /opt/doombox/
+cd /opt/doombox/host
+sudo ./scripts/enable-compose-stack.sh --pull-remote-desktop
+systemctl is-enabled doombox-compose.service
+```
+
+Reboot once on the reference unit and confirm `http://box.local` comes back with **no** SSH and **no** manual `compose up`.
+
+Clone path (after the reference is proven): [GOLDEN.md](./GOLDEN.md) — `doombox-prepare-golden` → `doombox-bake-golden` → flash → power on.
+
 ## Next after v0 smoke
 
-1. Point host nginx at the compose gateway instead of the stub.  
+1. Point host nginx at the compose gateway (`enable-compose-stack.sh`).  
 2. HDMI claim kiosk: `sudo doombox-enable-claim-kiosk` (optional `--with-browser`).  
 3. When one sample is known-good, follow [GOLDEN.md](./GOLDEN.md) for a clonable image.

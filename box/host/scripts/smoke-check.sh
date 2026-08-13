@@ -218,6 +218,28 @@ if [[ ! -f "${REMOTE_ADMIN_MARKER}" ]]; then
   fi
 fi
 
+if [[ "${CONTAINER}" -eq 1 ]]; then
+  skip "doombox-compose systemd units (no systemd in slim container)"
+elif [[ -f /etc/systemd/system/doombox-compose.service ]]; then
+  if systemctl is-enabled --quiet doombox-compose.service 2>/dev/null; then
+    pass "doombox-compose.service enabled"
+  else
+    fail "doombox-compose.service installed but not enabled"
+  fi
+  if [[ -f /etc/systemd/system/doombox-first-boot.service ]]; then
+    pass "doombox-first-boot.service installed"
+  else
+    fail "doombox-first-boot.service missing"
+  fi
+  if [[ -x /usr/local/sbin/doombox-compose-up ]]; then
+    pass "doombox-compose-up helper installed"
+  else
+    fail "doombox-compose-up missing"
+  fi
+else
+  skip "doombox-compose.service (run enable-compose-stack.sh for boot-on-power)"
+fi
+
 printf '\n'
 if [[ "${FAILS}" -eq 0 ]]; then
   printf 'All smoke checks passed.\n'
