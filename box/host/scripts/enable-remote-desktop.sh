@@ -13,28 +13,43 @@ die() { printf 'ERROR: %s\n' "$*" >&2; exit 1; }
 [[ "${EUID}" -eq 0 ]] || die "run as root"
 command -v docker >/dev/null || die "docker required"
 
-install -d -m 0755 /mnt/storage/compose
-install -d -m 0755 /mnt/storage/remote-desktop
-install -d -m 0755 /mnt/storage/workspace
-
 cd "${BOX_ROOT}"
 [[ -f .env ]] || cp .env.example .env
 
-# Mark desired state for the dashboard
-python3 - <<'PY' || true
-import json
-from pathlib import Path
-p = Path("/mnt/storage/compose/apps.json")
-data = {}
-if p.is_file():
-    try:
-        data = json.loads(p.read_text(encoding="utf-8"))
-    except Exception:
-        data = {}
-data["remote_desktop"] = True
-p.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
-p.chmod(0o600)
-PY
+puid="${REMOTE_DESKTOP_PUID:-1000}"
+pgid="${REMOTE_DESKTOP_PGID:-1000}"
+for envf in "${BOX_ROOT}/.env" "/box/.env"; do
+  [[ -f "${envf}" ]] || continue
+  # shellcheck disable=SC1090
+  set -a
+  # shellcheck disable=SC1091
+  source "${envf}"
+  set +a
+  puid="${REMOTE_DESKTOP_PUID:-${puid}}"
+  pgid="${REMOTE_DESKTOP_PGID:-${pgid}}"
+  break
+done
+[[ "${puid}" =~ ^[0-9]+$ && "${pgid}" =~ ^[0-9]+$ ]] \
+  || die "REMOTE_DESKTOP_PUID/PGID must be numeric (got ${puid}:${pgid})"
+
+install -d -m 0755 /mnt/storage/compose
+install -d -m 0755 -o "${puid}" -g "${pgid}" /mnt/storage/remote-desktop
+install -d -m 0755 -o "${puid}" -g "${pgid}" /mnt/storage/workspace
+
+update_apps_json=""
+for helper in \
+  "${HOST_ROOT}/scripts/lib/update-apps-json.py" \
+  "/usr/local/lib/doombox/update-apps-json.py"
+do
+  if [[ -f "${helper}" ]]; then
+    update_apps_json="${helper}"
+    break
+  fi
+done
+[[ -n "${update_apps_json}" ]] || die "update-apps-json.py not found"
+
+# Mark desired state for the dashboard (locked; never wipe on corrupt JSON)
+python3 "${update_apps_json}" --key remote_desktop --value true
 
 log "Starting remote-desktop profile (pull may take a few minutes)"
 docker compose -f compose/docker-compose.yml --env-file .env --profile remote-desktop up -d remote-desktop

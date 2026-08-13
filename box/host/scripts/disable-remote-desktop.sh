@@ -16,21 +16,19 @@ command -v docker >/dev/null || die "docker required"
 cd "${BOX_ROOT}"
 [[ -f .env ]] || cp .env.example .env
 
-python3 - <<'PY' || true
-import json
-from pathlib import Path
-p = Path("/mnt/storage/compose/apps.json")
-data = {}
-if p.is_file():
-    try:
-        data = json.loads(p.read_text(encoding="utf-8"))
-    except Exception:
-        data = {}
-data["remote_desktop"] = False
-p.parent.mkdir(parents=True, exist_ok=True)
-p.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
-p.chmod(0o600)
-PY
+update_apps_json=""
+for helper in \
+  "${HOST_ROOT}/scripts/lib/update-apps-json.py" \
+  "/usr/local/lib/doombox/update-apps-json.py"
+do
+  if [[ -f "${helper}" ]]; then
+    update_apps_json="${helper}"
+    break
+  fi
+done
+[[ -n "${update_apps_json}" ]] || die "update-apps-json.py not found"
+
+python3 "${update_apps_json}" --key remote_desktop --value false
 
 log "Flushing apt software cache before stop"
 docker compose -f compose/docker-compose.yml --env-file .env --profile remote-desktop \
