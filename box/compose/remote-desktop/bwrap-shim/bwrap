@@ -12,7 +12,7 @@ from __future__ import annotations
 import os
 import sys
 
-# Options that take one following argument.
+# Options that take one following argument (or --key=VAL).
 _ONE_ARG = {
     "--chdir",
     "--unsetenv",
@@ -22,29 +22,36 @@ _ONE_ARG = {
     "--size",
     "--perms",
     "--seccomp",
+    "--add-seccomp-fd",
     "--uid-fd",
     "--gid-fd",
     "--info-fd",
     "--json-status-fd",
     "--userns-block-fd",
     "--userns-fd",
+    "--assert-userns-fd",
     "--pidns-fd",
     "--args",
     "--file-label",
+    "--exec-label",
     "--remount-ro",
     "--tmpfs",
     "--dir",
     "--proc",
     "--dev",
+    "--mqueue",
     "--lock-file",
     "--sync-fd",
     "--block-fd",
     "--userns",
+    "--userns2",
+    "--pidns",
     "--cap-add",
     "--cap-drop",
 }
 
-# Options that take two following arguments (SRC DEST or KEY VALUE).
+# Options that take two following arguments (SRC DEST or KEY VALUE),
+# or --key=VAL plus one following argument.
 _TWO_ARG = {
     "--ro-bind",
     "--ro-bind-try",
@@ -69,6 +76,10 @@ def _exec_command(cmd: list[str]) -> None:
     os.execvp(cmd[0], cmd)
 
 
+def _looks_like_option(arg: str) -> bool:
+    return arg.startswith("-") and arg != "-"
+
+
 def main() -> int:
     args = sys.argv[1:]
     if not args:
@@ -76,17 +87,10 @@ def main() -> int:
         return 1
 
     if args in (["--version"], ["-V"]):
-        # Real bwrap --version is used by some probes; keep them quiet.
         sys.stdout.write("bwrap-shim (doombox) 0\n")
         return 0
 
-    # Explicit command separator always wins.
-    if "--" in args:
-        cmd = args[args.index("--") + 1 :]
-        if cmd:
-            _exec_command(cmd)
-
-    # Skip bwrap options; first remaining token is the command (glycin path, etc.).
+    # Sequential parse only — never scan ahead for "--" (it can be a flag value).
     i = 0
     while i < len(args):
         arg = args[i]
@@ -98,7 +102,11 @@ def main() -> int:
         if arg.startswith("--"):
             key = arg.split("=", 1)[0]
             if "=" in arg:
-                i += 1
+                # --key=VAL consumes this token; two-arg options still need DEST/VALUE.
+                if key in _TWO_ARG:
+                    i += 2
+                else:
+                    i += 1
                 continue
             if key in _TWO_ARG:
                 i += 3
@@ -106,8 +114,11 @@ def main() -> int:
             if key in _ONE_ARG:
                 i += 2
                 continue
-            # Unknown flag with no args (e.g. --unshare-all, --die-with-parent).
-            i += 1
+            # Unknown flag: if next token looks like a value, skip it too.
+            if i + 1 < len(args) and not _looks_like_option(args[i + 1]):
+                i += 2
+            else:
+                i += 1
             continue
         _exec_command(args[i:])
 
